@@ -121,10 +121,10 @@ public class Crobe
     public boolean live(){
         //age a turn
         _age += 1;
-        _lifeCycle.processAging(this);
+        _lifeCycle.processAging();
 
         //feed
-        _metabolism.processFeeding(this);
+        _metabolism.processFeeding();
 
         //check for healing
         if(_health < _maxHealth) {
@@ -144,7 +144,7 @@ public class Crobe
         return (_stage != CrobeEnums.LifeStage.DEAD);
     }
     public boolean reproduce(ArrayList<Crobe> children) {
-        _lifeCycle.processReproduction(this, children);
+        _lifeCycle.processReproduction(children);
 
         return (children.size() > 0);
     }
@@ -213,7 +213,7 @@ public class Crobe
         _maxEnergy = _energy;
 
         //initialize any gene pool functions
-        _lifeCycle.initializeReproduction(this);
+        _lifeCycle.initializeReproduction();
     }
 
     public String toString(){

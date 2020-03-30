@@ -11,8 +11,8 @@ public interface ILifeCycleGenePool extends IGenePool
     void initializeGenePool(int[] span,
                             int[] spanRange,
                             float[] maturity);
-    void initializeReproduction(Crobe crobe);
+    void initializeReproduction();
 
-    void processAging(Crobe crobe);
-    void processReproduction(Crobe crobe, ArrayList<Crobe> children);
+    void processAging();
+    void processReproduction(ArrayList<Crobe> children);
 }

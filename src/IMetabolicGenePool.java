@@ -14,5 +14,5 @@ public interface IMetabolicGenePool extends IGenePool
                             int[] staminaRange,
                             int[] mortalityRate);
 
-    void processFeeding(Crobe crobe);
+    void processFeeding();
 }

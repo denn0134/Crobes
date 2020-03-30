@@ -4,6 +4,10 @@ public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
 {
     private static final String TS_FMT = "    vitality: %1$s vRange: %2$s healRate: %3$s stamina: %4$s sRange: %5$s mortalityRate: %6$s";
 
+    public BasePhotoMetabolism(Crobe crobe) {
+        super(crobe);
+    }
+
     @Override
     public String getNamePart() {
         return "photus";
@@ -56,15 +60,15 @@ public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
     }
 
     @Override
-    public void processFeeding(Crobe crobe) {
+    public void processFeeding() {
         //for now simply assume 1 light is available
         //recharge 1 energy for each light available
-        crobe.recharge(1);
+        _crobe.recharge(1);
     }
 
     @Override
-    public GenePool recombinateGenePool(ArrayList<GenePool> genePools) {
-        BasePhotoMetabolism pool = new BasePhotoMetabolism();
+    public GenePool recombinateGenePool(Crobe crobe, ArrayList<GenePool> genePools) {
+        BasePhotoMetabolism pool = new BasePhotoMetabolism(crobe);
         ArrayList<Gene> vGenes = new ArrayList<Gene>();
         ArrayList<Gene> vrGenes = new ArrayList<Gene>();
         ArrayList<Gene> hrGenes = new ArrayList<Gene>();
