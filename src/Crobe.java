@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -85,6 +86,14 @@ public class Crobe
         _stressLevel = stressLevel;
     }
 
+    private Point _position;
+    public Point position() {
+        return _position;
+    }
+    public void position(Point position) {
+        _position = position;
+    }
+
     public Crobe(String designation){
         _designation = designation;
         _stressLevel = 1;
@@ -111,6 +120,14 @@ public class Crobe
     }
     public void metabolism(IMetabolicGenePool metabolism) {
         _metabolism = metabolism;
+    }
+
+    private IMotilityGenePool _motility;
+    public IMotilityGenePool motility() {
+        return _motility;
+    }
+    public void motility(IMotilityGenePool motility) {
+        _motility = motility;
     }
 
     private int getIntRange(int base, int range) {
@@ -226,6 +243,7 @@ public class Crobe
                 " energy: " + _energy +
                 " stressLevel: " + _stressLevel + "\n" +
                 _lifeCycle.toString() + "\n" +
-                _metabolism.toString();
+                _metabolism.toString() + "\n" +
+                _motility.toString();
     }
 }
