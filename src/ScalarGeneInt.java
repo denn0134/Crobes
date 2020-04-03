@@ -29,16 +29,30 @@ public class ScalarGeneInt extends Gene
         return result;
     }
 
+    private void mutationType(CrobeEnums.MutationType mutationType) {
+        //RANDOM mutation type is not allowed
+        if(mutationType == CrobeEnums.MutationType.RANDOM)
+            _mutationType = CrobeEnums.MutationType.SCALAR_DISCREET;
+        else
+            _mutationType = mutationType;
+    }
+    private int _mutationRange;
     private int getMutation(int value) {
-        System.out.println("MUTATION!-INT");
-
         int result = value;
-        int rng = (int) Math.round(value * Crobe.MUTATION_RANGE);
         int sign = _rand.nextInt(2);
-        int change = _rand.nextInt(rng) + 1;
-        if(sign == 0) {
+        int change = 0;
+
+        switch (_mutationType) {
+            case ADJACENT:
+                change = _rand.nextInt(_mutationRange) + 1;
+                break;
+            case SCALAR_DISCREET:
+                change = 1;
+        }//end switch
+
+        if (sign == 0) {
             result -= change;
-            if(result <= 0)
+            if (result <= 0)
                 result = 1;
         }//end if
         else {
@@ -48,8 +62,18 @@ public class ScalarGeneInt extends Gene
         return result;
     }
 
-    public ScalarGeneInt(int[] genotype) {
+    public ScalarGeneInt(int[] genotype,
+                         CrobeEnums.MutationType mutationType,
+                         int mutationRange) {
         _genotype = genotype;
+        mutationType(mutationType);
+        _mutationRange = mutationRange;
+    }
+    public ScalarGeneInt(int[] genotype,
+                         CrobeEnums.MutationType mutationType) {
+        _genotype = genotype;
+        mutationType(mutationType);
+        _mutationRange = Math.round(phenotype() * Crobe.MUTATION_RANGE);
     }
 
     @Override
@@ -71,7 +95,7 @@ public class ScalarGeneInt extends Gene
             genotype[idx++] = geneValues[1];
         }//end for i
 
-        gene = new ScalarGeneInt(genotype);
+        gene = new ScalarGeneInt(genotype, _mutationType, _mutationRange);
 
         return gene;
     }

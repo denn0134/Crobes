@@ -31,19 +31,15 @@ public class HeritableGeneBool extends HeritableGene
         return _dominance[idx];
     }
 
-    private boolean getMutation(boolean value) {
-        System.out.println("MUTATION!-BOOLEAN");
-
-        int b = _rand.nextInt(2);
-        return (b == 1);
-    }
-
     private boolean[] _dominance;
     public void dominance(boolean[] hierarchy) { _dominance = hierarchy; }
 
-    public HeritableGeneBool(boolean[] genotype, boolean[] hierarchy) {
+    public HeritableGeneBool(boolean[] genotype,
+                             boolean[] hierarchy,
+                             CrobeEnums.MutationType mutationType) {
         _genotype = genotype;
         _dominance = hierarchy;
+        mutationType(_mutationType);
     }
 
     private String getBoolStr(boolean b) {
@@ -51,6 +47,29 @@ public class HeritableGeneBool extends HeritableGene
             return "T";
         else
             return "F";
+    }
+
+    @Override
+    public void mutate(int stressLevel) {
+        for(int i = 0; i < _genotype.length; i++) {
+            int m = _rand.nextInt(Crobe.MUTATION_RATE);
+            if(m < stressLevel)
+                _genotype[i] = getMutation(_genotype[i]);
+        }//end for i
+    }
+    private boolean getMutation(boolean value) {
+        boolean result = value;
+
+        switch (_mutationType) {
+            case RANDOM:
+                int b = _rand.nextInt(2);
+                result = (b == 1);
+                break;
+            case ADJACENT:
+                result = !result;
+        }//end switch
+
+        return result;
     }
 
     @Override
@@ -72,19 +91,12 @@ public class HeritableGeneBool extends HeritableGene
             genotype[idx++] = geneValues[1];
         }//end for i
 
-        gene = new HeritableGeneBool(genotype, _dominance);
+        gene = new HeritableGeneBool(genotype, _dominance, _mutationType);
 
         return gene;
     }
 
-    @Override
-    public void mutate(int stressLevel) {
-        for(int i = 0; i < _genotype.length; i++) {
-            int m = _rand.nextInt(Crobe.MUTATION_RATE);
-            if(m < stressLevel)
-                _genotype[i] = getMutation(_genotype[i]);
-        }//end for i
-    }
+
 
     @Override
     public String toString() {

@@ -1,5 +1,13 @@
 public abstract class HeritableGene extends Gene
 {
+    protected void mutationType(CrobeEnums.MutationType mutationType) {
+        //heritable gene cannot have SCALAR_DISCREET
+        //mutations - treat this as ADJACENT
+        if(mutationType == CrobeEnums.MutationType.SCALAR_DISCREET)
+            _mutationType = CrobeEnums.MutationType.ADJACENT;
+        else
+            _mutationType = mutationType;
+    }
     protected int getInheritanceIndex(int[] geneCounts) {
         int result = -1;
 

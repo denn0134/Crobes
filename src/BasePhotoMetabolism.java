@@ -7,6 +7,21 @@ public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
     public BasePhotoMetabolism(Crobe crobe) {
         super(crobe);
     }
+    public BasePhotoMetabolism(Crobe crobe,
+                               ScalarGeneInt vitality,
+                               ScalarGeneInt vitalityRange,
+                               ScalarGeneFlt healRate,
+                               ScalarGeneInt stamina,
+                               ScalarGeneInt staminaRange,
+                               ScalarGeneInt mortalityRate) {
+        super(crobe);
+        _vitality = vitality;
+        _vitalityRange = vitalityRange;
+        _healRate = healRate;
+        _stamina = stamina;
+        _staminaRange = staminaRange;
+        _mortalityRate = mortalityRate;
+    }
 
     @Override
     public String getNamePart() {
@@ -51,12 +66,12 @@ public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
 
     @Override
     public void initializeGenePool(int[] vitality, int[] vitalityRange, float[] healRate, int[] stamina, int[] staminaRange, int[] mortalityRate) {
-        _vitality = new ScalarGeneInt(vitality);
-        _vitalityRange = new ScalarGeneInt(vitalityRange);
+        _vitality = new ScalarGeneInt(vitality, CrobeEnums.MutationType.SCALAR_DISCREET);
+        _vitalityRange = new ScalarGeneInt(vitalityRange, CrobeEnums.MutationType.ADJACENT);
         _healRate = new ScalarGeneFlt(healRate);
-        _stamina = new ScalarGeneInt(stamina);
-        _staminaRange = new ScalarGeneInt(staminaRange);
-        _mortalityRate = new ScalarGeneInt(mortalityRate);
+        _stamina = new ScalarGeneInt(stamina, CrobeEnums.MutationType.SCALAR_DISCREET);
+        _staminaRange = new ScalarGeneInt(staminaRange, CrobeEnums.MutationType.ADJACENT);
+        _mortalityRate = new ScalarGeneInt(mortalityRate, CrobeEnums.MutationType.SCALAR_DISCREET);
     }
 
     @Override

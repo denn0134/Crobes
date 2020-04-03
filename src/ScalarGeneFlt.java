@@ -29,13 +29,13 @@ public class ScalarGeneFlt extends Gene
         return result;
     }
 
+    private float _mutationRange;
     private float getMutation(float value) {
-        System.out.println("MUTATION!-FLOAT");
-
         float result = value;
-        float rng = value * Crobe.MUTATION_RANGE;
-        float change = _rand.nextFloat() * rng;
         int sign = _rand.nextInt(2);
+
+        float change = _rand.nextFloat() * _mutationRange;
+
         if(sign == 0) {
             result -= change;
             if(result <= 0)
@@ -50,8 +50,16 @@ public class ScalarGeneFlt extends Gene
         return result;
     }
 
+    public ScalarGeneFlt(float[] genotype,
+                         float mutationRange) {
+        _genotype = genotype;
+        _mutationType = CrobeEnums.MutationType.SCALAR_DISCREET;
+        _mutationRange = mutationRange;
+    }
     public ScalarGeneFlt(float[] genotype) {
         _genotype = genotype;
+        _mutationType = CrobeEnums.MutationType.SCALAR_DISCREET;
+        _mutationRange = phenotype() * Crobe.MUTATION_RANGE;
     }
 
     @Override
@@ -73,7 +81,7 @@ public class ScalarGeneFlt extends Gene
             genotype[idx++] = geneValues[1];
         }//end for i
 
-        gene = new ScalarGeneFlt(genotype);
+        gene = new ScalarGeneFlt(genotype, _mutationRange);
 
         return gene;
     }

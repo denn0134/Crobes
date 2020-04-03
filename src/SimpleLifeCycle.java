@@ -19,6 +19,15 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
     public SimpleLifeCycle(Crobe crobe) {
         super(crobe);
     }
+    public SimpleLifeCycle(Crobe crobe,
+                           ScalarGeneInt span,
+                           ScalarGeneInt spanRange,
+                           ScalarGeneFlt maturity) {
+        super(crobe);
+        _span = span;
+        _spanRange = spanRange;
+        _maturity = maturity;
+    }
 
     @Override
     public String getNamePart() {
@@ -55,8 +64,8 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
 
     @Override
     public void initializeGenePool(int[] span, int[] spanRange, float[] maturity) {
-        _span = new ScalarGeneInt(span);
-        _spanRange = new ScalarGeneInt(spanRange);
+        _span = new ScalarGeneInt(span, CrobeEnums.MutationType.SCALAR_DISCREET);
+        _spanRange = new ScalarGeneInt(spanRange, CrobeEnums.MutationType.ADJACENT);
         _maturity = new ScalarGeneFlt(maturity);
         reproInterval = 0;
     }
