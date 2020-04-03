@@ -11,7 +11,7 @@ public class Crobe
     public CrobeEnums.LifeStage stage() { return _stage; }
     public void stage(CrobeEnums.LifeStage stage) { _stage = stage; }
 
-    private static final String TAXA_FORMAT = "%1$s: %2$s %3$s";
+    private static final String TAXA_FORMAT = "%1$s: %2$s %3$s %4$s";
     public Random rand = new Random();
 
     public CrobeColony parent;
@@ -103,7 +103,8 @@ public class Crobe
         return String.format(TAXA_FORMAT,
                 _designation,
                 _lifeCycle.getNamePart(),
-                _metabolism.getNamePart());
+                _metabolism.getNamePart(),
+                _motility.getNamePart());
     }
 
     private ILifeCycleGenePool _lifeCycle;
