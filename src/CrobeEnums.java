@@ -20,7 +20,22 @@ public class CrobeEnums
         SCALAR_DISCREET   //change the value by a random range
     }
 
+    /***
+     * Defines the basic movement abilities of the crobe.
+     */
     public enum MotilityType {
-        ANCHORED, NON_MOTILE, MOTILE
+        ANCHORED,     //does not move on it's own, does not drift
+        NON_MOTILE,   //does not move, can drift
+        MOTILE        //can move and drift
+    }
+
+    /***
+     * Defines the pathing mechanics for movement.
+     */
+    public enum MovementType {
+        CREEPER,      //single direction, tends to low range
+        HOPPER,       //single direction, avoids obstacles
+        ZIGGER,       //two legs of movement in different directions
+        SPRINTER      //single direction, tends to high range
     }
 }

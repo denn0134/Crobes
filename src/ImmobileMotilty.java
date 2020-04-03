@@ -2,10 +2,21 @@ import java.util.ArrayList;
 
 public class ImmobileMotilty extends GenePool implements IMotilityGenePool
 {
-    private static final String TS_FMT = "    motilityType: %1$s";
+    private static final String TS_FMT = "    motilityType: %1$s moveType: %2$s moveBase: %3$s moveRange: %4$s lethargy: %5$s efficiency: %6$s";
 
     public ImmobileMotilty(Crobe crobe) {
         super(crobe);
+    }
+    public ImmobileMotilty(Crobe crobe,
+                           ScalarGeneInt moveBase,
+                           ScalarGeneInt moveRange,
+                           ScalarGeneFlt lethargy,
+                           ScalarGeneFlt efficiency) {
+        super(crobe);
+        _moveBase = moveBase;
+        _moveRange = moveRange;
+        _lethargy = lethargy;
+        _efficiency = efficiency;
     }
 
     @Override
@@ -97,11 +108,22 @@ public class ImmobileMotilty extends GenePool implements IMotilityGenePool
 
     @Override
     public void mutate(int stressLevel) {
-
+        _motilityType.mutate(stressLevel);
+        _moveType.mutate(stressLevel);
+        _moveBase.mutate(stressLevel);
+        _moveRange.mutate(stressLevel);
+        _lethargy.mutate(stressLevel);
+        _efficiency.mutate(stressLevel);
     }
 
     @Override
     public String toString() {
-        return String.format(TS_FMT, _motilityType.toString());
+        return String.format(TS_FMT,
+                _motilityType.toString(),
+                _moveType.toString(),
+                _moveBase.toString(),
+                _moveRange.toString(),
+                _lethargy.toString(),
+                _efficiency.toString());
     }
 }
