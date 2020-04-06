@@ -11,7 +11,7 @@ public class Crobe
     public CrobeEnums.LifeStage stage() { return _stage; }
     public void stage(CrobeEnums.LifeStage stage) { _stage = stage; }
 
-    private static final String TAXA_FORMAT = "%1$s: %2$s %3$s %4$s";
+    private static final String TAXA_FORMAT = "%1$s: %2$s %3$s %4$s %5$s";
     public Random rand = new Random();
 
     public CrobeColony parent;
@@ -104,7 +104,8 @@ public class Crobe
                 _designation,
                 _lifeCycle.getNamePart(),
                 _metabolism.getNamePart(),
-                _motility.getNamePart());
+                _motility.getNamePart(),
+                _renderer.getNamePart());
     }
 
     private ILifeCycleGenePool _lifeCycle;
@@ -129,6 +130,14 @@ public class Crobe
     }
     public void motility(IMotilityGenePool motility) {
         _motility = motility;
+    }
+
+    private IRenderGenePool _renderer;
+    public IRenderGenePool renderer() {
+        return _renderer;
+    }
+    public void renderer(IRenderGenePool renderer) {
+        _renderer = renderer;
     }
 
     private int getIntRange(int base, int range) {
@@ -245,6 +254,7 @@ public class Crobe
                 " stressLevel: " + _stressLevel + "\n" +
                 _lifeCycle.toString() + "\n" +
                 _metabolism.toString() + "\n" +
-                _motility.toString();
+                _motility.toString() + "\n" +
+                _renderer.toString();
     }
 }

@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
-public class HeritableGeneEnum extends HeritableGene
+public class HeritableGeneString extends HeritableGene
 {
-    private Enum[] _genotype;
-    public Enum[] getGeneValues() {
-        Enum[] result = new Enum[2];
+    private String[] _genotype;
+    public String[] getGeneValues() {
+        String[] result = new String[2];
 
         int idx1, idx2;
         idx1 = _rand.nextInt(_genotype.length);
@@ -18,7 +18,7 @@ public class HeritableGeneEnum extends HeritableGene
 
         return result;
     }
-    public Enum phenotype() {
+    public String phenotype() {
         int[] counts = new int[_dominance.length];
         for(int i : counts) {
             i = 0;
@@ -35,15 +35,17 @@ public class HeritableGeneEnum extends HeritableGene
         return _dominance[idx];
     }
 
-    private Enum[] _dominance;
-    public void dominance(Enum[] dominance) {
+    private String[] _dominance;
+    public void dominance(String[] dominance) {
         _dominance = dominance;
     }
 
-    public HeritableGeneEnum(Enum[] genotype, Enum[] dominance, CrobeEnums.MutationType type) {
+    public HeritableGeneString(String[] genotype,
+                               String[] dominance,
+                               CrobeEnums.MutationType mutationType) {
         _genotype = genotype;
         _dominance = dominance;
-        _mutationType = type;
+        mutationType(mutationType);
     }
 
     @Override
@@ -54,10 +56,10 @@ public class HeritableGeneEnum extends HeritableGene
                 _genotype[i] = getMutation(_genotype[i]);
         }//end for i
     }
-    private Enum getMutation(Enum value) {
+    public String getMutation(String value) {
         int idx = -1;
         for(int i = 0; i < _dominance.length; i++ ) {
-            if(value == _dominance[i])
+            if(value.equalsIgnoreCase(_dominance[i]))
                 idx = i;
         }//end for i
 
@@ -82,24 +84,24 @@ public class HeritableGeneEnum extends HeritableGene
 
     @Override
     protected Gene recombinate(ArrayList<Gene> genes) {
-        HeritableGeneEnum gene;
+        HeritableGeneString gene;
 
         int genotypeSize = (genes.size() + 1) * 2;
-        Enum[] genotype = new Enum[genotypeSize];
-        Enum[] geneValues;
+        String[] genotype = new String[genotypeSize];
+        String[] geneValues;
         int idx = 0;
 
         geneValues = this.getGeneValues();
         genotype[idx++] = geneValues[0];
         genotype[idx++] = geneValues[1];
         for(int i = 0; i < genes.size(); i++) {
-            HeritableGeneEnum sg = (HeritableGeneEnum) genes.get(i);
+            HeritableGeneString sg = (HeritableGeneString) genes.get(i);
             geneValues = sg.getGeneValues();
             genotype[idx++] = geneValues[0];
             genotype[idx++] = geneValues[1];
         }//end for i
 
-        gene = new HeritableGeneEnum(genotype, _dominance, _mutationType);
+        gene = new HeritableGeneString(genotype, _dominance, _mutationType);
 
         return gene;
     }
@@ -108,15 +110,15 @@ public class HeritableGeneEnum extends HeritableGene
     public String toString() {
         if(_genotype != null && _genotype.length > 0) {
             StringBuilder sb = new StringBuilder();
-            sb.append(_genotype[0].name());
+            sb.append(_genotype[0]);
             for(int i = 1; i < _genotype.length; i++) {
-                sb.append(", " + _genotype[i].name());
+                sb.append(", " + _genotype[i]);
             }//end for gene
 
-            return String.format("%1$s[%2$s]", phenotype().name(), sb.toString());
+            return String.format("%1$s[%2$s]", phenotype(), sb.toString());
         }//end if
         else {
-            return "HeritableGeneEnum";
+            return "HeritableGeneString";
         }
     }
 }
