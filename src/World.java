@@ -42,7 +42,14 @@ public class World
         return inBounds;
     }
     public Location getLocation(int X, int Y) {
-        return _environment.get(X, Y);
+        //check if the coordinates are valid
+        boolean wValid = ((X > -1) && (X < _environment.width()));
+        boolean hValid = ((Y > -1) && (Y < _environment.height()));
+
+        if(wValid && hValid)
+            return _environment.get(X, Y);
+        else
+            return null;
     }
 
     public void processEnvironment() {

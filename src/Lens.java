@@ -16,12 +16,25 @@ public class Lens
 
     private StringBuilder geoCache;
 
+    private Location _selection;
+    public Location selection() {
+        return _selection;
+    }
+    public void selection(Location selection) {
+        _selection = selection;
+    }
+
     private Point _center;
     public Point center() {
         return _center;
     }
     public void center(Point center) {
         _center = center;
+    }
+
+    private Point _origin = new Point();
+    public Point origin() {
+        return _origin;
     }
 
     /***
@@ -102,14 +115,13 @@ public class Lens
         String currentBGround = null;
 
         //render the location within the lens view
-        int startX, startY;
-        startX = _center.x - widthOffset();
-        startY = _center.y - heightOffset();
+        _origin.x = _center.x - widthOffset();
+        _origin.y = _center.y - heightOffset();
         for(int y = 0; y < _height; y++) {
-            int mixelY = startY + y;
+            int mixelY = _origin.y + y;
             for(int x = 0; x < _width; x++) {
                 RenderContext rc;
-                int mixelX = startX + x;
+                int mixelX = _origin.x + x;
                 if(_world.inBounds(mixelX, mixelY)) {
                     rc = _world.getLocation(mixelX, mixelY).render(_mode);
                 }//end if

@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -7,10 +8,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.util.List;
@@ -265,21 +269,81 @@ public class Microscope extends Application
     private void configureScopePane() {
         pnlScope = new BorderPane();
         lensPane = new WebView();
+
+        //set the cursor on the WebView to be a crosshair
+        lensPane.getEngine().getLoadWorker().stateProperty().addListener(
+                (observable, oldState, newState) -> {
+                    if(newState != Worker.State.SUCCEEDED) {
+                        return;
+                    }//end if
+
+                    Document doc = lensPane.getEngine().getDocument();
+                    Element body = (Element)doc.getElementsByTagName("body").item(0);
+                    String style = body.getAttribute("style");
+                    body.setAttribute("style", "cursor: crosshair;" + style);
+                });
+        //set the selection event
+        lensPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //get the x,y clicked
+                double x = event.getX();
+                double y = event.getY();
+
+                //convert the screen coordinates to a mixel
+                int wBase = (int)Math.round(Math.floor(lens.fontSize() / 4 * 2.5)) + 7;
+                int hBase = (int)Math.round(lens.fontSize() / 4 * 1.5) * 3 + 7;
+
+                int mixelX = (int)Math.round(Math.floor((x - wBase) / calcWidthIncrement())) + 1;
+                int mixelY = (int)Math.round(Math.floor((y - hBase) / calcHeightIncrement())) + 2;
+
+                //adjust for the lens origin
+                mixelX += lens.origin().x - 1;
+                mixelY += lens.origin().y - 1;
+
+                //set the mixel location as selected
+                Location mixel = world.getLocation(mixelX, mixelY);
+                if(lens.selection() == null) {
+                    if(mixel != null) {
+                        lens.selection(mixel);
+                        mixel.selected(true);
+                    }//end if
+                }//end if
+                else {
+                    //deselect the current selection
+                    Location current = lens.selection();
+                    current.selected(false);
+                    lens.selection(null);
+
+                    if((mixel != null) && (mixel != current)) {
+                        lens.selection(mixel);
+                        mixel.selected(true);
+                    }//end if
+                }//end else
+
+                refreshLens();
+            }
+        });
+
         pnlScope.setCenter(lensPane);
+    }
+
+    private double calcWidthIncrement() {
+        return lens.fontSize() * FONT_WIDTH_COEFFICIENT;
+    }
+    private int calcHeightIncrement() {
+        return (int)(Math.round(lens.fontSize() * FONT_HEIGHT_COEFFICIENT));
     }
 
     private void resizeLens() {
         //set the lens width and height based on
         //the size of the lensPane
-        int lensWidth, lensHeight, heightIncrement;
-        double widthIncrement;
+        int lensWidth, lensHeight;
         int paneWidth = (int)Math.round(lensPane.getWidth());
         int paneHeight = (int)Math.round(lensPane.getHeight());
 
-        widthIncrement = lens.fontSize() * FONT_WIDTH_COEFFICIENT;
-        lensWidth = (int)(Math.round((paneWidth - FONT_WIDTH_CONSTANT) / widthIncrement));
-        heightIncrement = (int)(Math.round(lens.fontSize() * FONT_HEIGHT_COEFFICIENT));
-        lensHeight = (paneHeight - FONT_HEIGHT_CONSTANT) / heightIncrement;
+        lensWidth = (int)(Math.round((paneWidth - FONT_WIDTH_CONSTANT) / calcWidthIncrement()));
+        lensHeight = (paneHeight - FONT_HEIGHT_CONSTANT) / calcHeightIncrement();
 
         lens.width(lensWidth);
         lens.height(lensHeight);

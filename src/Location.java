@@ -5,6 +5,7 @@ import java.awt.*;
  */
 public class Location
 {
+    private static final String BG_SELECTED = "fuchsia";
     private static final String BG_LIGHT_0 = "darkgray";
     private static final String BG_LIGHT_1 = "silver";
     private static final String BG_LIGHT_2 = "lightgray";
@@ -18,6 +19,14 @@ public class Location
     private Point _point;
     public Point point() {
         return _point;
+    }
+
+    private boolean _selected;
+    public boolean selected() {
+        return _selected;
+    }
+    public void selected(boolean selected) {
+        _selected = selected;
     }
 
     private int _ambientLight;
@@ -103,7 +112,10 @@ public class Location
         //set the context values based on the environment,
         //crobes and environmental objects in the location
         //first get the background color based on the mode
-        rc.background = getBackgroundByMode(mode);
+        if(_selected)
+            rc.background = BG_SELECTED;
+        else
+            rc.background = getBackgroundByMode(mode);
 
         rc.foreground = "black";
         rc.content = "&nbsp;";
