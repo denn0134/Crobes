@@ -8,9 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
@@ -23,10 +25,11 @@ public class Microscope extends Application
 {
     //panels
     private BorderPane root;
-    private GridPane pnlBottom;
+    private BorderPane pnlBottom;
     private BorderPane pnlTop;
     private GridPane pnlControls;
     private BorderPane pnlScope;
+    private BorderPane pnlLocation;
 
     //buttons, edits, combos, etc.
     private Button btnZoomIn;
@@ -36,6 +39,7 @@ public class Microscope extends Application
     private Button btnPanLeft;
     private Button btnPanRight;
     private ChoiceBox<String> cmbMode;
+    private TextArea txtLocation;
 
     //microscope objects
     private World world;
@@ -103,10 +107,20 @@ public class Microscope extends Application
     }
 
     private void configureBottomPane() {
-        pnlBottom = new GridPane();
+        pnlBottom = new BorderPane();
         pnlBottom.setPrefSize(0, 200);
         BackgroundFill fill = new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY);
         pnlBottom.setBackground(new Background(fill));
+
+        pnlLocation = new BorderPane();
+        pnlLocation.setPrefSize(200, 0);
+
+        txtLocation = new TextArea();
+        txtLocation.setEditable(false);
+        txtLocation.setFont(Font.font("monospace", 14));
+        pnlLocation.setCenter(txtLocation);
+
+        pnlBottom.setLeft(pnlLocation);
     }
     private void configureTopPane() {
         pnlTop = new BorderPane();
@@ -321,6 +335,7 @@ public class Microscope extends Application
                     }//end if
                 }//end else
 
+                setSelectedLocation(lens.selection());
                 refreshLens();
             }
         });
@@ -333,6 +348,15 @@ public class Microscope extends Application
     }
     private int calcHeightIncrement() {
         return (int)(Math.round(lens.fontSize() * FONT_HEIGHT_COEFFICIENT));
+    }
+
+    private void setSelectedLocation(Location location) {
+        String locText = "";
+        if(location != null) {
+            locText = location.toString();
+        }//end if
+
+        txtLocation.setText(locText);
     }
 
     private void resizeLens() {

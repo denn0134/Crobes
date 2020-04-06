@@ -53,6 +53,7 @@ public class Environment extends ArrayList<ArrayList<Location>>
                 //based on the ambient properties and the
                 //environmental factors
                 loc.lightLevel(loc.ambientLight());
+                loc.thermalLevel(loc.ambientHeat());
             }//end for loc
         }//end for row
     }
@@ -234,8 +235,8 @@ public class Environment extends ArrayList<ArrayList<Location>>
                         double dist = Math.sqrt(Math.pow(c - thermalCenter.x, 2) + Math.pow(r - thermalCenter.y, 2));
                         if(dist < (radius + bleed)) {
                             Location loc = get(c, r);
-                            if(loc.thermalLevel() < heat)
-                                loc.thermalLevel(heat);
+                            if(loc.ambientHeat() < heat)
+                                loc.ambientHeat(heat);
                         }//end if
                     }//end if
                 }//end for j

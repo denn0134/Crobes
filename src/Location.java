@@ -45,7 +45,7 @@ public class Location
     }
 
     private int _ambientHeat;
-    public int amvientHeat() {
+    public int ambientHeat() {
         return _ambientHeat;
     }
     public void ambientHeat(int ambientHeat) {
@@ -125,5 +125,22 @@ public class Location
 
     public void reset() {
         _lightLevel = 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("Location ( %1$d, %2$d )", _point.x, _point.y));
+        sb.append("\n");
+        sb.append("====================\n");
+        sb.append("Light level:\n");
+        sb.append(String.format("  amb: %1$d  cur: %2$d", _ambientLight, _lightLevel));
+        sb.append("\n");
+        sb.append("Thermal level:\n");
+        sb.append(String.format("  amb: %1$d  cur: %2$d", _ambientHeat, _thermalLevel));
+        sb.append("\n");
+
+        return sb.toString();
     }
 }
