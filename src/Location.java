@@ -5,16 +5,17 @@ import java.awt.*;
  */
 public class Location
 {
-    private static final String BG_SELECTED = "fuchsia";
-    private static final String BG_LIGHT_0 = "darkgray";
-    private static final String BG_LIGHT_1 = "silver";
-    private static final String BG_LIGHT_2 = "lightgray";
-    private static final String BG_LIGHT_3 = "white";
-    private static final String BG_TEMP_0 = "lightblue";
-    private static final String BG_TEMP_1 = "pink";
-    private static final String BG_TEMP_2 = "lightsalmon";
-    private static final String BG_TEMP_3 = "lightcoral";
-    private static final String BG_TEMP_4 = "red";
+    private static final CrobeEnums.CrobeColor BG_SELECTED = CrobeEnums.CrobeColor.fuchsia;
+    private static final CrobeEnums.CrobeColor BG_LIGHT_0 = CrobeEnums.CrobeColor.darkgray;
+    private static final CrobeEnums.CrobeColor BG_LIGHT_1 = CrobeEnums.CrobeColor.silver;
+    private static final CrobeEnums.CrobeColor BG_LIGHT_2 = CrobeEnums.CrobeColor.lightgray;
+    private static final CrobeEnums.CrobeColor BG_LIGHT_3 = CrobeEnums.CrobeColor.white;
+    private static final CrobeEnums.CrobeColor BG_TEMP_0 = CrobeEnums.CrobeColor.lightblue;
+    private static final CrobeEnums.CrobeColor BG_TEMP_1 = CrobeEnums.CrobeColor.pink;
+    private static final CrobeEnums.CrobeColor BG_TEMP_2 = CrobeEnums.CrobeColor.lightsalmon;
+    private static final CrobeEnums.CrobeColor BG_TEMP_3 = CrobeEnums.CrobeColor.lightcoral;
+    private static final CrobeEnums.CrobeColor BG_TEMP_4 = CrobeEnums.CrobeColor.red;
+
 
     private Point _point;
     public Point point() {
@@ -59,12 +60,20 @@ public class Location
         _thermalLevel = thermalLevel;
     }
 
+    private Crobe _crobe;
+    public Crobe crobe() {
+        return _crobe;
+    }
+    public void crobe(Crobe crobe) {
+        _crobe = crobe;
+    }
+
     public Location(int X, int Y) {
         _point = new Point(X, Y);
     }
 
-    private String getBackgroundByMode(Lens.Mode mode) {
-        String bg = "white";
+    private CrobeEnums.CrobeColor getBackgroundByMode(Lens.Mode mode) {
+        CrobeEnums.CrobeColor bg = CrobeEnums.CrobeColor.white;
 
         switch (mode) {
             case LIGHT:
@@ -112,19 +121,36 @@ public class Location
         //set the context values based on the environment,
         //crobes and environmental objects in the location
         //first get the background color based on the mode
-        if(_selected)
-            rc.background = BG_SELECTED;
-        else
-            rc.background = getBackgroundByMode(mode);
+        rc.background = getBackgroundByMode(mode);
 
-        rc.foreground = "black";
-        rc.content = "&nbsp;";
+        if(_crobe != null) {
+            RenderContext crc = new RenderContext();
+            _crobe.renderer().renderCrobe(point(), crc);
+
+            rc.foreground = crc.foreground;
+            rc.content = crc.content;
+            rc.background = crc.background;
+        }//end if
+        else {
+            rc.foreground = CrobeEnums.CrobeColor.black;
+            rc.content = "&nbsp;";
+        }//end else
+
+        //if the location is selected set the background
+        if(selected()) {
+            rc.background = CrobeEnums.CrobeColor.fuchsia;
+        }//end if
 
         return rc;
     }
 
     public void reset() {
         _lightLevel = 0;
+    }
+
+    public void setCrobe(Crobe crobe) {
+        _crobe = crobe;
+        _crobe.locations(new Location[] {this});
     }
 
     @Override
@@ -140,6 +166,12 @@ public class Location
         sb.append("Thermal level:\n");
         sb.append(String.format("  amb: %1$d  cur: %2$d", _ambientHeat, _thermalLevel));
         sb.append("\n");
+
+        if(_crobe != null) {
+            sb.append("\n");
+            sb.append("Crobe:\n");
+            sb.append("  " + _crobe.getTaxa());
+        }//end if
 
         return sb.toString();
     }

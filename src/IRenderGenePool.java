@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public interface IRenderGenePool extends IGenePool
 {
     HeritableGeneEnum skin();
@@ -6,4 +8,7 @@ public interface IRenderGenePool extends IGenePool
     void face(HeritableGeneString face);
     HeritableGeneEnum body();
     void body(HeritableGeneEnum body);
+
+    void renderCrobe(Point location,
+                     RenderContext renderContext);
 }

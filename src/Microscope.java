@@ -30,6 +30,7 @@ public class Microscope extends Application
     private GridPane pnlControls;
     private BorderPane pnlScope;
     private BorderPane pnlLocation;
+    private BorderPane pnlCrobeDetail;
 
     //buttons, edits, combos, etc.
     private Button btnZoomIn;
@@ -40,6 +41,8 @@ public class Microscope extends Application
     private Button btnPanRight;
     private ChoiceBox<String> cmbMode;
     private TextArea txtLocation;
+    private Button btnAddRandom;
+    private TextArea txtCrobeDetail;
 
     //microscope objects
     private World world;
@@ -114,13 +117,18 @@ public class Microscope extends Application
 
         pnlLocation = new BorderPane();
         pnlLocation.setPrefSize(200, 0);
-
         txtLocation = new TextArea();
         txtLocation.setEditable(false);
         txtLocation.setFont(Font.font("monospace", 14));
         pnlLocation.setCenter(txtLocation);
-
         pnlBottom.setLeft(pnlLocation);
+
+        pnlCrobeDetail = new BorderPane();
+        txtCrobeDetail = new TextArea();
+        txtCrobeDetail.setEditable(false);
+        txtCrobeDetail.setFont(Font.font("monospace", 14));
+        pnlCrobeDetail.setCenter(txtCrobeDetail);
+        pnlBottom.setCenter(pnlCrobeDetail);
     }
     private void configureTopPane() {
         pnlTop = new BorderPane();
@@ -277,7 +285,23 @@ public class Microscope extends Application
         };
         cmbMode.valueProperty().addListener(cmbModeChange);
 
-        vb.getChildren().addAll(label, cmbMode);
+        btnAddRandom = new Button("Add Random");
+        btnAddRandom.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(lens.selection() == null) {
+                    return;
+                }//end if
+
+                Crobe c = CrobeFarm.randomCrobe("Rnd");
+                world.crobes().add(c);
+                lens.selection().setCrobe(c);
+                txtCrobeDetail.setText(c.toString());
+                refreshLens();
+            }
+        });
+
+        vb.getChildren().addAll(label, cmbMode, btnAddRandom);
         ctrPaneBot.setCenter(vb);
     }
     private void configureScopePane() {
@@ -352,11 +376,17 @@ public class Microscope extends Application
 
     private void setSelectedLocation(Location location) {
         String locText = "";
+        String crobeText = "";
         if(location != null) {
             locText = location.toString();
+
+            if(location.crobe() != null) {
+                crobeText = location.crobe().toString();
+            }//end if
         }//end if
 
         txtLocation.setText(locText);
+        txtCrobeDetail.setText(crobeText);
     }
 
     private void resizeLens() {

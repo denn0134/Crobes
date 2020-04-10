@@ -38,4 +38,58 @@ public class CrobeEnums
         ZIGGER,       //two legs of movement in different directions
         SPRINTER      //single direction, tends to high range
     }
+
+    /***
+     * Enumeration of colors.
+     */
+    public enum CrobeColor {
+        undefined,
+        //pinks
+        pink, lightpink, hotpink, deeppink, palevioletred,
+        mediumvioletred,
+        //reds
+        lightsalmon, salmon, darksalmon, lightcoral,
+        indianred, crimson, firebrick, darkred, red,
+        //oranges
+        orangered, tomato, coral, darkorange, orange,
+        //yellows
+        yellow, lightyellow, lemonchiffon, lightgoldenrodyellow,
+        papayawhip, moccasin, peachpuff, palegoldenrod, khaki,
+        darkkhaki, gold,
+        //browns
+        cornsilk, blanchedalmond, bisque, navajowhite, wheat,
+        burlywood, tan, rosybrown, sandybrown, goldenrod,
+        darkgoldenrod, peru, chocolate, saddlebrown, sienna,
+        brown, maroon,
+        //purples
+        lavender, thistle, plum, violet, orchid, fuchsia,
+        magenta, mediumorchid, mediumpurple, blueviolet,
+        darkviolet, darkorchid, darkmagenta, purple, indigo,
+        darkslateblue, slateblue, mediumslateblue,
+        //whites
+        white, snow, honeydew, mintcream, azure, aliceblue,
+        ghostwhite, whitesmoke, seashell, beige, oldlace,
+        floralwhite, ivory, antiquewhite, linen,
+        lavenderblush, mistyrose,
+        //greys and blacks
+        gainsboro, lightgray, silver, darkgray, gray,
+        dimgray, lightslategray, slategray,
+        darkslategray, black,
+        //greens
+        darkolivegreen, olive, olivedrab, yellowgreen,
+        limegreen, lime, lawngreen, chartreuse, greenyellow,
+        springgreen, mediumspringgreen, lightgreen,
+        palegreen, darkseagreen, mediumaquamarine,
+        mediumseagreen, seagreen, forestgreen, green,
+        darkgreen,
+        //cyans
+        aqua, cyan, lightcyan, paleturquoise, aquamarine,
+        turquoise, mediumturquoise, darkturquoise,
+        lightseagreen, cadetblue, darkcyan, teal,
+        //blues
+        lightsteelblue, powderblue, lightblue, skyblue,
+        lightskyblue, deepskyblue, dodgerblue,
+        cornflowerblue, steelblue, royalblue, blue,
+        mediumblue, darkblue, navy, midnightblue
+    }
 }

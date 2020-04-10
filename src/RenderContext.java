@@ -3,12 +3,13 @@
  */
 public class RenderContext
 {
-    public String background;
-    public String foreground;
+    public CrobeEnums.CrobeColor background;
+    public CrobeEnums.CrobeColor foreground;
     public String content;
 
-    public boolean matches(String fGround, String bGround) {
-        return ((foreground.equalsIgnoreCase(fGround)) &&
-                (background.equalsIgnoreCase(bGround)));
+    public boolean matches(CrobeEnums.CrobeColor fGround,
+                           CrobeEnums.CrobeColor bGround) {
+        return ((foreground == fGround) &&
+                (background == bGround));
     }
 }

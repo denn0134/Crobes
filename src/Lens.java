@@ -111,8 +111,8 @@ public class Lens
         geoCache = new StringBuilder();
         geoCache.append(String.format(FMT_FONT_STYLE, Microscope.FONT_NAME, fontSize()));
 
-        String currentFGround = null;
-        String currentBGround = null;
+        CrobeEnums.CrobeColor currentFGround = CrobeEnums.CrobeColor.undefined;
+        CrobeEnums.CrobeColor currentBGround = CrobeEnums.CrobeColor.undefined;
 
         //render the location within the lens view
         _origin.x = _center.x - widthOffset();
@@ -127,12 +127,12 @@ public class Lens
                 }//end if
                 else {
                     rc = new RenderContext();
-                    rc.foreground = "yellow";
-                    rc.background = "black";
+                    rc.foreground = CrobeEnums.CrobeColor.yellow;
+                    rc.background = CrobeEnums.CrobeColor.black;
                     rc.content = OUT_OF_BOUNDS_CONTENT;
                 }//end else
 
-                if((currentFGround == null) && (currentBGround == null)) {
+                if((currentFGround == CrobeEnums.CrobeColor.undefined) && (currentBGround == CrobeEnums.CrobeColor.undefined)) {
                     geoCache.append(String.format(FMT_FONT_COLORS, rc.foreground, rc.background));
                     geoCache.append(rc.content);
                 }//end if
@@ -151,8 +151,8 @@ public class Lens
 
             if(y != (_height - 1))
                 geoCache.append(END_LINE);
-            currentFGround = null;
-            currentBGround = null;
+            currentFGround = CrobeEnums.CrobeColor.undefined;
+            currentBGround = CrobeEnums.CrobeColor.undefined;
         }//end for y
 
         geoCache.append(END_SPAN);

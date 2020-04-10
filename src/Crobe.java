@@ -94,6 +94,14 @@ public class Crobe
         _position = position;
     }
 
+    private Location[] _locations;
+    public Location[] locations() {
+        return _locations;
+    }
+    public void locations(Location[] locations) {
+        _locations = locations;
+    }
+
     public Crobe(String designation){
         _designation = designation;
         _stressLevel = 1;
