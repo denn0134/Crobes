@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
@@ -7,6 +8,10 @@ public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
     @Override
     public String getNamePart() {
         return "homlys";
+    }
+
+    public SimpleVisageRenderer(Crobe crobe) {
+        super(crobe);
     }
 
     private HeritableGeneEnum _skin;
@@ -39,8 +44,36 @@ public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
         _body = body;
     }
 
-    public SimpleVisageRenderer(Crobe crobe) {
-        super(crobe);
+    @Override
+    public void initializeRandomDefault() {
+        if((_skin != null) ||
+                (_face != null) ||
+                (_body != null)) {
+            return;
+        }//end if
+
+        //skin
+        _skin = new HeritableGeneEnum(new Enum[] {CrobeEnums.CrobeColor.black, CrobeEnums.CrobeColor.brown},
+                new Enum[] {CrobeEnums.CrobeColor.brown, CrobeEnums.CrobeColor.maroon, CrobeEnums.CrobeColor.black},
+                CrobeEnums.MutationType.RANDOM);
+
+        //face
+        String[] faces = new String[] {"O", "W", "M", "X"};
+        _face = new HeritableGeneString(new String[] {faces[0], faces[3]},
+                faces, CrobeEnums.MutationType.RANDOM);
+
+        //body
+        _body = new HeritableGeneEnum(new Enum[] {CrobeEnums.CrobeColor.yellow, CrobeEnums.CrobeColor.yellow},
+                new Enum[] {CrobeEnums.CrobeColor.lightblue, CrobeEnums.CrobeColor.pink, CrobeEnums.CrobeColor.yellow},
+                CrobeEnums.MutationType.RANDOM);
+    }
+
+    @Override
+    public void renderCrobe(Point location,
+                            RenderContext renderContext) {
+        renderContext.foreground = (CrobeEnums.CrobeColor) _skin.phenotype();
+        renderContext.background = (CrobeEnums.CrobeColor) _body.phenotype();
+        renderContext.content = _face.phenotype();
     }
 
     @Override

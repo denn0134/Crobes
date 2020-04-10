@@ -63,6 +63,38 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
     }
 
     @Override
+    public void initializeRandomDefault() {
+        if((_span != null) ||
+                (_spanRange != null) ||
+                (_maturity != null) ||
+                (_finite != null)) {
+            return;
+        }
+
+        //span  15-30
+        int int1 = getIntRange(15, 30);
+        int int2 = getIntRange(15, 30);
+        _span = new ScalarGeneInt(new int[] {int1, int2},
+                CrobeEnums.MutationType.SCALAR_DISCREET,
+                5);
+
+        //spanRange 5
+        _spanRange = new ScalarGeneInt(new int[] {5, 5},
+                CrobeEnums.MutationType.ADJACENT);
+
+        //maturity 20% - 30%
+        float flt1 = getFloatRange(0.20f, 0.30f);
+        float flt2 = getFloatRange(0.20f, 0.30f);
+        _maturity = new ScalarGeneFlt(new float[] {flt1, flt2},
+                0.05f);
+
+        //finite true : (true > false)
+        _finite = new HeritableGeneBool(new boolean[] {true, false},
+                new boolean[] {true, false},
+                CrobeEnums.MutationType.RANDOM);
+    }
+
+    @Override
     public void initializeGenePool(int[] span, int[] spanRange, float[] maturity) {
         _span = new ScalarGeneInt(span, CrobeEnums.MutationType.SCALAR_DISCREET);
         _spanRange = new ScalarGeneInt(spanRange, CrobeEnums.MutationType.ADJACENT);

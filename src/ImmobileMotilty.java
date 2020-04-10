@@ -69,6 +69,54 @@ public class ImmobileMotilty extends GenePool implements IMotilityGenePool
     }
 
     @Override
+    public void initializeRandomDefault() {
+        if((_motilityType != null) ||
+                (_moveType != null) ||
+                (_moveBase != null) ||
+                (_moveRange != null) ||
+                (_lethargy != null) ||
+                (_efficiency != null)) {
+            return;
+        }//end if
+
+        //motilityType NON_MOTILE
+        _motilityType = new HeritableGeneEnum(
+                new Enum[] {CrobeEnums.MotilityType.NON_MOTILE, CrobeEnums.MotilityType.NON_MOTILE},
+                new Enum[] {CrobeEnums.MotilityType.ANCHORED, CrobeEnums.MotilityType.NON_MOTILE, CrobeEnums.MotilityType.MOTILE},
+                CrobeEnums.MutationType.RANDOM);
+
+        //moveType CREEPER
+        _moveType = new HeritableGeneEnum(
+                new Enum[] {CrobeEnums.MovementType.CREEPER, CrobeEnums.MovementType.CREEPER},
+                new Enum[] {CrobeEnums.MovementType.CREEPER, CrobeEnums.MovementType.HOPPER, CrobeEnums.MovementType.ZIGGER},
+                CrobeEnums.MutationType.ADJACENT);
+
+        //moveBase 1-2
+        int int1 = getIntRange(1, 2);
+        int int2 = getIntRange(1, 2);
+        _moveBase = new ScalarGeneInt(new int[] {int1, int2},
+                CrobeEnums.MutationType.ADJACENT);
+
+        //moveRange 0-1
+        int1 = getIntRange(0, 1);
+        int2 = getIntRange(0, 1);
+        _moveRange = new ScalarGeneInt(new int[] {int1, int2},
+                CrobeEnums.MutationType.ADJACENT);
+
+        //lethargy 20% - 40%
+        float flt1 = getFloatRange(0.20f, 0.40f);
+        float flt2 = getFloatRange(0.20f, 0.40f);
+        _lethargy = new ScalarGeneFlt(new float[] {flt1, flt2},
+                0.05f);
+
+        //efficiency 0.75 - 1.00
+        flt1 = getFloatRange(0.75f, 1.00f);
+        flt2 = getFloatRange(0.75f, 1.00f);
+        _efficiency = new ScalarGeneFlt(new float[] {flt1, flt2},
+                0.02f);
+    }
+
+    @Override
     public void initializeGenePool(int[] moveBase, int[] moveRange, float[] lethargy, float[] efficiency) {
         _moveBase = new ScalarGeneInt(moveBase, CrobeEnums.MutationType.SCALAR_DISCREET);
         _moveRange = new ScalarGeneInt(moveRange, CrobeEnums.MutationType.ADJACENT);
