@@ -290,6 +290,12 @@ public class Microscope extends Application
             @Override
             public void handle(ActionEvent event) {
                 if(lens.selection() == null) {
+                    //no location selected
+                    return;
+                }//end if
+
+                if(lens.selection().crobe() != null) {
+                    //selected location already has a crobe
                     return;
                 }//end if
 
