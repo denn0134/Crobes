@@ -5,10 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -43,6 +45,11 @@ public class Microscope extends Application
     private TextArea txtLocation;
     private Button btnAddRandom;
     private TextArea txtCrobeDetail;
+    private RadioButton btnPause;
+    private Button btnStep;
+    private RadioButton btnSlow;
+    private RadioButton btnMedium;
+    private RadioButton btnFast;
 
     //microscope objects
     private World world;
@@ -161,6 +168,14 @@ public class Microscope extends Application
         result.setFillHeight(fill);
         return result;
     }
+    private void setToggleButtonSkin(RadioButton rb) {
+        rb.getStyleClass().remove("radio-button");
+        rb.getStyleClass().add("toggle-button");
+    }
+    private void setButtonIcon(Labeled button, String iconResource) {
+        Image img = new Image(getClass().getResourceAsStream(iconResource));
+        button.setGraphic(new ImageView(img));
+    }
 
     private void configureControlPane() {
         pnlControls = new GridPane();
@@ -173,6 +188,47 @@ public class Microscope extends Application
         BorderPane ctrPaneTop = new BorderPane();
         GridPane ctrPaneMid = new GridPane();
         BorderPane ctrPaneBot = new BorderPane();
+
+        //top pane - turn buttons
+        FlowPane pnlSpeedToolbar = new FlowPane();
+        ToggleGroup tglSpeed = new ToggleGroup();
+
+        //pause button
+        btnPause = new RadioButton();
+        setToggleButtonSkin(btnPause);
+        setButtonIcon(btnPause, "pause.png");
+        btnPause.setTooltip(new Tooltip("Pause simulation"));
+        btnPause.setToggleGroup(tglSpeed);
+        btnPause.setSelected(true);
+
+        //step button
+        btnStep = new Button();
+        setButtonIcon(btnStep, "step.png");
+        btnStep.setTooltip(new Tooltip("Advance one day"));
+
+        //slow button
+        btnSlow = new RadioButton();
+        setToggleButtonSkin(btnSlow);
+        setButtonIcon(btnSlow, "slow.png");
+        btnSlow.setTooltip(new Tooltip("Slow speed"));
+        btnSlow.setToggleGroup(tglSpeed);
+
+        //medium button
+        btnMedium = new RadioButton();
+        setToggleButtonSkin(btnMedium);
+        setButtonIcon(btnMedium, "medium.png");
+        btnMedium.setTooltip(new Tooltip("Medium speed"));
+        btnMedium.setToggleGroup(tglSpeed);
+
+        //fast button
+        btnFast = new RadioButton();
+        setToggleButtonSkin(btnFast);
+        setButtonIcon(btnFast, "fast.png");
+        btnFast.setTooltip(new Tooltip("Fast speed"));
+        btnFast.setToggleGroup(tglSpeed);
+
+        pnlSpeedToolbar.getChildren().addAll(btnPause, btnStep, btnSlow, btnMedium, btnFast);
+        pnlTop.setTop(pnlSpeedToolbar);
 
         //middle pane - pan and zoom buttons
         ctrPaneMid.getColumnConstraints().add(createColumn(100.0 / 3.0, true));
@@ -196,10 +252,6 @@ public class Microscope extends Application
         ctrPaneMid.add(btnPanRight, 3, 1, 1, 1);
         btnPanDown = createButton("Down", true);
         ctrPaneMid.add(btnPanDown, 1, 2, 2, 1);
-
-        pnlControls.add(ctrPaneTop, 0, 0);
-        pnlControls.add(ctrPaneMid, 0, 1);
-        pnlControls.add(ctrPaneBot, 0, 2);
 
         btnZoomIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -267,7 +319,7 @@ public class Microscope extends Application
         btnPanLeft.setOnAction(panClick);
         btnPanRight.setOnAction(panClick);
 
-        //bottom pane - mode dropdown
+        //bottom pane - mode dropdown and add crobe buttons
         VBox vb = new VBox();
 
         Label label = new Label("Environment Mode");
@@ -309,6 +361,10 @@ public class Microscope extends Application
 
         vb.getChildren().addAll(label, cmbMode, btnAddRandom);
         ctrPaneBot.setCenter(vb);
+
+        pnlControls.add(ctrPaneTop, 0, 0);
+        pnlControls.add(ctrPaneMid, 0, 1);
+        pnlControls.add(ctrPaneBot, 0, 2);
     }
     private void configureScopePane() {
         pnlScope = new BorderPane();
