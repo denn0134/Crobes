@@ -68,6 +68,14 @@ public class Location
         _crobe = crobe;
     }
 
+    private Factor[] _factors;
+    public Factor[] factors() {
+        return _factors;
+    }
+    public void factors(Factor[] factors) {
+        _factors = factors;
+    }
+
     public Location(int X, int Y) {
         _point = new Point(X, Y);
     }
@@ -146,11 +154,6 @@ public class Location
 
     public void reset() {
         _lightLevel = 0;
-    }
-
-    public void setCrobe(Crobe crobe) {
-        _crobe = crobe;
-        _crobe.locations(new Location[] {this});
     }
 
     @Override

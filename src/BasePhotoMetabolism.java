@@ -121,9 +121,17 @@ public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
 
     @Override
     public void processFeeding() {
-        //for now simply assume 1 light is available
-        //recharge 1 energy for each light available
-        _crobe.recharge(1);
+        //recharge 1 energy for each light level
+        //currently available to the crobe
+        Location[] locs = _crobe.inhabits();
+        int light = 0;
+        for(Location l : locs) {
+            if(l.lightLevel() > light) {
+                light = l.lightLevel();
+            }//end if
+        }//end for l
+
+        _crobe.recharge(light);
     }
 
     @Override

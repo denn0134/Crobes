@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
 {
@@ -109,6 +110,14 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
     }
 
     @Override
+    public void mutate(int stressLevel) {
+        _span.mutate(stressLevel);
+        _spanRange.mutate(stressLevel);
+        _maturity.mutate(stressLevel);
+        _finite.mutate(stressLevel);
+    }
+
+    @Override
     public void processAging() {
         switch (_crobe.stage()) {
             case CHILD:
@@ -120,7 +129,7 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
                 //check if the crobe reached it lifespan
                 if(_crobe.age() > _crobe.lifeSpan()) {
                     if(_finite.phenotype()) {
-                        System.out.println("Crobe [" + _crobe.designation() + "] died of old age");
+                        processDeath(_crobe.stage());
                         _crobe.stage(CrobeEnums.LifeStage.DEAD);
                     }//end if
                     else {
@@ -138,7 +147,6 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
                     _crobe.wound(1);
         }//end switch
     }
-
     @Override
     public void processReproduction(ArrayList<Crobe> children) {
         //only adults reproduce
@@ -165,18 +173,32 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
             //spawn a new crobe
             String newName = _crobe.designation() + "-" + _crobe.getSpawnName();
             Crobe child = new Crobe(newName);
+            child.world(_crobe.world());
             child.lifeCycle((ILifeCycleGenePool) _crobe.lifeCycle().recombinateGenePool(child, new ArrayList<GenePool>()));
             child.metabolism((IMetabolicGenePool) _crobe.metabolism().recombinateGenePool(child, new ArrayList<GenePool>()));
+            child.motility((IMotilityGenePool) _crobe.motility().recombinateGenePool(child, new ArrayList<GenePool>()));
+            child.renderer((IRenderGenePool) _crobe.renderer().recombinateGenePool(child, new ArrayList<GenePool>()));
 
             child.mutate();
             child.init();
 
-            children.add(child);
+            //determine an adjacent position which
+            //is open to be the childs position
+            ArrayList<Location> locs = new ArrayList<Location>(Arrays.asList(_crobe.adjacent()));
+            for(int i = locs.size() - 1; i > -1; i--) {
+                if(locs.get(i).crobe() != null) {
+                    locs.remove(i);
+                }//end if
+            }//end for i
 
-            System.out.println("Crobe[" + _crobe.designation() + "] spawned [" + newName + "]");
+            if(locs.size() > 0) {
+                int rnd = _crobe.rand.nextInt(locs.size());
+                child.position(locs.get(rnd).point());
 
-            reproInterval = 5;
-            _crobe.exert(reproMinEnergy);
+                children.add(child);
+                reproInterval = 5;
+                _crobe.exert(reproMinEnergy);
+            }//end if
         }//end if
     }
 
@@ -206,11 +228,8 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
     }
 
     @Override
-    public void mutate(int stressLevel) {
-        _span.mutate(stressLevel);
-        _spanRange.mutate(stressLevel);
-        _maturity.mutate(stressLevel);
-        _finite.mutate(stressLevel);
+    public void processDeath(CrobeEnums.LifeStage stage) {
+        //no special death action
     }
 
     @Override

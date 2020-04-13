@@ -112,7 +112,7 @@ public class Microscope extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        world.processEnvironment();
+        world.updateEnvironment();
         refreshLens();
     }
 
@@ -205,6 +205,12 @@ public class Microscope extends Application
         btnStep = new Button();
         setButtonIcon(btnStep, "step.png");
         btnStep.setTooltip(new Tooltip("Advance one day"));
+        btnStep.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                advance();
+            }
+        });
 
         //slow button
         btnSlow = new RadioButton();
@@ -352,8 +358,9 @@ public class Microscope extends Application
                 }//end if
 
                 Crobe c = CrobeFarm.randomCrobe("Rnd");
+                c.world(world);
                 world.crobes().add(c);
-                lens.selection().setCrobe(c);
+                c.position(lens.selection().point());
                 txtCrobeDetail.setText(c.toString());
                 refreshLens();
             }
@@ -469,5 +476,27 @@ public class Microscope extends Application
         lens.renderWorld();
         String content = lens.flush();
         lensPane.getEngine().loadContent(content);
+
+        setSelectedLocation(lens.selection());
+    }
+
+    private void advance() {
+        //advances one day in the world
+        //tell all crobes to live for a day
+        //and process reproduction
+        world.crobes().live();
+        world.crobes().reproduce();
+
+        //remove any dead crobes from the colony
+        world.crobes().purge();
+
+        //update all environmental factors
+        world.updateFactors();
+
+        //update the environment
+        world.updateEnvironment();
+
+        //rerender everything
+        refreshLens();
     }
 }

@@ -15,6 +15,13 @@ public class Crobe
     public Random rand = new Random();
 
     public CrobeColony parent;
+    private World _world;
+    public World world() {
+        return _world;
+    }
+    public void world(World world) {
+        _world = world;
+    }
 
     private int _spawned;
     public int spawned() {
@@ -91,15 +98,15 @@ public class Crobe
         return _position;
     }
     public void position(Point position) {
+        //set the position
         _position = position;
-    }
 
-    private Location[] _locations;
-    public Location[] locations() {
-        return _locations;
-    }
-    public void locations(Location[] locations) {
-        _locations = locations;
+        //make sure all inhabited Locations
+        //reference the crobe
+        Location[] locs = inhabits();
+        for(Location l : locs) {
+            l.crobe(this);
+        }//end for l
     }
 
     public Crobe(String designation){
@@ -153,7 +160,7 @@ public class Crobe
         return base + rand.nextInt(fullRange) - range;
     }
 
-    public boolean live(){
+    public void live(){
         //age a turn
         _age += 1;
         _lifeCycle.processAging();
@@ -172,16 +179,12 @@ public class Crobe
         //check for mortality
         int die = rand.nextInt(_metabolism.mortalityRate().phenotype());
         if(die < _stressLevel) {
-            System.out.println("Crobe [" + _designation + "] died from natural causes");
+            _lifeCycle.processDeath(_stage);
             stage(CrobeEnums.LifeStage.DEAD);
         }//end if
-
-        return (_stage != CrobeEnums.LifeStage.DEAD);
     }
-    public boolean reproduce(ArrayList<Crobe> children) {
+    public void reproduce(ArrayList<Crobe> children) {
         _lifeCycle.processReproduction(children);
-
-        return (children.size() > 0);
     }
 
     public void stressed(int stress) {
@@ -195,6 +198,7 @@ public class Crobe
         else {
             System.out.println("Crobe [" + _designation + "] died from health damage");
             _health = 0;
+            _lifeCycle.processDeath(_stage);
             _stage = CrobeEnums.LifeStage.DEAD;
             return false;
         }//end else
@@ -232,6 +236,8 @@ public class Crobe
     public void mutate() {
         _lifeCycle.mutate(_stressLevel);
         _metabolism.mutate(_stressLevel);
+        _motility.mutate(_stressLevel);
+        _renderer.mutate(_stressLevel);
     }
 
     public void init(){
@@ -251,15 +257,32 @@ public class Crobe
         _lifeCycle.initializeReproduction();
     }
 
+    /***
+     * Returns an array of the Locations which this
+     * Crobe inhabits.
+     * @return Array of Locations this Crobe inhabits.
+     */
+    public Location[] inhabits() {
+        return _renderer.getLocations(_stage);
+    }
+    /***
+     * Returns an array of Locations which are adjacent
+     * to this Crobe.
+     * @return Array of adjacent Locations.
+     */
+    public Location[] adjacent() {
+        return _renderer.getAdjacents(_stage);
+    }
+
     public String toString(){
         return getTaxa() + "\n" +
-                "  age: " + _age +
-                " lifeSpan: " + _lifeSpan +
-                " stage: " + _stage.name() +
-                " maturity: " + _maturityAge +
-                " health: " + _health +
-                " energy: " + _energy +
-                " stressLevel: " + _stressLevel + "\n" +
+                String.format(" age: %1$d", _age) +
+                String.format(" lifespan: %1$d", _lifeSpan) +
+                String.format(" maturity: %1$d", _maturityAge) +
+                String.format(" stage: %1$s", _stage.name()) +
+                String.format(" health: %1$d(%2$d)", _health, _maxHealth) +
+                String.format(" energy: %1$d(%2$d)", _energy, _maxEnergy) +
+                String.format(" stress: %1$d", _stressLevel) + "\n" +
                 _lifeCycle.toString() + "\n" +
                 _metabolism.toString() + "\n" +
                 _motility.toString() + "\n" +

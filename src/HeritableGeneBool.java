@@ -39,7 +39,7 @@ public class HeritableGeneBool extends HeritableGene
                              CrobeEnums.MutationType mutationType) {
         _genotype = genotype;
         _dominance = hierarchy;
-        mutationType(_mutationType);
+        mutationType(mutationType);
     }
 
     private String getBoolStr(boolean b) {

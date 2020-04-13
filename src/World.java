@@ -2,6 +2,11 @@ import java.util.ArrayList;
 
 public class World
 {
+    private int _age;
+    public int age() {
+        return _age;
+    }
+
     private Environment _environment;
     public Environment environment() {
         return _environment;
@@ -12,12 +17,14 @@ public class World
         return _crobes;
     }
 
-    private ArrayList<EnviromentalFactor> _factors = new ArrayList<EnviromentalFactor>();
-    public ArrayList<EnviromentalFactor> factors() {
+    private ArrayList<Factor> _factors = new ArrayList<Factor>();
+    public ArrayList<Factor> factors() {
         return _factors;
     }
 
     public World(int environmentalRadix) {
+        _age = 0;
+        _factors = new ArrayList<Factor>();
         _environment = new Environment(environmentalRadix);
         _crobes = new CrobeColony();
     }
@@ -52,8 +59,11 @@ public class World
             return null;
     }
 
-    public void processEnvironment() {
+    public void updateEnvironment() {
         _environment.reset();
         _environment.updateLocations();
+    }
+    public void updateFactors() {
+
     }
 }

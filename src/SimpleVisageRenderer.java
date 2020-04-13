@@ -105,6 +105,64 @@ public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
     }
 
     @Override
+    public Location[] getLocations(CrobeEnums.LifeStage stage) {
+        //this crobe is only ever a single location
+        return new Location[] {_crobe.world().environment().get(_crobe.position())};
+    }
+
+    @Override
+    public Location[] getAdjacents(CrobeEnums.LifeStage stage) {
+        int count = 8;
+        int xMin, xMax, yMin, yMax;
+        xMin = -1;
+        xMax = 2;
+        yMin = -1;
+        yMax = 2;
+
+        //check if we are on the edge of the environment
+        Point p = _crobe.position();
+        int maxW, maxH;
+        maxW = _crobe.world().environment().width();
+        maxH = _crobe.world().environment().height();
+
+        if(p.x == 0) {
+            count -= 2;
+            xMin = 0;
+        }//end if
+        else if(p.x == maxW) {
+            count -= 2;
+            xMax = 1;
+        }//end else if
+
+        if(p.y == 0) {
+            count -= 2;
+            yMin = 0;
+        }//end if
+        else if(p.y == maxH) {
+            count -= 2;
+            yMax = 1;
+        }//end else if
+
+        if(count < 8) {
+            count -= 1;
+        }//end if
+
+        Location[] result = new Location[count];
+
+        int idx = 0;
+        for(int x = xMin; x < xMax; x++) {
+            for(int y = yMin; y < yMax; y++) {
+                if((x != 0) || (y != 0)) {
+                    result[idx] = _crobe.world().environment().get(p.x + x, p.y + y);
+                    idx++;
+                }//end if
+            }//end for y
+        }//end for x
+
+        return result;
+    }
+
+    @Override
     public String toString() {
         return String.format(TS_FMT,
                 _skin.toString(),

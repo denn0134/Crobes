@@ -15,4 +15,5 @@ public interface ILifeCycleGenePool extends IGenePool
 
     void processAging();
     void processReproduction(ArrayList<Crobe> children);
+    void processDeath(CrobeEnums.LifeStage stage);
 }

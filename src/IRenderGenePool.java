@@ -11,4 +11,7 @@ public interface IRenderGenePool extends IGenePool
 
     void renderCrobe(Point location,
                      RenderContext renderContext);
+
+    Location[] getLocations(CrobeEnums.LifeStage stage);
+    Location[] getAdjacents(CrobeEnums.LifeStage stage);
 }

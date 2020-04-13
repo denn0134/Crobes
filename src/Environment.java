@@ -38,6 +38,9 @@ public class Environment extends ArrayList<ArrayList<Location>>
     public Location get(int X, int Y) {
         return get(Y).get(X);
     }
+    public Location get(Point p) {
+        return get(p.x, p.y);
+    }
 
     public void reset() {
         for(ArrayList<Location> row: this) {

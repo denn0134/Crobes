@@ -37,30 +37,6 @@ public class ScalarGeneInt extends Gene
             _mutationType = mutationType;
     }
     private int _mutationRange;
-    private int getMutation(int value) {
-        int result = value;
-        int sign = _rand.nextInt(2);
-        int change = 0;
-
-        switch (_mutationType) {
-            case ADJACENT:
-                change = _rand.nextInt(_mutationRange) + 1;
-                break;
-            case SCALAR_DISCREET:
-                change = 1;
-        }//end switch
-
-        if (sign == 0) {
-            result -= change;
-            if (result <= 0)
-                result = 1;
-        }//end if
-        else {
-            result += change;
-        }//end else
-
-        return result;
-    }
 
     public ScalarGeneInt(int[] genotype,
                          CrobeEnums.MutationType mutationType,
@@ -73,7 +49,11 @@ public class ScalarGeneInt extends Gene
                          CrobeEnums.MutationType mutationType) {
         _genotype = genotype;
         mutationType(mutationType);
-        _mutationRange = Math.round(phenotype() * Crobe.MUTATION_RANGE);
+
+        if(_mutationType == CrobeEnums.MutationType.ADJACENT)
+            _mutationRange = 1;
+        else
+            _mutationRange = Math.round(phenotype() * Crobe.MUTATION_RANGE);
     }
 
     @Override
@@ -107,6 +87,31 @@ public class ScalarGeneInt extends Gene
             if(m < stressLevel)
                 _genotype[i] = getMutation(_genotype[i]);
         }//end for i
+    }
+    private int getMutation(int value) {
+        int result = value;
+        int sign = _rand.nextInt(2);
+        int change = 0;
+
+        switch (_mutationType) {
+            case SCALAR_DISCREET:
+                change = _rand.nextInt(_mutationRange) + 1;
+                break;
+            case ADJACENT:
+                change = 1;
+                break;
+        }//end switch
+
+        if (sign == 0) {
+            result -= change;
+            if (result <= 0)
+                result = 1;
+        }//end if
+        else {
+            result += change;
+        }//end else
+
+        return result;
     }
 
     @Override
