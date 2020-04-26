@@ -1,3 +1,9 @@
+package crobes.genetics.genes;
+
+
+import crobes.genetics.Gene;
+import crobes.core.*;
+
 public abstract class HeritableGene extends Gene
 {
     protected void mutationType(CrobeEnums.MutationType mutationType) {

@@ -1,3 +1,6 @@
+package crobes;
+
+import crobes.core.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

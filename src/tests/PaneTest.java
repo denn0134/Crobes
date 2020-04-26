@@ -1,3 +1,5 @@
+package tests;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;

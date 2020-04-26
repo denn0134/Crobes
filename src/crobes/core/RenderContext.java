@@ -1,3 +1,5 @@
+package crobes.core;
+
 /***
  * Data structure for returning render values.
  */

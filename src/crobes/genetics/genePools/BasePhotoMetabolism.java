@@ -1,3 +1,8 @@
+package crobes.genetics.genePools;
+
+import crobes.core.*;
+import crobes.genetics.*;
+import crobes.genetics.genes.*;
 import java.util.ArrayList;
 
 public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool

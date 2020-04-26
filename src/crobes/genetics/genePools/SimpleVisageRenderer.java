@@ -1,3 +1,8 @@
+package crobes.genetics.genePools;
+
+import crobes.core.*;
+import crobes.genetics.*;
+import crobes.genetics.genes.*;
 import java.awt.*;
 import java.util.ArrayList;
 

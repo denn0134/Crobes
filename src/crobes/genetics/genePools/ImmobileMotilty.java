@@ -1,3 +1,8 @@
+package crobes.genetics.genePools;
+
+import crobes.core.*;
+import crobes.genetics.*;
+import crobes.genetics.genes.*;
 import java.util.ArrayList;
 
 public class ImmobileMotilty extends GenePool implements IMotilityGenePool

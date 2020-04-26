@@ -1,3 +1,5 @@
+package crobes.core;
+
 public class IncompatibleGenomeException extends Exception
 {
     private static final String IGE_FMT = "%1$s is not compatible with %2$s";

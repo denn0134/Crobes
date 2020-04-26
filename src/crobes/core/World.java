@@ -1,3 +1,5 @@
+package crobes.core;
+
 import java.util.ArrayList;
 
 public class World

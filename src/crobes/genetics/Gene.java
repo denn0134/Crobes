@@ -1,10 +1,13 @@
+package crobes.genetics;
+
+import crobes.core.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Gene
 {
     protected Random _rand = new Random();
-    protected abstract Gene recombinate(ArrayList<Gene> genes);
+    public abstract Gene recombinate(ArrayList<Gene> genes);
     public Gene combine(ArrayList<Gene> genes) throws IncompatibleGenomeException{
         if(canCombine(genes))
             return recombinate(genes);

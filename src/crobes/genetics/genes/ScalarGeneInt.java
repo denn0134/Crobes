@@ -1,3 +1,7 @@
+package crobes.genetics.genes;
+
+import crobes.core.*;
+import crobes.genetics.*;
 import java.util.ArrayList;
 
 public class ScalarGeneInt extends Gene
@@ -57,7 +61,7 @@ public class ScalarGeneInt extends Gene
     }
 
     @Override
-    protected Gene recombinate(ArrayList<Gene> genes) {
+    public Gene recombinate(ArrayList<Gene> genes) {
         ScalarGeneInt gene;
 
         int genotypeSize = (genes.size() + 1) * 2;

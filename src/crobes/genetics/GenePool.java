@@ -1,3 +1,6 @@
+package crobes.genetics;
+
+import crobes.core.*;
 import java.util.ArrayList;
 
 public abstract class GenePool implements IGenePool

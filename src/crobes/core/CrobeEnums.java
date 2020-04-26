@@ -1,3 +1,5 @@
+package crobes.core;
+
 public class CrobeEnums
 {
     /***

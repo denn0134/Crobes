@@ -1,3 +1,6 @@
+package crobes.core;
+
+import crobes.genetics.genePools.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;

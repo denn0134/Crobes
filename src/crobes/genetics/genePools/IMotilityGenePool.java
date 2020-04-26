@@ -1,3 +1,8 @@
+package crobes.genetics.genePools;
+
+import crobes.genetics.*;
+import crobes.genetics.genes.*;
+
 public interface IMotilityGenePool extends IGenePool
 {
     HeritableGeneEnum motilityType();

@@ -1,3 +1,7 @@
+package crobes.genetics.genes;
+
+import crobes.core.*;
+import crobes.genetics.*;
 import java.util.ArrayList;
 
 public class HeritableGeneBool extends HeritableGene
@@ -73,7 +77,7 @@ public class HeritableGeneBool extends HeritableGene
     }
 
     @Override
-    protected Gene recombinate(ArrayList<Gene> genes) {
+    public Gene recombinate(ArrayList<Gene> genes) {
         HeritableGeneBool gene;
 
         int genotypeSize = (genes.size() + 1) * 2;

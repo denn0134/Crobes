@@ -1,3 +1,5 @@
+package crobes.core;
+
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 public class Factor
