@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
@@ -22,6 +23,8 @@ import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Microscope extends Application
 {
@@ -50,6 +53,7 @@ public class Microscope extends Application
     private RadioButton btnSlow;
     private RadioButton btnMedium;
     private RadioButton btnFast;
+    private Timer tmrClock;
 
     //microscope objects
     private World world;
@@ -65,6 +69,9 @@ public class Microscope extends Application
     private static final double FONT_HEIGHT_COEFFICIENT = 1.13;
     private static final int MIN_SCALE = 1;
     private static final int MAX_SCALE = 14;
+    private static final long DELAY_SLOW = 25000;
+    private static final long DELAY_MEDIUM = 5000;
+    private static final long DELAY_FAST = 1000;
 
     public static void main(String[] args) {
         launch(args);
@@ -200,6 +207,12 @@ public class Microscope extends Application
         btnPause.setTooltip(new Tooltip("Pause simulation"));
         btnPause.setToggleGroup(tglSpeed);
         btnPause.setSelected(true);
+        btnPause.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stopTimer();
+            }
+        });
 
         //step button
         btnStep = new Button();
@@ -218,6 +231,13 @@ public class Microscope extends Application
         setButtonIcon(btnSlow, "slow.png");
         btnSlow.setTooltip(new Tooltip("Slow speed"));
         btnSlow.setToggleGroup(tglSpeed);
+        btnSlow.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stopTimer();
+                startTimer(DELAY_SLOW);
+            }
+        });
 
         //medium button
         btnMedium = new RadioButton();
@@ -225,6 +245,13 @@ public class Microscope extends Application
         setButtonIcon(btnMedium, "medium.png");
         btnMedium.setTooltip(new Tooltip("Medium speed"));
         btnMedium.setToggleGroup(tglSpeed);
+        btnMedium.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stopTimer();
+                startTimer(DELAY_MEDIUM);
+            }
+        });
 
         //fast button
         btnFast = new RadioButton();
@@ -232,6 +259,13 @@ public class Microscope extends Application
         setButtonIcon(btnFast, "fast.png");
         btnFast.setTooltip(new Tooltip("Fast speed"));
         btnFast.setToggleGroup(tglSpeed);
+        btnFast.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stopTimer();
+                startTimer(DELAY_FAST);
+            }
+        });
 
         pnlSpeedToolbar.getChildren().addAll(btnPause, btnStep, btnSlow, btnMedium, btnFast);
         pnlTop.setTop(pnlSpeedToolbar);
@@ -498,5 +532,29 @@ public class Microscope extends Application
 
         //rerender everything
         refreshLens();
+    }
+    private void stopTimer() {
+        if(tmrClock != null) {
+            tmrClock.purge();
+            tmrClock.cancel();
+            tmrClock = null;
+        }//end if
+    }
+    private void startTimer(long delay) {
+        tmrClock = new Timer(true);
+        tmrClock.schedule(new AdvanceTask(), delay, delay);
+    }
+
+    private class AdvanceTask extends TimerTask
+    {
+        @Override
+        public void run() {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    advance();
+                }
+            });
+        }
     }
 }
