@@ -8,6 +8,11 @@ import java.util.Arrays;
 
 public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
 {
+    @Override
+    public String description() {
+        return "Basic child to adult lifecycle.";
+    }
+
     private static final String TS_FMT = "    span: %1$s spanRange: %2$s maturity: %3$s finite: %4$s reproInt: %5$s";
     private static final int SLCGP_ELDER_STRESS = 5;
     private static final int SLCGP_ELDER_DAMAGE = 20;

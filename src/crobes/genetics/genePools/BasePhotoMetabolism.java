@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
 {
+    @Override
+    public String description() {
+        return "Basic no-frills photosynthetic driven metabolism.";
+    }
+
     private static final String TS_FMT = "    vitality: %1$s vRange: %2$s healRate: %3$s stamina: %4$s sRange: %5$s mortalityRate: %6$s";
 
     public BasePhotoMetabolism(Crobe crobe) {

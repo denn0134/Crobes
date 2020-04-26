@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
 {
+    @Override
+    public String description() {
+        return "Simple no-frills renderer for single location crobes.";
+    }
+
     private static final String TS_FMT = "    skin: %1$s face: %2$s body: %3$s";
 
     @Override

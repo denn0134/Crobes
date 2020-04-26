@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 public abstract class GenePool implements IGenePool
 {
+    public abstract String description();
+
     protected float getFloatRange(float low, float high) {
         //generates a random float from low to high
         //inclusive to a precision of 1/100.

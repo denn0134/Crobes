@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class ImmobileMotilty extends GenePool implements IMotilityGenePool
 {
+    @Override
+    public String description() {
+        return "Non-mobile motility plan.";
+    }
+
     private static final String TS_FMT = "    motilityType: %1$s moveType: %2$s moveBase: %3$s moveRange: %4$s lethargy: %5$s efficiency: %6$s";
 
     public ImmobileMotilty(Crobe crobe) {
