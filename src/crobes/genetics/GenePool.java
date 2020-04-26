@@ -25,6 +25,7 @@ public abstract class GenePool implements IGenePool
         _crobe = crobe;
     }
 
+    protected abstract void initializeGeneNames();
     public abstract void initializeRandomDefault();
 
     public abstract String getNamePart();

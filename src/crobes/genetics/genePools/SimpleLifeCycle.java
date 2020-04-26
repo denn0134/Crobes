@@ -6,7 +6,7 @@ import crobes.genetics.genes.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
+public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
 {
     @Override
     public String description() {
@@ -103,6 +103,8 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
         _finite = new HeritableGeneBool(new boolean[] {true, false},
                 new boolean[] {true, false},
                 CrobeEnums.MutationType.RANDOM);
+
+        initializeGeneNames();
     }
 
     @Override
@@ -233,6 +235,8 @@ public class SimpleLifeCycle extends GenePool implements ILifeCycleGenePool
         pool._maturity = (ScalarGeneFlt) this._maturity.recombinate(mGenes);
         pool._finite = (HeritableGeneBool) this._finite.recombinate(fGenes);
         pool.reproInterval = 0;
+
+        pool.initializeGeneNames();
 
         return pool;
     }

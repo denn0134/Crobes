@@ -6,7 +6,7 @@ import crobes.genetics.genes.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
+public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
 {
     @Override
     public String description() {
@@ -76,6 +76,8 @@ public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
         _body = new HeritableGeneEnum(new Enum[] {CrobeEnums.CrobeColor.yellow, CrobeEnums.CrobeColor.yellow},
                 new Enum[] {CrobeEnums.CrobeColor.lightblue, CrobeEnums.CrobeColor.pink, CrobeEnums.CrobeColor.yellow},
                 CrobeEnums.MutationType.RANDOM);
+
+        initializeGeneNames();
     }
 
     @Override
@@ -110,6 +112,8 @@ public class SimpleVisageRenderer extends GenePool implements IRenderGenePool
         pool._skin = (HeritableGeneEnum) this._skin.recombinate(sGenes);
         pool._face = (HeritableGeneString) this._face.recombinate(fGenes);
         pool._body = (HeritableGeneEnum) this._body.recombinate(bGenes);
+
+        pool.initializeGeneNames();
 
         return pool;
     }

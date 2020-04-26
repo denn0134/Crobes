@@ -6,6 +6,14 @@ import java.util.Random;
 
 public abstract class Gene
 {
+    protected String _name;
+    public String name() {
+        return _name;
+    }
+    public void name(String name) {
+        _name = name;
+    }
+
     protected Random _rand = new Random();
     public abstract Gene recombinate(ArrayList<Gene> genes);
     public Gene combine(ArrayList<Gene> genes) throws IncompatibleGenomeException{

@@ -5,7 +5,7 @@ import crobes.genetics.*;
 import crobes.genetics.genes.*;
 import java.util.ArrayList;
 
-public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
+public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePool
 {
     @Override
     public String description() {
@@ -117,6 +117,8 @@ public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
         _mortalityRate = new ScalarGeneInt(new int[] {1000, 1000},
                 CrobeEnums.MutationType.SCALAR_DISCREET,
                 100);
+
+        initializeGeneNames();
     }
 
     @Override
@@ -170,6 +172,8 @@ public class BasePhotoMetabolism extends GenePool implements IMetabolicGenePool
         pool._stamina = (ScalarGeneInt) this._stamina.recombinate(sGenes);
         pool._staminaRange = (ScalarGeneInt) this._staminaRange.recombinate(srGenes);
         pool._mortalityRate = (ScalarGeneInt) this._mortalityRate.recombinate(mrGenes);
+
+        pool.initializeGeneNames();
 
         return pool;
     }

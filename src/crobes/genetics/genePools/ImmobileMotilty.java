@@ -5,7 +5,7 @@ import crobes.genetics.*;
 import crobes.genetics.genes.*;
 import java.util.ArrayList;
 
-public class ImmobileMotilty extends GenePool implements IMotilityGenePool
+public class ImmobileMotilty extends Motility implements IMotilityGenePool
 {
     @Override
     public String description() {
@@ -124,6 +124,8 @@ public class ImmobileMotilty extends GenePool implements IMotilityGenePool
         flt2 = getFloatRange(0.75f, 1.00f);
         _efficiency = new ScalarGeneFlt(new float[] {flt1, flt2},
                 0.02f);
+
+        initializeGeneNames();
     }
 
     @Override
@@ -160,6 +162,8 @@ public class ImmobileMotilty extends GenePool implements IMotilityGenePool
         pool._moveRange = (ScalarGeneInt) this._moveRange.recombinate(mrGenes);
         pool._lethargy = (ScalarGeneFlt) this._lethargy.recombinate(lGenes);
         pool._efficiency = (ScalarGeneFlt) this._efficiency.recombinate(eGenes);
+
+        pool.initializeGeneNames();
 
         return pool;
     }
