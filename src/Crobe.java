@@ -5,7 +5,7 @@ import java.util.Random;
 public class Crobe
 {
     public static final float MUTATION_RANGE = 0.40f;
-    public static final int MUTATION_RATE = 10;
+    public static int MUTATION_RATE = 100;
 
     private CrobeEnums.LifeStage _stage;
     public CrobeEnums.LifeStage stage() { return _stage; }

@@ -86,6 +86,7 @@ public class Microscope extends Application
         if((list != null) &&
                 (list.size() > 0)) {
             _radix = Integer.parseInt(list.get(0));
+            Crobe.MUTATION_RATE = Integer.parseInt(list.get(1));
         }//end if
     }
 
