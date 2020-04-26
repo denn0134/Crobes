@@ -96,8 +96,6 @@ public class HeritableGeneBool extends HeritableGene
         return gene;
     }
 
-
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
