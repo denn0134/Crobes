@@ -1,4 +1,4 @@
-package crobes.genetics;
+package crobes.genetics.genes;
 
 import crobes.core.*;
 import java.util.ArrayList;

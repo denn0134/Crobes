@@ -1,6 +1,8 @@
-package crobes.genetics;
+package crobes.genetics.genePools;
 
 import crobes.core.*;
+import crobes.genetics.genePools.GenePool;
+
 import java.util.ArrayList;
 
 public interface IGenePool

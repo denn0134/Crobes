@@ -1,7 +1,7 @@
 package crobes.genetics.genes;
 
 import crobes.core.*;
-import crobes.genetics.*;
+
 import java.util.ArrayList;
 
 public class HeritableGeneBool extends HeritableGene

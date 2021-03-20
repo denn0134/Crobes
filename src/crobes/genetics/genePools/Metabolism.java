@@ -2,7 +2,6 @@ package crobes.genetics.genePools;
 
 import crobes.core.Crobe;
 import crobes.core.CrobeConstants;
-import crobes.genetics.GenePool;
 
 public abstract class Metabolism extends GenePool implements IMetabolicGenePool
 {
