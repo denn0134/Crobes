@@ -1,5 +1,6 @@
 package tests;
 
+import crobes.genetics.genomics.Genome;
 import crobes.genetics.gui.Sequencer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -31,7 +32,12 @@ public class GenomeTest extends Application
         btnGo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Sequencer.createCrobe(primaryStage);
+                Genome genome = new Genome();
+
+                genome = Sequencer.sequenceGenome(genome, true, primaryStage);
+
+                if(genome != null)
+                    System.out.println(genome.toString());
             }
         });
 

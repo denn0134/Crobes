@@ -1,6 +1,9 @@
 package crobes.genetics.gui;
 
 import crobes.core.Crobe;
+import crobes.genetics.genomics.Genome;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,25 +28,45 @@ public class Sequencer extends Stage
     public static final double GENE_DOM_WIDTH = 75;
     public static final double GENE_GENOTYPE_WIDTH = 400;
 
+    private Genome _genome;
+    public Genome genome() {
+        return _genome;
+    }
+    public void genome(Genome genome) {
+        _genome = genome;
+    }
+
+    private boolean _cancelled;
+    public boolean cancelled() {
+        return _cancelled;
+    }
+
     /***
-     * Show the Crobe Generator form and generates a new
-     * Crobe based on the users genetic configuration
-     * choices.  This action can be cancelled.
-     * @param parentStage
-     * @return Returns a new Crobe if the user configures
-     *         the genetics and opts to create it, returns
-     *         null if the user cancels the action.
+     * Shows a Genome within an editor form to allow
+     * the user to examine/modify the genomic configuration.
+     * The form can allow editing or be set to read only
+     * mode.  If in read only mode the method will
+     * return null.
+     * @param genome The Genome object to view/edit.
+     * @param allowEdit Whether to allow editing.
+     * @param parentStage Parent stage for the modal form.
+     * @return Returns the edited Genome object; returns
+     *         null if in read only mode.
      */
-    public static Crobe createCrobe(Stage parentStage) {
-        Crobe crobe = null;
+    public static Genome sequenceGenome(Genome genome, boolean allowEdit, Stage parentStage) {
+        Genome result = null;
 
-        Stage crobeDialog = new Sequencer();
+        Sequencer centrifuge = new Sequencer(genome);
 
-        crobeDialog.initOwner(parentStage);
-        crobeDialog.initModality(Modality.APPLICATION_MODAL);
-        crobeDialog.showAndWait();
+        centrifuge.initOwner(parentStage);
+        centrifuge.initModality(Modality.APPLICATION_MODAL);
 
-        return crobe;
+        centrifuge.showAndWait();
+
+        if(!centrifuge.cancelled())
+            result = centrifuge.genome();
+
+        return result;
     }
 
     private BorderPane root;
@@ -51,7 +74,9 @@ public class Sequencer extends Stage
     private BorderPane rightPane;
     private FlowPane bottomPane;
 
-    public Sequencer() {
+    public Sequencer(Genome genome) {
+        _genome = genome;
+
         root = new BorderPane();
 
         leftPane = new VBox();
@@ -71,6 +96,21 @@ public class Sequencer extends Stage
         Button btnOk = new Button("OK");
         Button btnCancel = new Button("Cancel");
         bottomPane.getChildren().addAll(btnOk, btnCancel);
+
+        btnOk.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                _cancelled = false;
+                close();
+            }
+        });
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                _cancelled = true;
+                close();
+            }
+        });
 
         root.setLeft(leftPane);
         root.setRight(rightPane);
