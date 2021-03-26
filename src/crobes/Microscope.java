@@ -1,6 +1,8 @@
 package crobes;
 
 import crobes.core.*;
+import crobes.genetics.Genome;
+import crobes.genetics.Genomics;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -50,6 +52,7 @@ public class Microscope extends Application
     private ChoiceBox<String> cmbMode;
     private TextArea txtLocation;
     private Button btnAddRandom;
+    private Button btnAddCrobe;
     private TextArea txtCrobeDetail;
     private RadioButton btnPause;
     private Button btnStep;
@@ -404,7 +407,18 @@ public class Microscope extends Application
             }
         });
 
-        vb.getChildren().addAll(label, cmbMode, btnAddRandom);
+        btnAddCrobe = new Button("Genome");
+        btnAddCrobe.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(lens.selection().crobe() != null) {
+                    Genome genome = Genomics.extractGenome(lens.selection().crobe());
+                    System.out.println(genome.toString());
+                }//end if
+            }
+        });
+
+        vb.getChildren().addAll(label, cmbMode, btnAddRandom, btnAddCrobe);
         ctrPaneBot.setCenter(vb);
 
         pnlControls.add(ctrPaneTop, 0, 0);
