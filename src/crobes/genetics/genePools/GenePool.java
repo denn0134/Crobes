@@ -21,6 +21,12 @@ public abstract class GenePool implements IGenePool
     }
 
     protected Crobe _crobe;
+    public Crobe crobe() {
+        return _crobe;
+    }
+    public void crobe(Crobe crobe) {
+        this._crobe = crobe;
+    }
 
     public GenePool(Crobe crobe) {
         _crobe = crobe;

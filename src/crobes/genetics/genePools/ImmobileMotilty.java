@@ -2,10 +2,16 @@ package crobes.genetics.genePools;
 
 import crobes.core.*;
 import crobes.genetics.genes.*;
+import crobes.genetics.genomics.Genomics;
+
 import java.util.ArrayList;
 
 public class ImmobileMotilty extends Motility implements IMotilityGenePool
 {
+    static {
+        Genomics.motilities.registerMotility("ImmobilityMotility", ImmobileMotilty.class);
+    }//end static
+
     @Override
     public String description() {
         return "Non-mobile motility plan.";

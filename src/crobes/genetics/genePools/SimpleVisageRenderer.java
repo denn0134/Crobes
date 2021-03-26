@@ -2,11 +2,17 @@ package crobes.genetics.genePools;
 
 import crobes.core.*;
 import crobes.genetics.genes.*;
+import crobes.genetics.genomics.Genomics;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
 {
+    static {
+        Genomics.renderers.registerRenderer("SimpleVisageRenderer", SimpleVisageRenderer.class);
+    }//end static
+
     @Override
     public String description() {
         return "Simple no-frills renderer for single location crobes.";

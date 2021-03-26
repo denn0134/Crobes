@@ -2,10 +2,16 @@ package crobes.genetics.genePools;
 
 import crobes.core.*;
 import crobes.genetics.genes.*;
+import crobes.genetics.genomics.Genomics;
+
 import java.util.ArrayList;
 
 public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePool
 {
+    static {
+        Genomics.metabolisms.registerMetabolism("BasePhotoMetabolism", BasePhotoMetabolism.class);
+    }//end static
+
     @Override
     public String description() {
         return "Basic no-frills photosynthetic driven metabolism.";

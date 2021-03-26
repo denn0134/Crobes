@@ -2,11 +2,17 @@ package crobes.genetics.genePools;
 
 import crobes.core.*;
 import crobes.genetics.genes.*;
+import crobes.genetics.genomics.Genomics;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
 {
+    static {
+        Genomics.lifeCycles.registerLifeCycle("SimpleLifeCycle", SimpleLifeCycle.class);
+    }//end static
+
     @Override
     public String description() {
         return "Basic child to adult lifecycle.";
