@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CrobeGenerator extends Stage
+public class Sequencer extends Stage
 {
     //GUI constants
     public static final double GENEPOOL_BASE_HEIGHT = 10;
@@ -37,7 +37,7 @@ public class CrobeGenerator extends Stage
     public static Crobe createCrobe(Stage parentStage) {
         Crobe crobe = null;
 
-        Stage crobeDialog = new CrobeGenerator();
+        Stage crobeDialog = new Sequencer();
 
         crobeDialog.initOwner(parentStage);
         crobeDialog.initModality(Modality.APPLICATION_MODAL);
@@ -51,7 +51,7 @@ public class CrobeGenerator extends Stage
     private BorderPane rightPane;
     private FlowPane bottomPane;
 
-    public CrobeGenerator() {
+    public Sequencer() {
         root = new BorderPane();
 
         leftPane = new VBox();
