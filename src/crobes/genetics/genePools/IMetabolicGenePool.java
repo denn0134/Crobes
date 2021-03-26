@@ -26,7 +26,7 @@ public interface IMetabolicGenePool extends IGenePool
     ScalarGeneInt stamina();
 
     /***
-     * The enregy variability range for the crobe.
+     * The energy variability range for the crobe.
      */
     ScalarGeneInt staminaRange();
 
