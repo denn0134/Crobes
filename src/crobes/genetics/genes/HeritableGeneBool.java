@@ -7,6 +7,9 @@ import java.util.ArrayList;
 public class HeritableGeneBool extends HeritableGene
 {
     private boolean[] _genotype;
+    public boolean[] genoType() {
+        return _genotype;
+    }
     public boolean[] getGeneValues() {
         boolean[] result = new boolean[2];
 
@@ -37,6 +40,9 @@ public class HeritableGeneBool extends HeritableGene
 
     private boolean[] _dominance;
     public void dominance(boolean[] hierarchy) { _dominance = hierarchy; }
+    public boolean[] dominance() {
+        return _dominance;
+    }
 
     public HeritableGeneBool(boolean[] genotype,
                              boolean[] hierarchy,

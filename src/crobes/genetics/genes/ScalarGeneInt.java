@@ -7,6 +7,9 @@ import java.util.ArrayList;
 public class ScalarGeneInt extends Gene
 {
     private int[] _genotype;
+    public int[] genoType() {
+        return _genotype;
+    }
     public int[] getGeneValues() {
         int[] result = new int[2];
 
@@ -41,6 +44,9 @@ public class ScalarGeneInt extends Gene
             _mutationType = mutationType;
     }
     private int _mutationRange;
+    public int mutationRange() {
+        return _mutationRange;
+    }
 
     public ScalarGeneInt(int[] genotype,
                          CrobeEnums.MutationType mutationType,

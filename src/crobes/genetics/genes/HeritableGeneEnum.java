@@ -7,6 +7,9 @@ import java.util.ArrayList;
 public class HeritableGeneEnum extends HeritableGene
 {
     private Enum[] _genotype;
+    public Enum[] genoType() {
+        return _genotype;
+    }
     public Enum[] getGeneValues() {
         Enum[] result = new Enum[2];
 
@@ -42,6 +45,9 @@ public class HeritableGeneEnum extends HeritableGene
     private Enum[] _dominance;
     public void dominance(Enum[] dominance) {
         _dominance = dominance;
+    }
+    public Enum[] dominance() {
+        return _dominance;
     }
 
     public HeritableGeneEnum(Enum[] genotype, Enum[] dominance, CrobeEnums.MutationType type) {

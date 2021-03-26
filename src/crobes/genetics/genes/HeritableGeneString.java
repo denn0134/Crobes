@@ -7,6 +7,9 @@ import java.util.ArrayList;
 public class HeritableGeneString extends HeritableGene
 {
     private String[] _genotype;
+    public String[] genoType() {
+        return _genotype;
+    }
     public String[] getGeneValues() {
         String[] result = new String[2];
 
@@ -42,6 +45,9 @@ public class HeritableGeneString extends HeritableGene
     private String[] _dominance;
     public void dominance(String[] dominance) {
         _dominance = dominance;
+    }
+    public String[] dominance() {
+        return _dominance;
     }
 
     public HeritableGeneString(String[] genotype,

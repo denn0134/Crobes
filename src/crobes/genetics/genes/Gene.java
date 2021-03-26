@@ -41,5 +41,8 @@ public abstract class Gene
     }
 
     protected CrobeEnums.MutationType _mutationType;
+    public CrobeEnums.MutationType mutationType() {
+        return _mutationType;
+    }
     public abstract void mutate(int stressLevel);
 }

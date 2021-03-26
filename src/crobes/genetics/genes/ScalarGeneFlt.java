@@ -7,6 +7,9 @@ import java.util.ArrayList;
 public class ScalarGeneFlt extends Gene
 {
     private float[] _genotype;
+    public float[] genoType() {
+        return _genotype;
+    }
     public float[] getGeneValues() {
         float[] result = new float[2];
 
@@ -34,6 +37,9 @@ public class ScalarGeneFlt extends Gene
     }
 
     private float _mutationRange;
+    public float mutationRange() {
+        return _mutationRange;
+    }
     private float getMutation(float value) {
         float result = value;
         int sign = _rand.nextInt(2);
