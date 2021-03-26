@@ -1,4 +1,4 @@
-package crobes.genetics;
+package crobes.genetics.genomics;
 
 import crobes.genetics.genes.ScalarGeneFlt;
 

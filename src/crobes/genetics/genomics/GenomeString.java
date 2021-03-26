@@ -1,13 +1,13 @@
-package crobes.genetics;
+package crobes.genetics.genomics;
 
-import crobes.genetics.genes.HeritableGeneBool;
+import crobes.genetics.genes.HeritableGeneString;
 
-public class GenomeBool extends GenomeValue
+public class GenomeString extends GenomeValue
 {
-    public boolean[] genotype;
-    public boolean[] domain;
+    public String[] genotype;
+    public String[] domain;
 
-    public GenomeBool(HeritableGeneBool gene) {
+    public GenomeString(HeritableGeneString gene) {
         super(gene.mutationType());
 
         genotype = gene.genoType().clone();
@@ -19,7 +19,7 @@ public class GenomeBool extends GenomeValue
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < genotype.length; i++) {
-            sb.append(genotype[i]);
+            sb.append(Genome.quotedString(genotype[i]));
 
             if(i < genotype.length - 1)
                 sb.append(", ");
@@ -35,7 +35,7 @@ public class GenomeBool extends GenomeValue
         sb.append("[");
 
         for(int i = 0; i < domain.length; i++) {
-            sb.append(domain[i]);
+            sb.append(Genome.quotedString(domain[i]));
 
             if(i < domain.length - 1)
                 sb.append(", ");

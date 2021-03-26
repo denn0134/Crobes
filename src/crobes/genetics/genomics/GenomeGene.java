@@ -1,4 +1,4 @@
-package crobes.genetics;
+package crobes.genetics.genomics;
 
 /***
  * This is the model of a single gene within a Genome.

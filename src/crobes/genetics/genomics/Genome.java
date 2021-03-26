@@ -1,4 +1,4 @@
-package crobes.genetics;
+package crobes.genetics.genomics;
 
 /***
  * A Genome is a map of the genetic material of a crobe.

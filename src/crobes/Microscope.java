@@ -1,8 +1,8 @@
 package crobes;
 
 import crobes.core.*;
-import crobes.genetics.Genome;
-import crobes.genetics.Genomics;
+import crobes.genetics.genomics.Genome;
+import crobes.genetics.genomics.Genomics;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
