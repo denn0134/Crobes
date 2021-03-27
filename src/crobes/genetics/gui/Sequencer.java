@@ -9,9 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -70,6 +68,7 @@ public class Sequencer extends Stage
     }
 
     private BorderPane root;
+    private HBox topPane;
     private VBox leftPane;
     private BorderPane rightPane;
     private FlowPane bottomPane;
@@ -79,15 +78,25 @@ public class Sequencer extends Stage
 
         root = new BorderPane();
 
-        leftPane = new VBox();
-        Label lblTaxa = new Label("Taxonomic name");
+        //top pane - taxanomic name
+        topPane = new HBox();
+        topPane.setSpacing(5);
+
+        Label lblTaxa = new Label("Taxonomy");
 
         TextField txtTaxa = new TextField();
         txtTaxa.setEditable(false);
+        HBox.setHgrow(txtTaxa, Priority.ALWAYS);
 
-        //ListView<GenePoolPicker> lstPools = new ListView<GenePoolPicker>();
+        topPane.getChildren().addAll(lblTaxa, txtTaxa);
 
-        leftPane.getChildren().addAll(lblTaxa, txtTaxa);
+        //left pane - list of genePool pickers for each
+        //genePool interface
+        leftPane = new VBox();
+
+        Label lblGenePools = new Label("Gene Pools");
+
+        leftPane.getChildren().addAll(lblGenePools);
 
         rightPane = new BorderPane();
 
@@ -112,6 +121,7 @@ public class Sequencer extends Stage
             }
         });
 
+        root.setTop(topPane);
         root.setLeft(leftPane);
         root.setRight(rightPane);
         root.setBottom(bottomPane);
