@@ -9,8 +9,18 @@ import java.util.ArrayList;
 public class ImmobileMotilty extends Motility implements IMotilityGenePool
 {
     static {
-        Genomics.motilities.registerMotility("ImmobilityMotility", ImmobileMotilty.class);
+        Genomics.motilities.registerGenePool(ImmobileMotilty.class);
     }//end static
+
+    @Override
+    public String displayName() {
+        return "Immobility";
+    }
+
+    @Override
+    public String getNamePart() {
+        return "stasus";
+    }
 
     @Override
     public String description() {
@@ -19,6 +29,7 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
 
     private static final String TS_FMT = "    motilityType: %1$s moveType: %2$s moveBase: %3$s moveRange: %4$s lethargy: %5$s efficiency: %6$s";
 
+    public ImmobileMotilty() {}
     public ImmobileMotilty(Crobe crobe) {
         super(crobe);
     }
@@ -32,11 +43,6 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
         _moveRange = moveRange;
         _lethargy = lethargy;
         _efficiency = efficiency;
-    }
-
-    @Override
-    public String getNamePart() {
-        return "stasus";
     }
 
     private HeritableGeneEnum _motilityType;

@@ -5,6 +5,10 @@ import crobes.core.CrobeConstants;
 
 public abstract class LifeCycle extends GenePool implements ILifeCycleGenePool
 {
+    public static final String LIFECYCLE_DISPLAY = "Life Cycle";
+    public static final String LIFECYCLE_DESCRIPTION = "Defines life stages and reproduction of a Crobe.";
+
+    public LifeCycle() {}
     public LifeCycle(Crobe crobe) {
         super(crobe);
     }

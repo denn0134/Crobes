@@ -5,7 +5,10 @@ import crobes.core.CrobeConstants;
 
 public abstract class Metabolism extends GenePool implements IMetabolicGenePool
 {
+    public static final String METABOLISM_DISPLAY = "Metabolism";
+    public static final String METABOLISM_DESCRIPTION = "Defines how the Crobe maintains and uses energy.";
 
+    public Metabolism() {}
     public Metabolism(Crobe crobe) {
         super(crobe);
     }

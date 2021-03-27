@@ -9,8 +9,18 @@ import java.util.ArrayList;
 public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePool
 {
     static {
-        Genomics.metabolisms.registerMetabolism("BasePhotoMetabolism", BasePhotoMetabolism.class);
+        Genomics.metabolisms.registerGenePool(BasePhotoMetabolism.class);
     }//end static
+
+    @Override
+    public String displayName() {
+        return "Photosynthetic";
+    }
+
+    @Override
+    public String getNamePart() {
+        return "photus";
+    }
 
     @Override
     public String description() {
@@ -19,6 +29,7 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
 
     private static final String TS_FMT = "    vitality: %1$s vRange: %2$s healRate: %3$s stamina: %4$s sRange: %5$s mortalityRate: %6$s";
 
+    public BasePhotoMetabolism() {}
     public BasePhotoMetabolism(Crobe crobe) {
         super(crobe);
     }
@@ -36,11 +47,6 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
         _stamina = stamina;
         _staminaRange = staminaRange;
         _mortalityRate = mortalityRate;
-    }
-
-    @Override
-    public String getNamePart() {
-        return "photus";
     }
 
     private ScalarGeneInt _vitality;

@@ -64,7 +64,7 @@ public class Genomics
         Reflections ref = new Reflections();
 
         //load life cycles
-        genePools.registerGenePool(LifeCycle.class.getName(), LifeCycle.class);
+        genePools.registerGenePool(LifeCycle.LIFECYCLE_DISPLAY, LifeCycle.LIFECYCLE_DESCRIPTION, LifeCycle.class);
         Set<Class<? extends LifeCycle>> lifeCycles = ref.getSubTypesOf(LifeCycle.class);
         for(Class<? extends LifeCycle> lc : lifeCycles) {
             try {
@@ -76,7 +76,7 @@ public class Genomics
         }//end for lc
 
         //load metabolisms
-        genePools.registerGenePool(Metabolism.class.getName(), Metabolism.class);
+        genePools.registerGenePool(Metabolism.METABOLISM_DISPLAY, Metabolism.METABOLISM_DESCRIPTION, Metabolism.class);
         Set<Class<? extends Metabolism>> metabolisms = ref.getSubTypesOf(Metabolism.class);
         for(Class<? extends Metabolism> m : metabolisms) {
             try {
@@ -88,7 +88,7 @@ public class Genomics
         }//end for lc
 
         //load motilities
-        genePools.registerGenePool(Motility.class.getName(), Motility.class);
+        genePools.registerGenePool(Motility.MOTILITY_DISPLAY, Motility.MOTILITY_DESCRIPTION, Motility.class);
         Set<Class<? extends Motility>> motilities = ref.getSubTypesOf(Motility.class);
         for(Class<? extends Motility> m : motilities) {
             try {
@@ -100,7 +100,7 @@ public class Genomics
         }//end for lc
 
         //load renderers
-        genePools.registerGenePool(Renderer.class.getName(), Renderer.class);
+        genePools.registerGenePool(Renderer.RENDERER_DISPLAY, Renderer.RENDERER_DESCRIPTION, Renderer.class);
         Set<Class<? extends Renderer>> renderers = ref.getSubTypesOf(Renderer.class);
         for(Class<? extends Renderer> r : renderers) {
             try {
@@ -125,161 +125,89 @@ public class Genomics
 
     //class registries
     public static final GenePoolRegister genePools = new GenePoolRegister();
-    public static final LifeCycleRegister lifeCycles = new LifeCycleRegister();
-    public static final MetabolismRegister metabolisms = new MetabolismRegister();
-    public static final MotilityRegister motilities = new MotilityRegister();
-    public static final RendererRegister renderers = new RendererRegister();
+    public static final GenePoolClassRegister<LifeCycle> lifeCycles = new GenePoolClassRegister<LifeCycle>();
+    public static final GenePoolClassRegister<Metabolism> metabolisms = new GenePoolClassRegister<>();
+    public static final GenePoolClassRegister<Motility> motilities = new GenePoolClassRegister<>();
+    public static final GenePoolClassRegister<Renderer> renderers = new GenePoolClassRegister<>();
 
 
     //class register static classes
+    public static class GenePoolInfo
+    {
+        public Class<? extends GenePool> genePoolClass;
+        public String displayName;
+        public String taxanomicName;
+        public String description;
+    }
     public static class GenePoolRegister
     {
-        private Map<String, Class<? extends GenePool>> genePools = new HashMap<>();
+        private Map<String, GenePoolInfo> genePools = new HashMap<>();
         public int count() {
             return genePools.size();
         }
-        public void registerGenePool(String name, Class<? extends GenePool> genePool) {
-            genePools.put(name, genePool);
+        public void registerGenePool(String name,
+                                     String description,
+                                     Class<? extends GenePool> genePool) {
+            GenePoolInfo info = new GenePoolInfo();
+            info.genePoolClass = genePool;
+            info.displayName = name;
+            info.description = description;
+            info.taxanomicName = null;
+
+            genePools.put(genePool.getSimpleName(), info);
         }
         public String[] getGenePools() {
             String[] result = new String[genePools.size()];
             genePools.keySet().toArray(result);
             return result;
         }
-    }
-    public static class LifeCycleRegister
-    {
-        private Map<String, Class<? extends LifeCycle>> lifeCycles = new HashMap<>();
-        public int count() {
-            return lifeCycles.size();
-        }
-        public void registerLifeCycle(String name, Class<? extends LifeCycle> lifeCycle) {
-            lifeCycles.put(name, lifeCycle);
-        }
-        public LifeCycle getLifeCycle(String name, Crobe crobe) {
-            LifeCycle result = null;
-
-            Class<? extends LifeCycle> _class = lifeCycles.get(name);
-            if(_class != null) {
-                try {
-                    result = _class.newInstance();
-                    result.crobe(crobe);
-                }//end try
-                catch(IllegalAccessException iae) {
-
-                }//end catch iae
-                catch(InstantiationException ie) {
-
-                }//end catch ie
-            }//end if
-
-            return result;
-        }
-        public String[] getLifeCycles() {
-            String[] result = new String[lifeCycles.size()];
-            lifeCycles.keySet().toArray(result);
-            return result;
+        public GenePoolInfo getInfo(String name) {
+            return genePools.get(name);
         }
     }
-    public static class MetabolismRegister
+    public static class GenePoolClassRegister<T extends GenePool>
     {
-        private Map<String, Class<? extends Metabolism>> metabolisms = new HashMap<>();
+        private Map<String, GenePoolInfo> pools = new HashMap<>();
         public int count() {
-            return metabolisms.size();
+            return pools.size();
         }
-        public void registerMetabolism(String name, Class<? extends Metabolism> metabolism) {
-            metabolisms.put(name, metabolism);
-        }
-        public Metabolism getMetabolism(String name, Crobe crobe) {
-            Metabolism result = null;
+        public void registerGenePool(Class<? extends T> genePool) {
+            try {
+                T pool = genePool.newInstance();
+                GenePoolInfo info = new GenePoolInfo();
 
-            Class<? extends Metabolism> _class = metabolisms.get(name);
-            if(_class != null) {
+                info.genePoolClass = genePool;
+                info.displayName = pool.displayName();
+                info.description = pool.description();
+                info.taxanomicName = pool.getNamePart();
+
+                pools.put(genePool.getSimpleName(), info);
+            }//end try
+            catch (IllegalAccessException|InstantiationException ex) {
+                System.out.println(ex.getMessage());
+            }//end catch
+        }
+        public String[] getGenePools() {
+            String[] result = new String[pools.size()];
+            pools.keySet().toArray(result);
+            return result;
+        }
+        public GenePoolInfo getInfo(String name) {
+            return pools.get(name);
+        }
+        public T createGenePool(String name, Crobe crobe) {
+            T result = null;
+            GenePoolInfo info = pools.get(name);
+            if(info != null) {
                 try {
-                    result = _class.newInstance();
+                    result = (T)info.genePoolClass.newInstance();
                     result.crobe(crobe);
                 }//end try
-                catch(IllegalAccessException iae) {
-
-                }//end catch iae
-                catch(InstantiationException ie) {
-
-                }//end catch ie
+                catch (IllegalAccessException|InstantiationException ex) {
+                    System.out.println(ex.getMessage());
+                }//end catch ex
             }//end if
 
-            return result;
-        }
-        public String[] getMetabolisms() {
-            String[] result = new String[metabolisms.size()];
-            metabolisms.keySet().toArray(result);
-            return result;
-        }
-    }
-    public static class MotilityRegister
-    {
-        private Map<String, Class<? extends Motility>> motilities = new HashMap<>();
-        public int count() {
-            return motilities.size();
-        }
-        public void registerMotility(String name, Class<? extends Motility> motility) {
-            motilities.put(name, motility);
-        }
-        public Motility getMotility(String name, Crobe crobe) {
-            Motility result = null;
-
-            Class<? extends Motility> _class = motilities.get(name);
-            if(_class != null) {
-                try {
-                    result = _class.newInstance();
-                    result.crobe(crobe);
-                }//end try
-                catch(IllegalAccessException iae) {
-
-                }//end catch iae
-                catch(InstantiationException ie) {
-
-                }//end catch ie
-            }//end if
-
-            return result;
-        }
-        public String[] getMotilities() {
-            String[] result = new String[motilities.size()];
-            motilities.keySet().toArray(result);
-            return result;
-        }
-    }
-    public static class RendererRegister
-    {
-        private Map<String, Class<? extends Renderer>> renderers = new HashMap<>();
-        public int count() {
-            return renderers.size();
-        }
-        public void registerRenderer(String name, Class<? extends Renderer> renderer) {
-            renderers.put(name, renderer);
-        }
-        public Renderer getRenderer(String name, Crobe crobe) {
-            Renderer result = null;
-
-            Class<? extends Renderer> _class = renderers.get(name);
-            if(_class != null) {
-                try {
-                    result = _class.newInstance();
-                    result.crobe(crobe);
-                }//end try
-                catch(IllegalAccessException iae) {
-
-                }//end catch iae
-                catch(InstantiationException ie) {
-
-                }//end catch ie
-            }//end if
-
-            return result;
-        }
-        public String[] getRenderers() {
-            String[] result = new String[renderers.size()];
-            renderers.keySet().toArray(result);
             return result;
         }
     }

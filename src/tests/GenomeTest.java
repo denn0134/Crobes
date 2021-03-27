@@ -1,5 +1,6 @@
 package tests;
 
+import crobes.genetics.genePools.*;
 import crobes.genetics.genomics.Genome;
 import crobes.genetics.genomics.Genomics;
 import crobes.genetics.gui.Sequencer;
@@ -17,24 +18,58 @@ public class GenomeTest extends Application
     public static void main(String[] args) {
         Genomics.initializeGenomics();
 
+        System.out.println("GenePool Types");
         for(int i = 0; i < Genomics.genePools.count(); i++) {
-            System.out.println(Genomics.genePools.getGenePools()[i]);
+            String gps = Genomics.genePools.getGenePools()[i];
+            Genomics.GenePoolInfo info = Genomics.genePools.getInfo(gps);
+            System.out.println(gps);
+            System.out.println(info.displayName);
+            System.out.println(info.description);
+            System.out.println();
         }//end for i
 
+        System.out.println(Genomics.genePools.getInfo(LifeCycle.class.getSimpleName()).displayName);
         for(int i = 0; i < Genomics.lifeCycles.count(); i++) {
-            System.out.println(Genomics.lifeCycles.getLifeCycles()[i]);
+            String lcs = Genomics.lifeCycles.getGenePools()[i];
+            Genomics.GenePoolInfo info = Genomics.lifeCycles.getInfo(lcs);
+            System.out.println(lcs);
+            System.out.println(info.displayName);
+            System.out.println(info.description);
+            System.out.println(info.taxanomicName);
+            System.out.println();
         }//end for i
 
+        System.out.println(Genomics.genePools.getInfo(Metabolism.class.getSimpleName()).displayName);
         for(int i = 0; i < Genomics.metabolisms.count(); i++) {
-            System.out.println(Genomics.metabolisms.getMetabolisms()[i]);
+            String mbs = Genomics.metabolisms.getGenePools()[i];
+            Genomics.GenePoolInfo info = Genomics.metabolisms.getInfo(mbs);
+            System.out.println(mbs);
+            System.out.println(info.displayName);
+            System.out.println(info.description);
+            System.out.println(info.taxanomicName);
+            System.out.println();
         }//end for i
 
+        System.out.println(Genomics.genePools.getInfo(Motility.class.getSimpleName()).displayName);
         for(int i = 0; i < Genomics.motilities.count(); i++) {
-            System.out.println(Genomics.motilities.getMotilities()[i]);
+            String mts = Genomics.motilities.getGenePools()[i];
+            Genomics.GenePoolInfo info = Genomics.motilities.getInfo(mts);
+            System.out.println(mts);
+            System.out.println(info.displayName);
+            System.out.println(info.description);
+            System.out.println(info.taxanomicName);
+            System.out.println();
         }//end for i
 
+        System.out.println(Genomics.genePools.getInfo(Renderer.class.getSimpleName()).displayName);
         for(int i = 0; i < Genomics.renderers.count(); i++) {
-            System.out.println(Genomics.renderers.getRenderers()[i]);
+            String rds = Genomics.renderers.getGenePools()[i];
+            Genomics.GenePoolInfo info = Genomics.renderers.getInfo(rds);
+            System.out.println(rds);
+            System.out.println(info.displayName);
+            System.out.println(info.description);
+            System.out.println(info.taxanomicName);
+            System.out.println();
         }//end for i
 
         launch(args);

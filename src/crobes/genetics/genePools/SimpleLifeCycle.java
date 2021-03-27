@@ -10,8 +10,18 @@ import java.util.Arrays;
 public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
 {
     static {
-        Genomics.lifeCycles.registerLifeCycle("SimpleLifeCycle", SimpleLifeCycle.class);
+        Genomics.lifeCycles.registerGenePool(SimpleLifeCycle.class);
     }//end static
+
+    @Override
+    public String displayName() {
+        return "Simple Budding Cycle";
+    }
+
+    @Override
+    public String getNamePart() {
+        return "simplys";
+    }
 
     @Override
     public String description() {
@@ -32,6 +42,7 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
     private int reproMinEnergy;
     private int reproMinHealth;
 
+    public SimpleLifeCycle() {}
     public SimpleLifeCycle(Crobe crobe) {
         super(crobe);
     }
@@ -43,11 +54,6 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
         _span = span;
         _spanRange = spanRange;
         _maturity = maturity;
-    }
-
-    @Override
-    public String getNamePart() {
-        return "simplys";
     }
 
     private ScalarGeneInt _span;

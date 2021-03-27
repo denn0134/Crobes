@@ -8,12 +8,25 @@ import java.util.ArrayList;
 public interface IGenePool
 {
     /***
+     * Display name for use in configuration user
+     * interface forms.
+     * @return Returns the display name.
+     */
+    String displayName();
+
+    /***
      * Gets the gene pools name part for use
      * in the Taxanomic name.
      * @return Returns the taxa name part for this
      * gene pool.
      */
     String getNamePart();
+
+    /***
+     * Description of the gene pool.
+     * @return Returns the gene pool description.
+     */
+    String description();
 
     /***
      * Builds a chile gene pool based on parentage

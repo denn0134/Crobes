@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 public abstract class GenePool implements IGenePool
 {
-    public abstract String description();
-
     protected float getFloatRange(float low, float high) {
         //generates a random float from low to high
         //inclusive to a precision of 1/100.
@@ -28,14 +26,17 @@ public abstract class GenePool implements IGenePool
         this._crobe = crobe;
     }
 
+    public GenePool() {}
     public GenePool(Crobe crobe) {
         _crobe = crobe;
     }
 
     protected abstract void initializeGeneNames();
-    public abstract void initializeRandomDefault();
 
+    public abstract String displayName();
     public abstract String getNamePart();
+    public abstract String description();
+    public abstract void initializeRandomDefault();
     public abstract GenePool recombinateGenePool(Crobe crobe, ArrayList<GenePool> genePools);
     public abstract void mutate(int stressLevel);
 }

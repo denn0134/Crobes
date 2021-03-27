@@ -10,8 +10,18 @@ import java.util.ArrayList;
 public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
 {
     static {
-        Genomics.renderers.registerRenderer("SimpleVisageRenderer", SimpleVisageRenderer.class);
+        Genomics.renderers.registerGenePool(SimpleVisageRenderer.class);
     }//end static
+
+    @Override
+    public String displayName() {
+        return "Basic Render";
+    }
+
+    @Override
+    public String getNamePart() {
+        return "homlys";
+    }
 
     @Override
     public String description() {
@@ -20,11 +30,7 @@ public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
 
     private static final String TS_FMT = "    skin: %1$s face: %2$s body: %3$s";
 
-    @Override
-    public String getNamePart() {
-        return "homlys";
-    }
-
+    public SimpleVisageRenderer() {}
     public SimpleVisageRenderer(Crobe crobe) {
         super(crobe);
     }

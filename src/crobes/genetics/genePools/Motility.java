@@ -5,7 +5,10 @@ import crobes.core.CrobeConstants;
 
 public abstract class Motility extends GenePool implements IMotilityGenePool
 {
+    public static final String MOTILITY_DISPLAY = "Motility";
+    public static final String MOTILITY_DESCRIPTION = "Defines how and when the Crobe moves.";
 
+    public Motility() {}
     public Motility(Crobe crobe) {
         super(crobe);
     }
