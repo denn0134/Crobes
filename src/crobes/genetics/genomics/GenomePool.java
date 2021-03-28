@@ -60,9 +60,13 @@ public abstract class GenomePool
     String toJson() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("{\"genePool\": ");
+        sb.append("{");
+        sb.append(Genome.quotedString("genePool"));
+        sb.append(": ");
         sb.append(Genome.quotedString(genePool));
-        sb.append(", \"genes\": [");
+        sb.append(", ");
+        sb.append(Genome.quotedString("genes"));
+        sb.append(": [");
 
         for(int i = 0; i < _genes.size(); i++) {
             GenomeGene gene = _genes.get(i);
