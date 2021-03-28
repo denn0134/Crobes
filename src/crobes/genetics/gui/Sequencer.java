@@ -1,17 +1,29 @@
 package crobes.genetics.gui;
 
 import crobes.core.Crobe;
+import crobes.genetics.genePools.LifeCycle;
+import crobes.genetics.genePools.Metabolism;
+import crobes.genetics.genePools.Motility;
+import crobes.genetics.genePools.Renderer;
 import crobes.genetics.genomics.Genome;
+import crobes.genetics.genomics.Genomics;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Sequencer extends Stage
 {
@@ -93,10 +105,28 @@ public class Sequencer extends Stage
         //left pane - list of genePool pickers for each
         //genePool interface
         leftPane = new VBox();
+        leftPane.setPrefWidth(200);
 
         Label lblGenePools = new Label("Gene Pools");
 
-        leftPane.getChildren().addAll(lblGenePools);
+        ObservableList<GenePoolPicker> gpl = FXCollections.observableArrayList();
+
+        gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(LifeCycle.class.getSimpleName()).displayName,
+                Genomics.lifeCycles.getGenePools(),
+                _genome.lifeCycle()));
+        gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(Metabolism.class.getSimpleName()).displayName,
+                Genomics.metabolisms.getGenePools(),
+                _genome.metabolism()));
+        gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(Motility.class.getSimpleName()).displayName,
+                Genomics.motilities.getGenePools(),
+                _genome.metabolism()));
+        gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(Renderer.class.getSimpleName()).displayName,
+                Genomics.renderers.getGenePools(),
+                _genome.renderer()));
+
+        ListView genePoolList = new ListView(gpl);
+
+        leftPane.getChildren().addAll(lblGenePools, genePoolList);
 
         rightPane = new BorderPane();
 
