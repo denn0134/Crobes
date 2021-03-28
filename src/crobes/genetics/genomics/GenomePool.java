@@ -49,6 +49,14 @@ public abstract class GenomePool
         _genes = new ArrayList<GenomeGene>();
     }
 
+    public String getTaxa() {
+        Genomics.GenePoolInfo gpi = Genomics.getGenePoolInfo(this.getClass().getSimpleName());
+        if(gpi != null)
+            return gpi.taxanomicName;
+        else
+            return "";
+    }
+
     String toJson() {
         StringBuilder sb = new StringBuilder();
 

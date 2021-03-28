@@ -123,6 +123,26 @@ public class Genomics
         }
     }
 
+    /***
+     * Searches all of the gene pool registers for the
+     * specified GenePoolInfo.
+     * @param name The name of the GenePool to search for.
+     * @return Returns the GenePoolInfo if it is found.
+     */
+    public static GenePoolInfo getGenePoolInfo(String name) {
+        GenePoolInfo result = null;
+
+        result = lifeCycles.getInfo(name);
+        if(name == null)
+            result = metabolisms.getInfo(name);
+        if(name == null)
+            result = motilities.getInfo(name);
+        if(name == null)
+            result = renderers.getInfo(name);
+
+        return result;
+    }
+
     //class registries
     public static final GenePoolRegister genePools = new GenePoolRegister();
     public static final GenePoolClassRegister<LifeCycle> lifeCycles = new GenePoolClassRegister<LifeCycle>();
@@ -193,7 +213,10 @@ public class Genomics
             return result;
         }
         public GenePoolInfo getInfo(String name) {
-            return pools.get(name);
+            if(pools.keySet().contains(name))
+                return pools.get(name);
+            else
+                return null;
         }
         public T createGenePool(String name, Crobe crobe) {
             T result = null;
