@@ -105,7 +105,6 @@ public class Sequencer extends Stage
         //left pane - list of genePool pickers for each
         //genePool interface
         leftPane = new VBox();
-        leftPane.setPrefWidth(200);
 
         Label lblGenePools = new Label("Gene Pools");
 

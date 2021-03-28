@@ -25,6 +25,7 @@ public class GenePoolPicker extends VBox
 
         lblType = new Label(poolType);
         cmbClass = new ComboBox<String>(list);
+        cmbClass.setMaxWidth(Double.MAX_VALUE);
 
         getChildren().addAll(lblType, cmbClass);
     }
