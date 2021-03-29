@@ -16,6 +16,10 @@ public class GenePoolPicker extends VBox
 {
     private Sequencer _sequencer;
     private GenomePool _genomePool;
+    public GenomePool genomePool() {
+        return _genomePool;
+    }
+
     private ListView<GenePoolPicker> _listView = null;
     public void setListView(ListView<GenePoolPicker> list) {
         _listView = list;

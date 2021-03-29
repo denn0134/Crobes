@@ -1,12 +1,12 @@
 package crobes.genetics.gui;
 
 import crobes.core.Crobe;
-import crobes.genetics.genePools.LifeCycle;
-import crobes.genetics.genePools.Metabolism;
-import crobes.genetics.genePools.Motility;
-import crobes.genetics.genePools.Renderer;
+import crobes.genetics.genePools.*;
 import crobes.genetics.genomics.Genome;
+import crobes.genetics.genomics.GenomePool;
 import crobes.genetics.genomics.Genomics;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -85,9 +85,11 @@ public class Sequencer extends Stage
     private BorderPane rightPane;
     private FlowPane bottomPane;
     private TextField txtTaxa;
+    private GenePoolEditor poolEditor;
 
     public Sequencer(Genome genome) {
         _genome = genome;
+        _cancelled = true;
 
         root = new BorderPane();
 
@@ -134,12 +136,24 @@ public class Sequencer extends Stage
             gpp.setListView(genePoolList);
         }//end for each
 
+        genePoolList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GenePoolPicker>() {
+            @Override
+            public void changed(ObservableValue<? extends GenePoolPicker> observable, GenePoolPicker oldValue, GenePoolPicker newValue) {
+                poolEditor.setGenePool(newValue.genomePool());
+            }
+        });
+
         updateTaxonomy();
 
         leftPane.getChildren().addAll(lblGenePools, genePoolList);
 
+        //right pane - gene pool editor
         rightPane = new BorderPane();
 
+        poolEditor = new GenePoolEditor();
+        rightPane.setCenter(poolEditor);
+
+        //bottom pane - OK and cancel buttons
         bottomPane = new FlowPane();
         bottomPane.setAlignment(Pos.CENTER_RIGHT);
         Button btnOk = new Button("OK");
