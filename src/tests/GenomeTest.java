@@ -93,7 +93,9 @@ public class GenomeTest extends Application
                 Genome genome = new Genome();
 
                 genome.lifeCycle().genePool = SimpleLifeCycle.class.getSimpleName();
+                genome.metabolism().genePool = BasePhotoMetabolism.class.getSimpleName();
                 genome.motility().genePool = ImmobileMotilty.class.getSimpleName();
+                genome.renderer().genePool = SimpleVisageRenderer.class.getSimpleName();
 
                 genome = Sequencer.sequenceGenome(genome, true, primaryStage);
 
