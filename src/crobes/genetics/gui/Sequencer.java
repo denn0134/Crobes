@@ -84,6 +84,7 @@ public class Sequencer extends Stage
     private VBox leftPane;
     private BorderPane rightPane;
     private FlowPane bottomPane;
+    private TextField txtTaxa;
 
     public Sequencer(Genome genome) {
         _genome = genome;
@@ -96,7 +97,7 @@ public class Sequencer extends Stage
 
         Label lblTaxa = new Label("Taxonomy");
 
-        TextField txtTaxa = new TextField();
+        txtTaxa = new TextField();
         txtTaxa.setEditable(false);
         HBox.setHgrow(txtTaxa, Priority.ALWAYS);
 
@@ -112,18 +113,28 @@ public class Sequencer extends Stage
 
         gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(LifeCycle.class.getSimpleName()).displayName,
                 Genomics.lifeCycles.getGenePools(),
+                this,
                 _genome.lifeCycle()));
         gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(Metabolism.class.getSimpleName()).displayName,
                 Genomics.metabolisms.getGenePools(),
+                this,
                 _genome.metabolism()));
         gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(Motility.class.getSimpleName()).displayName,
                 Genomics.motilities.getGenePools(),
-                _genome.metabolism()));
+                this,
+                _genome.motility()));
         gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(Renderer.class.getSimpleName()).displayName,
                 Genomics.renderers.getGenePools(),
+                this,
                 _genome.renderer()));
 
         ListView genePoolList = new ListView(gpl);
+
+        for(GenePoolPicker gpp: gpl) {
+            gpp.setListView(genePoolList);
+        }//end for each
+
+        updateTaxonomy();
 
         leftPane.getChildren().addAll(lblGenePools, genePoolList);
 
@@ -157,5 +168,9 @@ public class Sequencer extends Stage
 
         Scene scene = new Scene(root, 800, 400);
         setScene(scene);
+    }
+
+    public void updateTaxonomy() {
+        txtTaxa.setText(_genome.getTaxonomy());
     }
 }

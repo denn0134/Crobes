@@ -50,7 +50,7 @@ public abstract class GenomePool
     }
 
     public String getTaxa() {
-        Genomics.GenePoolInfo gpi = Genomics.getGenePoolInfo(this.getClass().getSimpleName());
+        Genomics.GenePoolInfo gpi = Genomics.getGenePoolInfo(genePool);
         if(gpi != null)
             return gpi.taxanomicName;
         else

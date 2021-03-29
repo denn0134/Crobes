@@ -36,11 +36,11 @@ public class Genome
     }
 
     public String getTaxonomy() {
-        return String.format("%0$s %1$s %2$s %3$s",
-                lifeCycle().getTaxa(),
-                metabolism().getTaxa(),
-                motility().getTaxa(),
-                renderer().getTaxa());
+        return String.format("%1$s %2$s %3$s %4$s",
+                _lifeCycle.getTaxa(),
+                _metabolism.getTaxa(),
+                _motility.getTaxa(),
+                _renderer.getTaxa());
     }
 
     @Override

@@ -133,11 +133,11 @@ public class Genomics
         GenePoolInfo result = null;
 
         result = lifeCycles.getInfo(name);
-        if(name == null)
+        if(result == null)
             result = metabolisms.getInfo(name);
-        if(name == null)
+        if(result == null)
             result = motilities.getInfo(name);
-        if(name == null)
+        if(result == null)
             result = renderers.getInfo(name);
 
         return result;

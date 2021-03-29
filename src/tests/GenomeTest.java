@@ -92,6 +92,9 @@ public class GenomeTest extends Application
             public void handle(ActionEvent event) {
                 Genome genome = new Genome();
 
+                genome.lifeCycle().genePool = SimpleLifeCycle.class.getSimpleName();
+                genome.motility().genePool = ImmobileMotilty.class.getSimpleName();
+
                 genome = Sequencer.sequenceGenome(genome, true, primaryStage);
 
                 if(genome != null)
