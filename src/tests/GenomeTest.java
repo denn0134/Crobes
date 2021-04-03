@@ -1,5 +1,6 @@
 package tests;
 
+import crobes.core.CrobeEnums;
 import crobes.genetics.genePools.*;
 import crobes.genetics.genomics.Genome;
 import crobes.genetics.genomics.Genomics;
@@ -71,6 +72,24 @@ public class GenomeTest extends Application
             System.out.println(info.taxanomicName);
             System.out.println();
         }//end for i
+
+        System.out.println("Genes");
+        for(int i = 0; i < Genomics.genes.count(); i++) {
+            String gns = Genomics.genes.getGenes()[i];
+            Genomics.GeneInfo info = Genomics.genes.getInfo(gns);
+
+            if(info != null) {
+                System.out.println(gns);
+                for(CrobeEnums.MutationType mt: info.allowedMutations) {
+                    System.out.println(mt.name());
+                }//end for each
+                System.out.println(info.genomeValueClass.getSimpleName());
+            }//end if
+            else {
+                System.out.println(gns + " was not registered");
+                System.out.println();
+            }//end else
+        }///end for i
 
         launch(args);
     }

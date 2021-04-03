@@ -1,11 +1,18 @@
 package crobes.genetics.genes;
 
 import crobes.core.*;
+import crobes.genetics.genomics.GenomeFlt;
+import crobes.genetics.genomics.GenomeValue;
+import crobes.genetics.genomics.Genomics;
 
 import java.util.ArrayList;
 
 public class ScalarGeneFlt extends Gene
 {
+    static {
+        Genomics.genes.registerGene(ScalarGeneFlt.class);
+    }//end static
+
     private float[] _genotype;
     public float[] genoType() {
         return _genotype;
@@ -60,6 +67,9 @@ public class ScalarGeneFlt extends Gene
         return result;
     }
 
+    public ScalarGeneFlt() {
+        super();
+    }
     public ScalarGeneFlt(float[] genotype,
                          float mutationRange) {
         _genotype = genotype;
@@ -113,5 +123,14 @@ public class ScalarGeneFlt extends Gene
             sb.append(", " + _genotype[i]);
         }//end for i
         return phenotype() + "[" + sb.toString() + "]";
+    }
+
+    @Override
+    public CrobeEnums.MutationType[] allowedMutations() {
+        return new CrobeEnums.MutationType[] {CrobeEnums.MutationType.SCALAR_DISCREET};
+    }
+    @Override
+    public Class<? extends GenomeValue> geneValueClass() {
+        return GenomeFlt.class;
     }
 }

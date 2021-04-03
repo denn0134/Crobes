@@ -1,25 +1,34 @@
 package crobes.genetics.gui;
 
 
+import crobes.genetics.genomics.GenomeGene;
 import crobes.genetics.genomics.GenomePool;
 import crobes.genetics.genomics.Genomics;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 
 
 public class GenePoolEditor extends VBox
 {
     private GenomePool _genomePool;
 
-    protected Label lblName;
-    protected TextArea txtDescription;
-    protected Label lblGene;
-    protected Label lblMutationType;
-    protected Label lblDomainRange;
-    protected Label lblGenoType;
+    Label lblName;
+    TextArea txtDescription;
+    Label lblGene;
+    Label lblRandom;
+    Label lblMutationType;
+    Label lblDomainRange;
+    Label lblGenoType;
+    ObservableList<GeneEditor> geneList;
+    ListView<GeneEditor> lstGenes;
 
     public GenePoolEditor() {
         //set up the genepool controls
@@ -43,6 +52,11 @@ public class GenePoolEditor extends VBox
         lblGene.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(lblGene, Priority.ALWAYS);
 
+        lblRandom = new Label("Rand");
+        lblRandom.setPrefWidth(Sequencer.GENE_RAND_WIDTH);
+        lblRandom.setMaxWidth(Sequencer.GENE_RAND_WIDTH);
+        HBox.setHgrow(lblRandom, Priority.NEVER);
+
         lblMutationType = new Label("Mutation Type");
         lblMutationType.setPrefWidth(Sequencer.GENE_MT_WIDTH);
         lblMutationType.setMaxWidth(Sequencer.GENE_MT_WIDTH);
@@ -58,11 +72,15 @@ public class GenePoolEditor extends VBox
         lblGenoType.setMaxWidth(Sequencer.GENE_GENOTYPE_WIDTH);
         HBox.setHgrow(lblGenoType, Priority.NEVER);
 
-        hbxBanner.getChildren().addAll(lblGene,
+        hbxBanner.getChildren().addAll(lblGene, lblRandom,
                 lblMutationType, lblDomainRange, lblGenoType);
 
+        //set up the gene list
+        geneList = FXCollections.observableArrayList();
+        lstGenes = new ListView<>(geneList);
+
         //add the components to the editor
-        getChildren().addAll(lblName, txtDescription, hbxBanner);
+        getChildren().addAll(lblName, txtDescription, hbxBanner, lstGenes);
     }
 
     public void setGenePool(GenomePool pool) {
@@ -72,10 +90,25 @@ public class GenePoolEditor extends VBox
         if((_genomePool == null) || (info == null)) {
             lblName.setText("");
             txtDescription.setText("");
+
+            setGenes(null);
         }//end if
         else {
             lblName.setText(info.displayName);
             txtDescription.setText(info.description);
+
+            setGenes(_genomePool.genes());
         }//end else
+    }
+
+    private void setGenes(ArrayList<GenomeGene> genes) {
+        geneList.clear();
+
+        if(genes != null) {
+            for(GenomeGene gene: genes) {
+                geneList.add(new GeneEditor(gene));
+                lstGenes.refresh();
+            }//end for each
+        }//end if
     }
 }

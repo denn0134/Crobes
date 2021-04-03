@@ -1,5 +1,7 @@
 package crobes.genetics.genomics;
 
+import crobes.genetics.gui.GeneEditor;
+
 /***
  * This is the model of a single gene within a Genome.
  */

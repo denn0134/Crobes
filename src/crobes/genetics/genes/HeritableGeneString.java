@@ -1,11 +1,18 @@
 package crobes.genetics.genes;
 
 import crobes.core.*;
+import crobes.genetics.genomics.GenomeString;
+import crobes.genetics.genomics.GenomeValue;
+import crobes.genetics.genomics.Genomics;
 
 import java.util.ArrayList;
 
 public class HeritableGeneString extends HeritableGene
 {
+    static {
+        Genomics.genes.registerGene(HeritableGeneString.class);
+    }//end static
+
     private String[] _genotype;
     public String[] genoType() {
         return _genotype;
@@ -50,6 +57,9 @@ public class HeritableGeneString extends HeritableGene
         return _dominance;
     }
 
+    public HeritableGeneString() {
+        super();
+    }
     public HeritableGeneString(String[] genotype,
                                String[] dominance,
                                CrobeEnums.MutationType mutationType) {
@@ -130,5 +140,10 @@ public class HeritableGeneString extends HeritableGene
         else {
             return "HeritableGeneString";
         }
+    }
+
+    @Override
+    public Class<? extends GenomeValue> geneValueClass() {
+        return GenomeString.class;
     }
 }

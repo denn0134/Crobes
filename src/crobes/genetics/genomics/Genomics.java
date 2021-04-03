@@ -2,6 +2,7 @@ package crobes.genetics.genomics;
 
 import crobes.core.Crobe;
 import crobes.core.CrobeConstants;
+import crobes.core.CrobeEnums;
 import crobes.genetics.genePools.*;
 import crobes.genetics.genes.*;
 import org.reflections.Reflections;
@@ -143,13 +144,35 @@ public class Genomics
         return result;
     }
 
+    /***
+     * Finds the gene information for a specified GenomeGene.
+     * @param genomeGeneType The type name for the GenomeGene.
+     * @return Returns the gene information if it is found; if
+     *         it is not found returns null.
+     */
+    public static GeneInfo getGeneInfo(String genomeGeneType) {
+        //we will brute force this for now
+        if(genomeGeneType.equalsIgnoreCase(GenomeInt.class.getSimpleName()))
+            return genes.getInfo(ScalarGeneInt.class.getSimpleName());
+        else if(genomeGeneType.equalsIgnoreCase(GenomeFlt.class.getSimpleName()))
+            return genes.getInfo(ScalarGeneFlt.class.getSimpleName());
+        else if(genomeGeneType.equalsIgnoreCase(GenomeBool.class.getSimpleName()))
+            return genes.getInfo(HeritableGeneBool.class.getSimpleName());
+        else if(genomeGeneType.equalsIgnoreCase(GenomeEnum.class.getSimpleName()))
+            return genes.getInfo(HeritableGeneEnum.class.getSimpleName());
+        else if(genomeGeneType.equalsIgnoreCase(GenomeString.class.getSimpleName()))
+            return genes.getInfo(HeritableGeneString.class.getSimpleName());
+        else
+            return null;
+    }
+
     //class registries
     public static final GenePoolRegister genePools = new GenePoolRegister();
     public static final GenePoolClassRegister<LifeCycle> lifeCycles = new GenePoolClassRegister<LifeCycle>();
     public static final GenePoolClassRegister<Metabolism> metabolisms = new GenePoolClassRegister<>();
     public static final GenePoolClassRegister<Motility> motilities = new GenePoolClassRegister<>();
     public static final GenePoolClassRegister<Renderer> renderers = new GenePoolClassRegister<>();
-
+    public static final GeneRegister genes = new GeneRegister();
 
     //class register static classes
     public static class GenePoolInfo
@@ -230,6 +253,50 @@ public class Genomics
                     System.out.println(ex.getMessage());
                 }//end catch ex
             }//end if
+
+            return result;
+        }
+    }
+    public static class GeneInfo
+    {
+        public Class<? extends Gene> geneClass;
+        public CrobeEnums.MutationType[] allowedMutations;
+        public Class<? extends GenomeValue> genomeValueClass;
+    }
+    public static class GeneRegister
+    {
+        private Map<String, GeneInfo> _genes = new HashMap<>();
+        public int count() {
+            return _genes.size();
+        }
+        public void registerGene(Class<? extends Gene> geneClass) {
+            try {
+                Gene g = geneClass.newInstance();
+                GeneInfo info = new GeneInfo();
+
+                info.geneClass = geneClass;
+                info.allowedMutations = g.allowedMutations();
+                info.genomeValueClass = g.geneValueClass();
+
+                _genes.put(geneClass.getSimpleName(), info);
+            }//end try
+            catch (IllegalAccessException|InstantiationException ex) {
+                System.out.println(ex.getMessage());
+            }//end catch ex
+        }
+        public String[] getGenes() {
+            String[] result = new String[_genes.size()];
+            result = _genes.keySet().toArray(result);
+            return result;
+        }
+        public GeneInfo getInfo(String name) {
+            if(_genes.containsKey(name))
+                return _genes.get(name);
+            else
+                return null;
+        }
+        public Gene createGene(String name) {
+            Gene result = null;
 
             return result;
         }

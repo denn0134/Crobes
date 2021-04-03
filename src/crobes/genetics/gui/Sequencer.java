@@ -34,6 +34,7 @@ public class Sequencer extends Stage
 
     public static final double GENE_PICKER_WIDTH = 775;
     public static final double GENE_NAME_WIDTH = 150;
+    public static final double GENE_RAND_WIDTH = 50;
     public static final double GENE_MT_WIDTH = 150;
     public static final double GENE_DOM_WIDTH = 75;
     public static final double GENE_GENOTYPE_WIDTH = 400;

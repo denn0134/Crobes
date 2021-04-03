@@ -1,11 +1,18 @@
 package crobes.genetics.genes;
 
 import crobes.core.*;
+import crobes.genetics.genomics.GenomeBool;
+import crobes.genetics.genomics.GenomeValue;
+import crobes.genetics.genomics.Genomics;
 
 import java.util.ArrayList;
 
 public class HeritableGeneBool extends HeritableGene
 {
+    static {
+        Genomics.genes.registerGene(HeritableGeneBool.class);
+    }//end static
+
     private boolean[] _genotype;
     public boolean[] genoType() {
         return _genotype;
@@ -44,6 +51,9 @@ public class HeritableGeneBool extends HeritableGene
         return _dominance;
     }
 
+    public HeritableGeneBool() {
+        super();
+    }
     public HeritableGeneBool(boolean[] genotype,
                              boolean[] hierarchy,
                              CrobeEnums.MutationType mutationType) {
@@ -114,5 +124,10 @@ public class HeritableGeneBool extends HeritableGene
             sb.append(", " + getBoolStr(_genotype[i]));
         }//end for i
         return phenotype() + "[" + sb.toString() + "]";
+    }
+
+    @Override
+    public Class<? extends GenomeValue> geneValueClass() {
+        return GenomeBool.class;
     }
 }

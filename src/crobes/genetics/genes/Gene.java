@@ -1,11 +1,16 @@
 package crobes.genetics.genes;
 
 import crobes.core.*;
+import crobes.genetics.genomics.GenomeValue;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Gene
 {
+    public abstract CrobeEnums.MutationType[] allowedMutations();
+    public abstract Class<? extends GenomeValue> geneValueClass();
+
     protected String _name;
     public String name() {
         return _name;
@@ -15,6 +20,9 @@ public abstract class Gene
     }
 
     protected Random _rand = new Random();
+
+    public Gene() {}
+
     public abstract Gene recombinate(ArrayList<Gene> genes);
     public Gene combine(ArrayList<Gene> genes) throws IncompatibleGenomeException{
         if(canCombine(genes))

@@ -43,4 +43,9 @@ public abstract class HeritableGene extends Gene
 
         return result;
     }
+
+    @Override
+    public CrobeEnums.MutationType[] allowedMutations() {
+        return new CrobeEnums.MutationType[] {CrobeEnums.MutationType.RANDOM, CrobeEnums.MutationType.ADJACENT};
+    }
 }
