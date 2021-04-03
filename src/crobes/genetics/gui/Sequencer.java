@@ -32,12 +32,19 @@ public class Sequencer extends Stage
     public static final double GENEPOOL_DESC_HEIGHT = 20;
     public static final double GENEPOOL_GENES_HEIGHT = 50;
 
-    public static final double GENE_PICKER_WIDTH = 775;
+    public static final double GENE_PICKER_WIDTH = 300;
     public static final double GENE_NAME_WIDTH = 150;
     public static final double GENE_RAND_WIDTH = 50;
     public static final double GENE_MT_WIDTH = 150;
     public static final double GENE_DOM_WIDTH = 75;
     public static final double GENE_GENOTYPE_WIDTH = 400;
+    public static final double GENE_WIDTH_MODIFIER = 20;
+
+    private double getSequencerWidth() {
+        return GENE_PICKER_WIDTH + GENE_NAME_WIDTH +
+                GENE_RAND_WIDTH + GENE_MT_WIDTH +
+                GENE_DOM_WIDTH + GENE_GENOTYPE_WIDTH + 20;
+    }
 
     private Genome _genome;
     public Genome genome() {
@@ -109,6 +116,9 @@ public class Sequencer extends Stage
         //left pane - list of genePool pickers for each
         //genePool interface
         leftPane = new VBox();
+        leftPane.setMinWidth(GENE_PICKER_WIDTH);
+        leftPane.setPrefWidth(GENE_PICKER_WIDTH);
+        leftPane.setMaxWidth(GENE_PICKER_WIDTH);
 
         Label lblGenePools = new Label("Gene Pools");
 
@@ -178,11 +188,12 @@ public class Sequencer extends Stage
 
         root.setTop(topPane);
         root.setLeft(leftPane);
-        root.setRight(rightPane);
+        root.setCenter(rightPane);
         root.setBottom(bottomPane);
 
-        Scene scene = new Scene(root, 800, 400);
+        Scene scene = new Scene(root, getSequencerWidth(), 400);
         setScene(scene);
+        setMinWidth(scene.getWidth() + 2 * GENE_WIDTH_MODIFIER);
     }
 
     public void updateTaxonomy() {

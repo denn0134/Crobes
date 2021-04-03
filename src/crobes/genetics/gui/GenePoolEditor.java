@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -44,43 +45,62 @@ public class GenePoolEditor extends VBox
         //set up the gene editor title banner
         HBox hbxBanner = new HBox();
         hbxBanner.setPrefHeight(Sequencer.GENEPOOL_BASE_HEIGHT);
-        hbxBanner.setPrefWidth(Sequencer.GENE_PICKER_WIDTH);
+        //hbxBanner.setPrefWidth(Sequencer.GENE_PICKER_WIDTH);
         setVgrow(hbxBanner, Priority.NEVER);
 
         lblGene = new Label("Gene");
-        lblGene.setPrefWidth(Sequencer.GENE_NAME_WIDTH);
+        //subtract the width modifier to fix the alignment
+        lblGene.setMinWidth(Sequencer.GENE_NAME_WIDTH - Sequencer.GENE_WIDTH_MODIFIER);
+        lblGene.setPrefWidth(Sequencer.GENE_NAME_WIDTH - Sequencer.GENE_WIDTH_MODIFIER);
         lblGene.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(lblGene, Priority.ALWAYS);
 
         lblRandom = new Label("Rand");
+        lblRandom.setMinWidth(Sequencer.GENE_RAND_WIDTH);
         lblRandom.setPrefWidth(Sequencer.GENE_RAND_WIDTH);
         lblRandom.setMaxWidth(Sequencer.GENE_RAND_WIDTH);
         HBox.setHgrow(lblRandom, Priority.NEVER);
 
         lblMutationType = new Label("Mutation Type");
+        lblMutationType.setMinWidth(Sequencer.GENE_MT_WIDTH);
         lblMutationType.setPrefWidth(Sequencer.GENE_MT_WIDTH);
         lblMutationType.setMaxWidth(Sequencer.GENE_MT_WIDTH);
         HBox.setHgrow(lblMutationType, Priority.NEVER);
 
         lblDomainRange = new Label("Dom/Rng");
+        lblDomainRange.setMinWidth(Sequencer.GENE_DOM_WIDTH);
         lblDomainRange.setPrefWidth(Sequencer.GENE_DOM_WIDTH);
         lblDomainRange.setMaxWidth(Sequencer.GENE_DOM_WIDTH);
         HBox.setHgrow(lblMutationType, Priority.NEVER);
 
         lblGenoType = new Label("Genotype");
-        lblGenoType.setPrefWidth(Sequencer.GENE_GENOTYPE_WIDTH);
-        lblGenoType.setMaxWidth(Sequencer.GENE_GENOTYPE_WIDTH);
+        //add the width modifier to fix the alignment
+        lblGenoType.setMinWidth(Sequencer.GENE_GENOTYPE_WIDTH + Sequencer.GENE_WIDTH_MODIFIER);
+        lblGenoType.setPrefWidth(Sequencer.GENE_GENOTYPE_WIDTH + Sequencer.GENE_WIDTH_MODIFIER);
+        lblGenoType.setMaxWidth(Sequencer.GENE_GENOTYPE_WIDTH + Sequencer.GENE_WIDTH_MODIFIER);
         HBox.setHgrow(lblGenoType, Priority.NEVER);
 
-        hbxBanner.getChildren().addAll(lblGene, lblRandom,
-                lblMutationType, lblDomainRange, lblGenoType);
+        hbxBanner.getChildren().addAll(lblGene,
+                lblRandom, lblMutationType,
+                lblDomainRange, lblGenoType);
 
         //set up the gene list
+        double scWidth = Sequencer.GENE_NAME_WIDTH +
+                Sequencer.GENE_RAND_WIDTH +
+                Sequencer.GENE_DOM_WIDTH +
+                Sequencer.GENE_GENOTYPE_WIDTH;
+        ScrollPane sp = new ScrollPane();
+        sp.setFitToWidth(true);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         geneList = FXCollections.observableArrayList();
         lstGenes = new ListView<>(geneList);
+        lstGenes.setMinWidth(scWidth);
+        lstGenes.setPrefWidth(scWidth);
+        lstGenes.setMaxWidth(Double.MAX_VALUE);
+        sp.setContent(lstGenes);
 
         //add the components to the editor
-        getChildren().addAll(lblName, txtDescription, hbxBanner, lstGenes);
+        getChildren().addAll(lblName, txtDescription, hbxBanner, sp);
     }
 
     public void setGenePool(GenomePool pool) {
@@ -107,7 +127,6 @@ public class GenePoolEditor extends VBox
         if(genes != null) {
             for(GenomeGene gene: genes) {
                 geneList.add(new GeneEditor(gene));
-                lstGenes.refresh();
             }//end for each
         }//end if
     }
