@@ -2,6 +2,7 @@ package crobes.genetics.genes;
 
 import crobes.core.*;
 import crobes.genetics.genomics.GenomeValue;
+import crobes.genetics.gui.GeneEditor;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,6 +10,7 @@ import java.util.Random;
 public abstract class Gene
 {
     public abstract CrobeEnums.MutationType[] allowedMutations();
+    public abstract Class<? extends GeneEditor> geneEditorClass();
     public abstract Class<? extends GenomeValue> geneValueClass();
 
     protected String _name;

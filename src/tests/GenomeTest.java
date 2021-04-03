@@ -10,9 +10,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class GenomeTest extends Application
 {
@@ -83,6 +87,7 @@ public class GenomeTest extends Application
                 for(CrobeEnums.MutationType mt: info.allowedMutations) {
                     System.out.println(mt.name());
                 }//end for each
+                System.out.println(info.geneEditorClass.getSimpleName());
                 System.out.println(info.genomeValueClass.getSimpleName());
             }//end if
             else {
@@ -104,7 +109,20 @@ public class GenomeTest extends Application
         root.setCenter(pane);
 
         btnGo = new Button("GO");
-        pane.getChildren().add(btnGo);
+
+        Spinner<Integer> spnEdit = new Spinner<Integer>();
+        SpinnerValueFactory<Integer> svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999, 1, 1);
+        svf.setConverter(new IntegerStringConverter());
+        spnEdit.setEditable(true);
+        spnEdit.setValueFactory(svf);
+
+        Spinner<Double> spnDbl = new Spinner<Double>();
+        SpinnerValueFactory<Double> dvf = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999, 1, 1);
+        dvf.setConverter(new DoubleStringConverter());
+        spnDbl.setEditable(true);
+        spnDbl.setValueFactory(dvf);
+
+        pane.getChildren().addAll(btnGo, spnEdit, spnDbl);
 
         btnGo.setOnAction(new EventHandler<ActionEvent>() {
             @Override

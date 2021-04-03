@@ -5,6 +5,7 @@ import crobes.core.CrobeConstants;
 import crobes.core.CrobeEnums;
 import crobes.genetics.genePools.*;
 import crobes.genetics.genes.*;
+import crobes.genetics.gui.*;
 import org.reflections.Reflections;
 
 import java.util.Set;
@@ -166,6 +167,33 @@ public class Genomics
             return null;
     }
 
+    /***
+     * Creates a polymorphc GeneEditor for a given GenomeGene.
+     * @param gene GenomeGene to create the editor for.
+     * @return Returns the Editor for the gene; can return null
+     *         if the gene is invalid.
+     */
+    public static GeneEditor createGeneEditor(GenomeGene gene) {
+        GeneEditor result = null;
+
+        GeneInfo info = getGeneInfo(gene.geneType);
+        if(info != null) {
+            //we will brute force this for now
+            if(info.geneEditorClass == ScalarIntGeneEditor.class)
+                result = new ScalarIntGeneEditor(gene);
+            else if(info.geneEditorClass == ScalarFltGeneEditor.class)
+                result = new ScalarFltGeneEditor(gene);
+            else if(info.geneEditorClass == HeritableBoolGeneEditor.class)
+                result = new HeritableBoolGeneEditor(gene);
+            else if(info.geneEditorClass == HeritableEnumGeneEditor.class)
+                result = new HeritableEnumGeneEditor(gene);
+            else if(info.geneEditorClass == HeritableStringGeneEditor.class)
+                result = new HeritableStringGeneEditor(gene);
+        }//end if
+
+        return result;
+    }
+
     //class registries
     public static final GenePoolRegister genePools = new GenePoolRegister();
     public static final GenePoolClassRegister<LifeCycle> lifeCycles = new GenePoolClassRegister<LifeCycle>();
@@ -261,6 +289,7 @@ public class Genomics
     {
         public Class<? extends Gene> geneClass;
         public CrobeEnums.MutationType[] allowedMutations;
+        public Class<? extends GeneEditor> geneEditorClass;
         public Class<? extends GenomeValue> genomeValueClass;
     }
     public static class GeneRegister
@@ -276,6 +305,7 @@ public class Genomics
 
                 info.geneClass = geneClass;
                 info.allowedMutations = g.allowedMutations();
+                info.geneEditorClass = g.geneEditorClass();
                 info.genomeValueClass = g.geneValueClass();
 
                 _genes.put(geneClass.getSimpleName(), info);

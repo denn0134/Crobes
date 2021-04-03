@@ -4,6 +4,8 @@ import crobes.core.*;
 import crobes.genetics.genomics.GenomeEnum;
 import crobes.genetics.genomics.GenomeValue;
 import crobes.genetics.genomics.Genomics;
+import crobes.genetics.gui.GeneEditor;
+import crobes.genetics.gui.HeritableEnumGeneEditor;
 
 import java.util.ArrayList;
 
@@ -140,6 +142,10 @@ public class HeritableGeneEnum extends HeritableGene
         }
     }
 
+    @Override
+    public Class<? extends GeneEditor> geneEditorClass() {
+        return HeritableEnumGeneEditor.class;
+    }
     @Override
     public Class<? extends GenomeValue> geneValueClass() {
         return GenomeEnum.class;

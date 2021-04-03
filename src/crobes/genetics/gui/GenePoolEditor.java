@@ -126,7 +126,7 @@ public class GenePoolEditor extends VBox
 
         if(genes != null) {
             for(GenomeGene gene: genes) {
-                geneList.add(new GeneEditor(gene));
+                geneList.add(Genomics.createGeneEditor(gene));
             }//end for each
         }//end if
     }

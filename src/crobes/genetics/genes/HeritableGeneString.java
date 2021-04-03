@@ -4,6 +4,8 @@ import crobes.core.*;
 import crobes.genetics.genomics.GenomeString;
 import crobes.genetics.genomics.GenomeValue;
 import crobes.genetics.genomics.Genomics;
+import crobes.genetics.gui.GeneEditor;
+import crobes.genetics.gui.HeritableStringGeneEditor;
 
 import java.util.ArrayList;
 
@@ -142,6 +144,10 @@ public class HeritableGeneString extends HeritableGene
         }
     }
 
+    @Override
+    public Class<? extends GeneEditor> geneEditorClass() {
+        return HeritableStringGeneEditor.class;
+    }
     @Override
     public Class<? extends GenomeValue> geneValueClass() {
         return GenomeString.class;

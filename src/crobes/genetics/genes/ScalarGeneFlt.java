@@ -4,6 +4,8 @@ import crobes.core.*;
 import crobes.genetics.genomics.GenomeFlt;
 import crobes.genetics.genomics.GenomeValue;
 import crobes.genetics.genomics.Genomics;
+import crobes.genetics.gui.GeneEditor;
+import crobes.genetics.gui.ScalarFltGeneEditor;
 
 import java.util.ArrayList;
 
@@ -128,6 +130,10 @@ public class ScalarGeneFlt extends Gene
     @Override
     public CrobeEnums.MutationType[] allowedMutations() {
         return new CrobeEnums.MutationType[] {CrobeEnums.MutationType.SCALAR_DISCREET};
+    }
+    @Override
+    public Class<? extends GeneEditor> geneEditorClass() {
+        return ScalarFltGeneEditor.class;
     }
     @Override
     public Class<? extends GenomeValue> geneValueClass() {
