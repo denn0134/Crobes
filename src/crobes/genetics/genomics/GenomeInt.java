@@ -4,24 +4,33 @@ import crobes.genetics.genes.ScalarGeneInt;
 
 public class GenomeInt extends GenomeValue
 {
-    public int[] genotype;
-    public int mutationRange;
+    private int[] _genotype;
+    public int[] genoType() {
+        return _genotype;
+    }
+    public void genoType(int[] genoType) {
+        _genotype = genoType.clone();
+    }
+    private int _mutationRange;
+    public int mutationRange() {
+        return _mutationRange;
+    }
+    public void mutationRange(int mutationRange) {
+        _mutationRange = mutationRange;
+    }
 
-    public GenomeInt(ScalarGeneInt gene) {
-        super(gene.mutationType());
-
-        genotype = gene.genoType().clone();
-        mutationRange = gene.mutationRange();
+    public GenomeInt() {
+        super();
     }
 
     @Override
     String genoTypeJson() {
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < genotype.length; i++) {
-            sb.append(genotype[i]);
+        for(int i = 0; i < _genotype.length; i++) {
+            sb.append(_genotype[i]);
 
-            if(i < genotype.length - 1)
+            if(i < _genotype.length - 1)
                 sb.append(", ");
         }//end for i
 
@@ -30,6 +39,6 @@ public class GenomeInt extends GenomeValue
 
     @Override
     String domainJson() {
-        return "" + mutationRange;
+        return "" + _mutationRange;
     }
 }

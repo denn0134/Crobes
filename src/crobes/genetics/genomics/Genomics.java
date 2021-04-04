@@ -20,37 +20,37 @@ public class Genomics
         ILifeCycleGenePool clc = crobe.lifeCycle();
         GenomeLifeCycle glc = genome.lifeCycle();
         glc.genePool = clc.getClass().getName();
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPAN).geneValue = new GenomeInt(clc.span());
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPANRANGE).geneValue = new GenomeInt(clc.spanRange());
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_MATURITY).geneValue = new GenomeFlt(clc.maturity());
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_FINITE).geneValue = new GenomeBool(clc.finite());
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPAN).geneValue = makeInt(clc.span());
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPANRANGE).geneValue = makeInt(clc.spanRange());
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_MATURITY).geneValue = makeFlt(clc.maturity());
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_FINITE).geneValue = makeBool(clc.finite());
 
         IMetabolicGenePool cmb = crobe.metabolism();
         GenomeMetabolism gmb = genome.metabolism();
         gmb.genePool = cmb.getClass().getName();
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITY).geneValue = new GenomeInt(cmb.vitality());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITYRANGE).geneValue = new GenomeInt(cmb.vitalityRange());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINA).geneValue = new GenomeInt(cmb.stamina());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINARANGE).geneValue = new GenomeInt(cmb.staminaRange());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_HEALRATE).geneValue = new GenomeFlt(cmb.healRate());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_MORTALITYRATE).geneValue = new GenomeInt(cmb.mortalityRate());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITY).geneValue = makeInt(cmb.vitality());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITYRANGE).geneValue = makeInt(cmb.vitalityRange());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINA).geneValue = makeInt(cmb.stamina());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINARANGE).geneValue = makeInt(cmb.staminaRange());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_HEALRATE).geneValue = makeFlt(cmb.healRate());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_MORTALITYRATE).geneValue = makeInt(cmb.mortalityRate());
 
         IMotilityGenePool cmt = crobe.motility();
         GenomeMotility gmt = genome.motility();
         gmt.genePool = cmt.getClass().getName();
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE).geneValue = new GenomeEnum(cmt.motilityType());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE).geneValue = new GenomeEnum(cmt.moveType());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVEBASE).geneValue = new GenomeInt(cmt.moveBase());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVERANGE).geneValue = new GenomeInt(cmt.moveRange());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_LETHARGY).geneValue = new GenomeFlt(cmt.lethargy());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_EFFICIENCY).geneValue = new GenomeFlt(cmt.efficiency());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE).geneValue = makeEnum(cmt.motilityType());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE).geneValue = makeEnum(cmt.moveType());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVEBASE).geneValue = makeInt(cmt.moveBase());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVERANGE).geneValue = makeInt(cmt.moveRange());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_LETHARGY).geneValue = makeFlt(cmt.lethargy());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_EFFICIENCY).geneValue = makeFlt(cmt.efficiency());
 
         IRenderGenePool crd = crobe.renderer();
         GenomeRenderer grd = genome.renderer();
         grd.genePool = crd.getClass().getName();
-        grd.getGene(CrobeConstants.RENDERER_GENE_SKIN).geneValue = new GenomeEnum(crd.skin());
-        grd.getGene(CrobeConstants.RENDERER_GENE_FACE).geneValue = new GenomeString(crd.face());
-        grd.getGene(CrobeConstants.RENDERER_GENE_BODY).geneValue = new GenomeEnum(crd.body());
+        grd.getGene(CrobeConstants.RENDERER_GENE_SKIN).geneValue = makeEnum(crd.skin());
+        grd.getGene(CrobeConstants.RENDERER_GENE_FACE).geneValue = makeString(crd.face());
+        grd.getGene(CrobeConstants.RENDERER_GENE_BODY).geneValue = makeEnum(crd.body());
 
         return genome;
     }
@@ -330,5 +330,41 @@ public class Genomics
 
             return result;
         }
+    }
+
+    private static GenomeInt makeInt(ScalarGeneInt gene) {
+        GenomeInt result = new GenomeInt();
+        result.mutationType(gene.mutationType());
+        result.mutationRange(gene.mutationRange());
+        result.genoType(gene.genoType());
+        return result;
+    }
+    private static GenomeFlt makeFlt(ScalarGeneFlt gene) {
+        GenomeFlt result = new GenomeFlt();
+        result.mutationType(gene.mutationType());
+        result.mutationRange(gene.mutationRange());
+        result.genoType(gene.genoType());
+        return result;
+    }
+    private static GenomeBool makeBool(HeritableGeneBool gene) {
+        GenomeBool result = new GenomeBool();
+        result.mutationType(gene.mutationType());
+        result.domain(gene.dominance());
+        result.genoType(gene.genoType());
+        return result;
+    }
+    private static GenomeEnum makeEnum(HeritableGeneEnum gene) {
+        GenomeEnum result = new GenomeEnum();
+        result.mutationType(gene.mutationType());
+        result.domain(gene.dominance());
+        result.genoType(gene.genoType());
+        return result;
+    }
+    private static GenomeString makeString(HeritableGeneString gene) {
+        GenomeString result = new GenomeString();
+        result.mutationType(gene.mutationType());
+        result.domain(gene.dominance());
+        result.genoType(gene.genoType());
+        return result;
     }
 }

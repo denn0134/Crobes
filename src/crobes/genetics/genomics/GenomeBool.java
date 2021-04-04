@@ -1,27 +1,34 @@
 package crobes.genetics.genomics;
 
-import crobes.genetics.genes.HeritableGeneBool;
-
 public class GenomeBool extends GenomeValue
 {
-    public boolean[] genotype;
-    public boolean[] domain;
+    private boolean[] _genotype;
+    public boolean[] genoType() {
+        return _genotype;
+    }
+    public void genoType(boolean[] genoType) {
+        _genotype = genoType.clone();
+    }
+    private boolean[] _domain;
+    public boolean[] domain() {
+        return _domain;
+    }
+    public void domain(boolean[] domain) {
+        _domain = domain.clone();
+    }
 
-    public GenomeBool(HeritableGeneBool gene) {
-        super(gene.mutationType());
-
-        genotype = gene.genoType().clone();
-        domain = gene.dominance().clone();
+    public GenomeBool() {
+        super();
     }
 
     @Override
     String genoTypeJson() {
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < genotype.length; i++) {
-            sb.append(genotype[i]);
+        for(int i = 0; i < _genotype.length; i++) {
+            sb.append(_genotype[i]);
 
-            if(i < genotype.length - 1)
+            if(i < _genotype.length - 1)
                 sb.append(", ");
         }//end for i
 
@@ -34,10 +41,10 @@ public class GenomeBool extends GenomeValue
 
         sb.append("[");
 
-        for(int i = 0; i < domain.length; i++) {
-            sb.append(domain[i]);
+        for(int i = 0; i < _domain.length; i++) {
+            sb.append(_domain[i]);
 
-            if(i < domain.length - 1)
+            if(i < _domain.length - 1)
                 sb.append(", ");
         }//end for i
 

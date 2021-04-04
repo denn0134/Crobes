@@ -1,27 +1,34 @@
 package crobes.genetics.genomics;
 
-import crobes.genetics.genes.ScalarGeneFlt;
-
 public class GenomeFlt extends GenomeValue
 {
-    public float[] genotype;
-    public float mutationRange;
+    private float[] _genotype;
+    public float[] genoType() {
+        return _genotype;
+    }
+    public void genoType(float[] genoType) {
+        _genotype = genoType.clone();
+    }
+    private float _mutationRange;
+    public float mutationRange() {
+        return _mutationRange;
+    }
+    public void mutationRange(float mutationRange) {
+        _mutationRange = mutationRange;
+    }
 
-    public GenomeFlt(ScalarGeneFlt gene) {
-        super(gene.mutationType());
-
-        genotype = gene.genoType().clone();
-        mutationRange = gene.mutationRange();
+    public GenomeFlt() {
+        super();
     }
 
     @Override
     String genoTypeJson() {
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < genotype.length; i++) {
-            sb.append(genotype[i]);
+        for(int i = 0; i < _genotype.length; i++) {
+            sb.append(_genotype[i]);
 
-            if(i < genotype.length - 1)
+            if(i < _genotype.length - 1)
                 sb.append(", ");
         }//end for i
 
@@ -30,6 +37,6 @@ public class GenomeFlt extends GenomeValue
 
     @Override
     String domainJson() {
-        return "" + mutationRange;
+        return "" + _mutationRange;
     }
 }

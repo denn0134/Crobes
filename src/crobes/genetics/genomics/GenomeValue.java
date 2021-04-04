@@ -4,10 +4,16 @@ import crobes.core.CrobeEnums;
 
 public abstract class GenomeValue
 {
-    public CrobeEnums.MutationType mutationType;
+    private CrobeEnums.MutationType _mutationType;
+    public CrobeEnums.MutationType mutationType() {
+        return _mutationType;
+    }
+    public void mutationType(CrobeEnums.MutationType  mutationType) {
+        _mutationType = mutationType;
+    }
 
-    public GenomeValue(CrobeEnums.MutationType mutation) {
-        mutationType = mutation;
+    public GenomeValue() {
+
     }
 
     String toJson() {
@@ -24,7 +30,7 @@ public abstract class GenomeValue
         sb.append(", ");
         sb.append(Genome.quotedString("mutationType"));
         sb.append(": ");
-        sb.append(Genome.quotedString(mutationType.name()));
+        sb.append(Genome.quotedString(_mutationType.name()));
         sb.append("}");
 
         return sb.toString();

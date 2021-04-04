@@ -1,27 +1,34 @@
 package crobes.genetics.genomics;
 
-import crobes.genetics.genes.HeritableGeneEnum;
-
 public class GenomeEnum extends GenomeValue
 {
-    public Enum[] genotype;
-    public Enum[] domain;
+    private Enum[] _genotype;
+    public Enum[] genoType() {
+        return _genotype;
+    }
+    public void genoType(Enum[] genoType) {
+        _genotype = genoType.clone();
+    }
+    private Enum[] _domain;
+    public Enum[] domain() {
+        return _domain;
+    }
+    public void domain(Enum[] domain) {
+        _domain = domain.clone();
+    }
 
-    public GenomeEnum(HeritableGeneEnum gene) {
-        super(gene.mutationType());
-
-        genotype = gene.genoType().clone();
-        domain = gene.dominance().clone();
+    public GenomeEnum() {
+        super();
     }
 
     @Override
     String genoTypeJson() {
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < genotype.length; i++) {
-            sb.append(Genome.quotedString(genotype[i].name()));
+        for(int i = 0; i < _genotype.length; i++) {
+            sb.append(Genome.quotedString(_genotype[i].name()));
 
-            if(i < genotype.length - 1)
+            if(i < _genotype.length - 1)
                 sb.append(", ");
         }//end for i
 
@@ -34,10 +41,10 @@ public class GenomeEnum extends GenomeValue
 
         sb.append("[");
 
-        for(int i = 0; i < domain.length; i++) {
-            sb.append(Genome.quotedString(domain[i].name()));
+        for(int i = 0; i < _domain.length; i++) {
+            sb.append(Genome.quotedString(_domain[i].name()));
 
-            if(i < domain.length - 1)
+            if(i < _domain.length - 1)
                 sb.append(", ");
         }//end for i
 
