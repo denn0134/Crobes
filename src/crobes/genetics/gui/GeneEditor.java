@@ -3,6 +3,8 @@ package crobes.genetics.gui;
 import crobes.core.CrobeEnums;
 import crobes.genetics.genomics.GenomeGene;
 import crobes.genetics.genomics.Genomics;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
@@ -71,7 +73,18 @@ public class GeneEditor extends GridPane
         }//end for i
         cmbMutationType = new ComboBox<String>(mtList);
         cmbMutationType.setMaxWidth(Double.MAX_VALUE);
+        CrobeEnums.MutationType type = _genomeGene.geneValue.mutationType();
+        if(type != null)
+            cmbMutationType.getSelectionModel().select(type.name());
         add(cmbMutationType, 2, 0);
+
+        cmbMutationType.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                CrobeEnums.MutationType newType = CrobeEnums.MutationType.valueOf(newValue);
+                _genomeGene.geneValue.mutationType(newType);
+            }
+        });
 
         hbxRangeHierarchy = new HBox();
         add(hbxRangeHierarchy, 3, 0);
