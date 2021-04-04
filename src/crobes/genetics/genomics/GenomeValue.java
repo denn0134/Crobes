@@ -30,7 +30,10 @@ public abstract class GenomeValue
         sb.append(", ");
         sb.append(Genome.quotedString("mutationType"));
         sb.append(": ");
-        sb.append(Genome.quotedString(_mutationType.name()));
+        if(_mutationType != null)
+            sb.append(Genome.quotedString(_mutationType.name()));
+        else
+            sb.append("null");
         sb.append("}");
 
         return sb.toString();

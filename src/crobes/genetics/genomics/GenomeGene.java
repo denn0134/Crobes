@@ -16,7 +16,7 @@ public class GenomeGene
         name = geneName;
         random = false;
         geneType = type;
-        geneValue = null;
+        geneValue = Genomics.createGenomeValue(type);
     }
 
     String toJson() {
@@ -28,15 +28,15 @@ public class GenomeGene
         sb.append(Genome.quotedString(name));
         sb.append(", ");
         sb.append(Genome.quotedString("geneType"));
-        sb.append(", ");
+        sb.append(": ");
         sb.append(Genome.quotedString(geneType));
         sb.append(", ");
         sb.append(Genome.quotedString("random"));
-        sb.append(", ");
+        sb.append(": ");
         sb.append(random);
         sb.append(", ");
         sb.append(Genome.quotedString("geneValue"));
-        sb.append(", ");
+        sb.append(": ");
 
         if(geneValue != null)
             sb.append(geneValue.toJson());

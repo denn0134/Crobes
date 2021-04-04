@@ -194,6 +194,28 @@ public class Genomics
         return result;
     }
 
+    /***
+     * Creates a new GenomeVale based on the class name.
+     * @param valueClassName Class name of the GenomeValue.
+     * @return Returns the new GenomeValue.
+     */
+    public static GenomeValue createGenomeValue(String valueClassName) {
+        GenomeValue result = null;
+
+        if(valueClassName.equalsIgnoreCase(GenomeInt.class.getSimpleName()))
+            result = new GenomeInt();
+        else if(valueClassName.equalsIgnoreCase(GenomeFlt.class.getSimpleName()))
+            result = new GenomeFlt();
+        else if(valueClassName.equalsIgnoreCase(GenomeBool.class.getSimpleName()))
+            result = new GenomeBool();
+        else if(valueClassName.equalsIgnoreCase(GenomeEnum.class.getSimpleName()))
+            result = new GenomeEnum();
+        else if(valueClassName.equalsIgnoreCase(GenomeString.class.getSimpleName()))
+            result = new GenomeString();
+
+        return result;
+    }
+
     //class registries
     public static final GenePoolRegister genePools = new GenePoolRegister();
     public static final GenePoolClassRegister<LifeCycle> lifeCycles = new GenePoolClassRegister<LifeCycle>();
