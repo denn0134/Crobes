@@ -19,7 +19,9 @@ import javafx.stage.Stage;
 
 public class GeneEditor extends GridPane
 {
-    private GenomeGene _genomeGene;
+    protected Sequencer _sequencer;
+
+    protected GenomeGene _genomeGene;
     public GenomeGene genomeGene() {
         return _genomeGene;
     }
@@ -27,8 +29,8 @@ public class GeneEditor extends GridPane
     TextField txtGeneName;
     CheckBox chkRandom;
     ComboBox<String> cmbMutationType;
-    HBox hbxRangeHierarchy;
-    HBox hbxGenoType;
+    protected HBox hbxRangeHierarchy;
+    protected HBox hbxGenoType;
 
     private String _genePool;
     public String genePool() {
@@ -45,9 +47,10 @@ public class GeneEditor extends GridPane
         txtGeneName.setText(name);
     }
 
-    public GeneEditor(GenomeGene gene) {
+    public GeneEditor(GenomeGene gene, Sequencer sequencer) {
         super();
 
+        _sequencer = sequencer;
         _genomeGene = gene;
         Genomics.GeneInfo info = Genomics.getGeneInfo(_genomeGene.geneType);
 

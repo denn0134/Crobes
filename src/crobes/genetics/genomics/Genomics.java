@@ -173,22 +173,22 @@ public class Genomics
      * @return Returns the Editor for the gene; can return null
      *         if the gene is invalid.
      */
-    public static GeneEditor createGeneEditor(GenomeGene gene) {
+    public static GeneEditor createGeneEditor(GenomeGene gene, Sequencer sequencer) {
         GeneEditor result = null;
 
         GeneInfo info = getGeneInfo(gene.geneType);
         if(info != null) {
             //we will brute force this for now
             if(info.geneEditorClass == ScalarIntGeneEditor.class)
-                result = new ScalarIntGeneEditor(gene);
+                result = new ScalarIntGeneEditor(gene, sequencer);
             else if(info.geneEditorClass == ScalarFltGeneEditor.class)
-                result = new ScalarFltGeneEditor(gene);
+                result = new ScalarFltGeneEditor(gene, sequencer);
             else if(info.geneEditorClass == HeritableBoolGeneEditor.class)
-                result = new HeritableBoolGeneEditor(gene);
+                result = new HeritableBoolGeneEditor(gene, sequencer);
             else if(info.geneEditorClass == HeritableEnumGeneEditor.class)
-                result = new HeritableEnumGeneEditor(gene);
+                result = new HeritableEnumGeneEditor(gene, sequencer);
             else if(info.geneEditorClass == HeritableStringGeneEditor.class)
-                result = new HeritableStringGeneEditor(gene);
+                result = new HeritableStringGeneEditor(gene, sequencer);
         }//end if
 
         return result;

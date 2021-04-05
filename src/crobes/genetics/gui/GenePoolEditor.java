@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class GenePoolEditor extends VBox
 {
     private GenomePool _genomePool;
+    private Sequencer _sequencer;
 
     Label lblName;
     TextArea txtDescription;
@@ -31,7 +32,9 @@ public class GenePoolEditor extends VBox
     ObservableList<GeneEditor> geneList;
     ListView<GeneEditor> lstGenes;
 
-    public GenePoolEditor() {
+    public GenePoolEditor(Sequencer sequencer) {
+        _sequencer = sequencer;
+
         //set up the genepool controls
         lblName = new Label();
         lblName.setPrefHeight(Sequencer.GENEPOOL_BASE_HEIGHT);
@@ -126,7 +129,7 @@ public class GenePoolEditor extends VBox
 
         if(genes != null) {
             for(GenomeGene gene: genes) {
-                geneList.add(Genomics.createGeneEditor(gene));
+                geneList.add(Genomics.createGeneEditor(gene, _sequencer));
             }//end for each
         }//end if
     }

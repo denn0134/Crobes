@@ -14,7 +14,7 @@ public class GenomeString extends GenomeValue
         return _domain;
     }
     public void domain(String[] domain) {
-        _domain = domain.clone();
+        _domain = domain;
     }
 
     public GenomeString() {

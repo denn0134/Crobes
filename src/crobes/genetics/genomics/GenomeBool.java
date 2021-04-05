@@ -14,7 +14,7 @@ public class GenomeBool extends GenomeValue
         return _domain;
     }
     public void domain(boolean[] domain) {
-        _domain = domain.clone();
+        _domain = domain;
     }
 
     public GenomeBool() {

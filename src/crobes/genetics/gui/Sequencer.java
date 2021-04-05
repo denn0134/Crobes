@@ -161,7 +161,7 @@ public class Sequencer extends Stage
         //right pane - gene pool editor
         rightPane = new BorderPane();
 
-        poolEditor = new GenePoolEditor();
+        poolEditor = new GenePoolEditor(this);
         rightPane.setCenter(poolEditor);
 
         //bottom pane - OK and cancel buttons

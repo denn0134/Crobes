@@ -14,7 +14,7 @@ public class GenomeEnum extends GenomeValue
         return _domain;
     }
     public void domain(Enum[] domain) {
-        _domain = domain.clone();
+        _domain = domain;
     }
 
     public GenomeEnum() {
