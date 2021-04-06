@@ -102,12 +102,14 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
 
         //motilityType NON_MOTILE
         _motilityType = new HeritableGeneEnum(
+                CrobeEnums.MotilityType.class,
                 new Enum[] {CrobeEnums.MotilityType.NON_MOTILE, CrobeEnums.MotilityType.NON_MOTILE},
                 new Enum[] {CrobeEnums.MotilityType.ANCHORED, CrobeEnums.MotilityType.NON_MOTILE, CrobeEnums.MotilityType.MOTILE},
                 CrobeEnums.MutationType.RANDOM);
 
         //moveType CREEPER
         _moveType = new HeritableGeneEnum(
+                CrobeEnums.MovementType.class,
                 new Enum[] {CrobeEnums.MovementType.CREEPER, CrobeEnums.MovementType.CREEPER},
                 new Enum[] {CrobeEnums.MovementType.CREEPER, CrobeEnums.MovementType.HOPPER, CrobeEnums.MovementType.ZIGGER},
                 CrobeEnums.MutationType.ADJACENT);

@@ -15,6 +15,11 @@ public class HeritableGeneEnum extends HeritableGene
         Genomics.genes.registerGene(HeritableGeneEnum.class);
     }//end static
 
+    private Class<? extends Enum> _enumClass;
+    public Class<? extends Enum> enumClass() {
+        return _enumClass;
+    }
+
     private Enum[] _genotype;
     public Enum[] genoType() {
         return _genotype;
@@ -62,7 +67,14 @@ public class HeritableGeneEnum extends HeritableGene
     public HeritableGeneEnum() {
         super();
     }
-    public HeritableGeneEnum(Enum[] genotype, Enum[] dominance, CrobeEnums.MutationType type) {
+    public HeritableGeneEnum(Class<? extends Enum> enumClass) {
+        _enumClass = enumClass;
+    }
+    public HeritableGeneEnum(Class<? extends Enum> enumClass,
+                             Enum[] genotype,
+                             Enum[] dominance,
+                             CrobeEnums.MutationType type) {
+        _enumClass = enumClass;
         _genotype = genotype;
         _dominance = dominance;
         mutationType(type);
@@ -121,7 +133,7 @@ public class HeritableGeneEnum extends HeritableGene
             genotype[idx++] = geneValues[1];
         }//end for i
 
-        gene = new HeritableGeneEnum(genotype, _dominance, _mutationType);
+        gene = new HeritableGeneEnum(enumClass(), genotype, _dominance, _mutationType);
 
         return gene;
     }

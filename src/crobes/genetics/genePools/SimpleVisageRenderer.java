@@ -74,7 +74,9 @@ public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
         }//end if
 
         //skin
-        _skin = new HeritableGeneEnum(new Enum[] {CrobeEnums.CrobeColor.black, CrobeEnums.CrobeColor.brown},
+        _skin = new HeritableGeneEnum(
+                CrobeEnums.CrobeColor.class,
+                new Enum[] {CrobeEnums.CrobeColor.black, CrobeEnums.CrobeColor.brown},
                 new Enum[] {CrobeEnums.CrobeColor.brown, CrobeEnums.CrobeColor.maroon, CrobeEnums.CrobeColor.black},
                 CrobeEnums.MutationType.RANDOM);
 
@@ -84,7 +86,9 @@ public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
                 faces, CrobeEnums.MutationType.RANDOM);
 
         //body
-        _body = new HeritableGeneEnum(new Enum[] {CrobeEnums.CrobeColor.yellow, CrobeEnums.CrobeColor.yellow},
+        _body = new HeritableGeneEnum(
+                CrobeEnums.CrobeColor.class,
+                new Enum[] {CrobeEnums.CrobeColor.yellow, CrobeEnums.CrobeColor.yellow},
                 new Enum[] {CrobeEnums.CrobeColor.lightblue, CrobeEnums.CrobeColor.pink, CrobeEnums.CrobeColor.yellow},
                 CrobeEnums.MutationType.RANDOM);
 
