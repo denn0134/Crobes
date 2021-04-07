@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -28,40 +30,82 @@ public class DomainEditorString extends Stage
     BorderPane root;
     ObservableList<String> domainList;
     private DomainString _domain;
+    ListView<String> lstStrings;
+    TextField txtAdd;
 
-    public DomainEditorString(double width, double height) {
+    public DomainEditorString(DomainString domain,
+                              double width,
+                              double height) {
+        _domain = domain;
         root = new BorderPane();
 
         //top pane - controls
         HBox topPane = new HBox();
 
-        TextField txtAdd = new TextField();
+        txtAdd = new TextField();
         txtAdd.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtAdd, Priority.ALWAYS);
+        txtAdd.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.ENTER) {
+                    callAdd();
+                }//end if
+            }
+        });
 
         Button btnAdd = new Button("+");
         btnAdd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(!txtAdd.getText().isEmpty()) {
-                    String s = txtAdd.getText();
-                    txtAdd.setText("");
-                    txtAdd.requestFocus();
+                callAdd();
+            }
+        });
 
-                    if(!domainList.contains(s)) {
-                        domainList.add(s);
-                    }//end if
+        Button btnDelete = new Button("-");
+        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int index = lstStrings.getSelectionModel().getSelectedIndex();
 
+                if(index > -1) {
+                    domainList.remove(index);
                     copyListToDomain();
                 }//end if
             }
         });
 
-        Button btnDelete = new Button("-");
-
         Button btnUp = new Button("˄");
+        btnUp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int index = lstStrings.getSelectionModel().getSelectedIndex();
+
+                if(index > 0) {
+                    String s = domainList.get(index);
+                    domainList.remove(index);
+                    domainList.add(index - 1, s);
+                    lstStrings.getSelectionModel().select(index - 1);
+                    copyListToDomain();
+                }//end if
+            }
+        });
 
         Button btnDown = new Button("˅");
+        btnDown.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int index = lstStrings.getSelectionModel().getSelectedIndex();
+
+                if((index > -1) && (index != domainList.size() - 1)) {
+                    String s = domainList.get(index);
+                    domainList.remove(index);
+                    domainList.add(index + 1, s);
+                    lstStrings.getSelectionModel().select(index + 1);
+                    copyListToDomain();
+                }//end if
+            }
+        });
 
         topPane.getChildren().addAll(txtAdd, btnAdd, btnDelete, btnUp, btnDown);
 
@@ -70,11 +114,13 @@ public class DomainEditorString extends Stage
 
         domainList = FXCollections.observableArrayList();
         if(_domain != null) {
-            for(String s: _domain.domain)
-                domainList.add(s);
+            if(_domain.domain != null) {
+                for (String s : _domain.domain)
+                    domainList.add(s);
+            }//end if
         }//end if
 
-        ListView<String> lstStrings = new ListView<String>(domainList);
+        lstStrings = new ListView<String>(domainList);
         lstStrings.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(lstStrings, Priority.ALWAYS);
 
@@ -118,9 +164,8 @@ public class DomainEditorString extends Stage
     }
 
     public static boolean editStringDomain(DomainString domain, Stage parent) {
-        DomainEditorString edit = new DomainEditorString(350, 400);
+        DomainEditorString edit = new DomainEditorString(domain, 350, 400);
 
-        edit._domain = domain;
         edit.initOwner(parent);
         edit.initModality(Modality.WINDOW_MODAL);
         edit.showAndWait();
@@ -129,6 +174,18 @@ public class DomainEditorString extends Stage
         return edit.cancelled();
     }
 
+    private void callAdd() {
+        if(!txtAdd.getText().isEmpty()) {
+            String s = txtAdd.getText();
+            txtAdd.setText("");
+            txtAdd.requestFocus();
+
+            if(!domainList.contains(s)) {
+                domainList.add(s);
+                copyListToDomain();
+            }//end if
+        }//end if
+    }
     private void copyListToDomain() {
         _domain.domain = new String[domainList.size()];
         for(int i = 0; i < domainList.size(); i++ ) {
