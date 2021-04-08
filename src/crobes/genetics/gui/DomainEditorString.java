@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -60,8 +61,7 @@ public class DomainEditorString extends Stage
             }
         });
 
-        Button btnDelete = new Button("-");
-        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+        EventHandler<ActionEvent> evtDelete = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 int index = lstStrings.getSelectionModel().getSelectedIndex();
@@ -71,7 +71,9 @@ public class DomainEditorString extends Stage
                     copyListToDomain();
                 }//end if
             }
-        });
+        };
+        Button btnDelete = new Button("-");
+        btnDelete.setOnAction(evtDelete);
 
         Button btnUp = new Button("˄");
         btnUp.setOnAction(new EventHandler<ActionEvent>() {
@@ -121,6 +123,14 @@ public class DomainEditorString extends Stage
         lstStrings = new ListView<String>(domainList);
         lstStrings.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(lstStrings, Priority.ALWAYS);
+        lstStrings.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount() > 1) {
+                    evtDelete.handle(null);
+                }//end if
+            }
+        });
 
         midPane.getChildren().addAll(lstStrings);
 
