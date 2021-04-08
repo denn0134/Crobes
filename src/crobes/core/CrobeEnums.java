@@ -94,4 +94,17 @@ public class CrobeEnums
         cornflowerblue, steelblue, royalblue, blue,
         mediumblue, darkblue, navy, midnightblue
     }
+
+    public static Enum getEnum(String enumName, String name) {
+        Enum result = null;
+
+        if(enumName.equalsIgnoreCase(MotilityType.class.getSimpleName()))
+            result = MotilityType.valueOf(name);
+        else if(enumName.equalsIgnoreCase(MovementType.class.getSimpleName()))
+            result = MovementType.valueOf(name);
+        else if(enumName.equalsIgnoreCase(CrobeColor.class.getSimpleName()))
+            result = CrobeColor.valueOf(name);
+
+        return result;
+    }
 }

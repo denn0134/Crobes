@@ -14,47 +14,6 @@ import java.util.HashMap;
 
 public class Genomics
 {
-    public static Genome extractGenome(Crobe crobe) {
-        Genome genome = new Genome();
-
-        ILifeCycleGenePool clc = crobe.lifeCycle();
-        GenomeLifeCycle glc = genome.lifeCycle();
-        glc.genePool = clc.getClass().getName();
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPAN).geneValue = makeInt(clc.span());
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPANRANGE).geneValue = makeInt(clc.spanRange());
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_MATURITY).geneValue = makeFlt(clc.maturity());
-        glc.getGene(CrobeConstants.LIFECYCLE_GENE_FINITE).geneValue = makeBool(clc.finite());
-
-        IMetabolicGenePool cmb = crobe.metabolism();
-        GenomeMetabolism gmb = genome.metabolism();
-        gmb.genePool = cmb.getClass().getName();
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITY).geneValue = makeInt(cmb.vitality());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITYRANGE).geneValue = makeInt(cmb.vitalityRange());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINA).geneValue = makeInt(cmb.stamina());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINARANGE).geneValue = makeInt(cmb.staminaRange());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_HEALRATE).geneValue = makeFlt(cmb.healRate());
-        gmb.getGene(CrobeConstants.METABOLISM_GENE_MORTALITYRATE).geneValue = makeInt(cmb.mortalityRate());
-
-        IMotilityGenePool cmt = crobe.motility();
-        GenomeMotility gmt = genome.motility();
-        gmt.genePool = cmt.getClass().getName();
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE).geneValue = makeEnum(cmt.motilityType());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE).geneValue = makeEnum(cmt.moveType());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVEBASE).geneValue = makeInt(cmt.moveBase());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVERANGE).geneValue = makeInt(cmt.moveRange());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_LETHARGY).geneValue = makeFlt(cmt.lethargy());
-        gmt.getGene(CrobeConstants.MOTILITY_GENE_EFFICIENCY).geneValue = makeFlt(cmt.efficiency());
-
-        IRenderGenePool crd = crobe.renderer();
-        GenomeRenderer grd = genome.renderer();
-        grd.genePool = crd.getClass().getName();
-        grd.getGene(CrobeConstants.RENDERER_GENE_SKIN).geneValue = makeEnum(crd.skin());
-        grd.getGene(CrobeConstants.RENDERER_GENE_FACE).geneValue = makeString(crd.face());
-        grd.getGene(CrobeConstants.RENDERER_GENE_BODY).geneValue = makeEnum(crd.body());
-
-        return genome;
-    }
-
     private static final String FMT_CNFE = "Class not found [%1$s]";
 
     /***
@@ -124,6 +83,55 @@ public class Genomics
             }//end catch cnfe
         }
     }
+
+    /***
+     * Creates a Genome object modelled on the supplied
+     * Crobes genetic makeup.
+     * @param crobe The Crobe to extract the Genome from.
+     * @return Returns a configured Genome object with
+     *         the genetic data from the Crobe.
+     */
+    public static Genome extractGenome(Crobe crobe) {
+        Genome genome = new Genome();
+
+        ILifeCycleGenePool clc = crobe.lifeCycle();
+        GenomeLifeCycle glc = genome.lifeCycle();
+        glc.genePool = clc.getClass().getName();
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPAN).geneValue = makeInt(clc.span());
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPANRANGE).geneValue = makeInt(clc.spanRange());
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_MATURITY).geneValue = makeFlt(clc.maturity());
+        glc.getGene(CrobeConstants.LIFECYCLE_GENE_FINITE).geneValue = makeBool(clc.finite());
+
+        IMetabolicGenePool cmb = crobe.metabolism();
+        GenomeMetabolism gmb = genome.metabolism();
+        gmb.genePool = cmb.getClass().getName();
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITY).geneValue = makeInt(cmb.vitality());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITYRANGE).geneValue = makeInt(cmb.vitalityRange());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINA).geneValue = makeInt(cmb.stamina());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINARANGE).geneValue = makeInt(cmb.staminaRange());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_HEALRATE).geneValue = makeFlt(cmb.healRate());
+        gmb.getGene(CrobeConstants.METABOLISM_GENE_MORTALITYRATE).geneValue = makeInt(cmb.mortalityRate());
+
+        IMotilityGenePool cmt = crobe.motility();
+        GenomeMotility gmt = genome.motility();
+        gmt.genePool = cmt.getClass().getName();
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE).geneValue = makeEnum(cmt.motilityType());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE).geneValue = makeEnum(cmt.moveType());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVEBASE).geneValue = makeInt(cmt.moveBase());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVERANGE).geneValue = makeInt(cmt.moveRange());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_LETHARGY).geneValue = makeFlt(cmt.lethargy());
+        gmt.getGene(CrobeConstants.MOTILITY_GENE_EFFICIENCY).geneValue = makeFlt(cmt.efficiency());
+
+        IRenderGenePool crd = crobe.renderer();
+        GenomeRenderer grd = genome.renderer();
+        grd.genePool = crd.getClass().getName();
+        grd.getGene(CrobeConstants.RENDERER_GENE_SKIN).geneValue = makeEnum(crd.skin());
+        grd.getGene(CrobeConstants.RENDERER_GENE_FACE).geneValue = makeString(crd.face());
+        grd.getGene(CrobeConstants.RENDERER_GENE_BODY).geneValue = makeEnum(crd.body());
+
+        return genome;
+    }
+
 
     /***
      * Searches all of the gene pool registers for the
@@ -380,6 +388,7 @@ public class Genomics
         result.mutationType(gene.mutationType());
         result.domain(gene.dominance());
         result.genoType(gene.genoType());
+        result.enumClass(gene.enumClass());
         return result;
     }
     private static GenomeString makeString(HeritableGeneString gene) {

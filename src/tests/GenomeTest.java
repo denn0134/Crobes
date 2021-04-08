@@ -1,8 +1,10 @@
 package tests;
 
+import crobes.core.CrobeConstants;
 import crobes.core.CrobeEnums;
 import crobes.genetics.genePools.*;
 import crobes.genetics.genomics.Genome;
+import crobes.genetics.genomics.GenomeEnum;
 import crobes.genetics.genomics.Genomics;
 import crobes.genetics.gui.Sequencer;
 import javafx.application.Application;
@@ -133,6 +135,11 @@ public class GenomeTest extends Application
                 genome.metabolism().genePool = BasePhotoMetabolism.class.getSimpleName();
                 genome.motility().genePool = ImmobileMotilty.class.getSimpleName();
                 genome.renderer().genePool = SimpleVisageRenderer.class.getSimpleName();
+
+                ((GenomeEnum) genome.motility().getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE).geneValue).enumClass(CrobeEnums.MotilityType.class);
+                ((GenomeEnum) genome.motility().getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE).geneValue).enumClass(CrobeEnums.MovementType.class);
+                ((GenomeEnum) genome.renderer().getGene(CrobeConstants.RENDERER_GENE_BODY).geneValue).enumClass(CrobeEnums.CrobeColor.class);
+                ((GenomeEnum) genome.renderer().getGene(CrobeConstants.RENDERER_GENE_SKIN).geneValue).enumClass(CrobeEnums.CrobeColor.class);
 
                 genome = Sequencer.sequenceGenome(genome, true, primaryStage);
 

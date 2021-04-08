@@ -16,6 +16,13 @@ public class GenomeEnum extends GenomeValue
     public void domain(Enum[] domain) {
         _domain = domain;
     }
+    private Class<? extends Enum> _enumClass;
+    public Class<? extends Enum> enumClass() {
+        return _enumClass;
+    }
+    public void enumClass(Class<? extends Enum> enumClass) {
+        _enumClass = enumClass;
+    }
 
     public GenomeEnum() {
         super();
@@ -52,7 +59,10 @@ public class GenomeEnum extends GenomeValue
             }//end for i
         }//end if
 
-        sb.append("]");
+        sb.append("], ");
+        sb.append(Genome.quotedString("enumClass"));
+        sb.append(": ");
+        sb.append(Genome.quotedString(_enumClass.getSimpleName()));
 
         return sb.toString();
     }

@@ -18,11 +18,9 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
-
 public class DomainEditorString extends Stage
 {
-    private boolean _cancelled = false;
+    private boolean _cancelled = true;
     public boolean cancelled() {
         return _cancelled;
     }
@@ -158,7 +156,7 @@ public class DomainEditorString extends Stage
         setScene(scene);
     }
 
-    public static class DomainString
+    public static final class DomainString
     {
         public String[] domain;
     }
