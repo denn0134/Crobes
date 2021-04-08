@@ -139,10 +139,7 @@ public class DomainEditorEnum extends Stage
             @Override
             public void handle(MouseEvent event) {
                 if(event.getClickCount() > 1) {
-                    int index = lstEnums.getSelectionModel().getSelectedIndex();
-                    if(index > -1) {
-                        evtAdd.handle(null);
-                    }//end if
+                    evtAdd.handle(null);
                 }//end if
             }
         });
@@ -162,10 +159,7 @@ public class DomainEditorEnum extends Stage
             @Override
             public void handle(MouseEvent event) {
                 if(event.getClickCount() > 1) {
-                    int index = lstDomain.getSelectionModel().getSelectedIndex();
-                    if(index > -1) {
-                        evtRemove.handle(null);
-                    }//end if
+                    evtRemove.handle(null);
                 }//end if
             }
         });
