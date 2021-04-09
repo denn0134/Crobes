@@ -30,7 +30,7 @@ public class GeneEditor extends GridPane
     CheckBox chkRandom;
     ComboBox<String> cmbMutationType;
     protected HBox hbxRangeHierarchy;
-    protected HBox hbxGenoType;
+    protected GenotypeEditor hbxGenoType;
 
     private String _genePool;
     public String genePool() {
@@ -92,7 +92,7 @@ public class GeneEditor extends GridPane
         hbxRangeHierarchy = new HBox();
         add(hbxRangeHierarchy, 3, 0);
 
-        hbxGenoType = new HBox();
+        hbxGenoType = new GenotypeEditor();
         add(hbxGenoType, 4, 0);
     }
 }
