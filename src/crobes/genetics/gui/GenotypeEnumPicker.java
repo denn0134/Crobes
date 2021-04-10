@@ -1,5 +1,6 @@
 package crobes.genetics.gui;
 
+import crobes.core.CrobeEnums;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,9 +18,9 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class GenotypeStringPicker extends Stage
+public class GenotypeEnumPicker extends Stage
 {
-    private GenotypeString _genotypeString;
+    private GenotypeEnum _genotypeEnum;
     private boolean _cancelled = true;
     public boolean cancelled() {
         return _cancelled;
@@ -29,17 +30,17 @@ public class GenotypeStringPicker extends Stage
     ObservableList<String> genotypeList;
     ListView<String> lstGenotype;
 
-    public GenotypeStringPicker(GenotypeString genotypeString,
-                                double width,
-                                double height) {
-        _genotypeString = genotypeString;
+    public GenotypeEnumPicker(GenotypeEnum genotypeEnum,
+                              double width,
+                              double height) {
+        _genotypeEnum = genotypeEnum;
 
         BorderPane root = new BorderPane();
 
         //top - name label and buttons
         HBox hbxTop = new HBox();
 
-        Label lblName = new Label(_genotypeString.name);
+        Label lblName = new Label(_genotypeEnum.name);
         lblName.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(lblName, Priority.ALWAYS);
 
@@ -77,9 +78,9 @@ public class GenotypeStringPicker extends Stage
         HBox hbxMid = new HBox();
 
         domainList = FXCollections.observableArrayList();
-        if(_genotypeString.domain != null) {
-            for(String s: _genotypeString.domain)
-                domainList.add(s);
+        if(_genotypeEnum.domain != null) {
+            for(Enum e: _genotypeEnum.domain)
+                domainList.add(e.name());
         }//end if
         lstDomain = new ListView<String>(domainList);
         lstDomain.setMaxWidth(Double.MAX_VALUE);
@@ -93,9 +94,9 @@ public class GenotypeStringPicker extends Stage
         HBox.setHgrow(lstDomain, Priority.ALWAYS);
 
         genotypeList = FXCollections.observableArrayList();
-        if(_genotypeString.genotype != null) {
-            for(String s: _genotypeString.genotype)
-                genotypeList.add(s);
+        if(_genotypeEnum.genotype != null) {
+            for(Enum e: _genotypeEnum.genotype)
+                genotypeList.add(e.name());
         }//end if
         lstGenotype = new ListView<String>(genotypeList);
         lstGenotype.setMaxWidth(Double.MAX_VALUE);
@@ -142,28 +143,29 @@ public class GenotypeStringPicker extends Stage
         setScene(scene);
     }
 
-    public static final class GenotypeString
+    public static final class GenotypeEnum
     {
         public String name;
-        public String[] domain;
-        public String[] genotype;
+        public String enumName;
+        public Enum[] domain;
+        public Enum[] genotype;
     }
 
-    public static boolean editStringGenotype(GenotypeString genotypeString, Stage parent) {
-        GenotypeStringPicker edit = new GenotypeStringPicker(genotypeString, 300, 400);
+    public static boolean editStringGenotype(GenotypeEnum genotypeEnum, Stage parent) {
+        GenotypeEnumPicker edit = new GenotypeEnumPicker(genotypeEnum, 300, 400);
 
         edit.initOwner(parent);
         edit.initModality(Modality.APPLICATION_MODAL);
         edit.showAndWait();
-        genotypeString = edit._genotypeString;
+        genotypeEnum = edit._genotypeEnum;
 
         return edit.cancelled();
     }
 
     private void copyListToGenotype() {
-        _genotypeString.genotype = new String[genotypeList.size()];
+        _genotypeEnum.genotype = new Enum[genotypeList.size()];
         for(int i = 0; i < genotypeList.size(); i++) {
-            _genotypeString.genotype[i] = genotypeList.get(i);
+            _genotypeEnum.genotype[i] = CrobeEnums.getEnum(_genotypeEnum.enumName, genotypeList.get(i));
         }//end for i
     }
 }
