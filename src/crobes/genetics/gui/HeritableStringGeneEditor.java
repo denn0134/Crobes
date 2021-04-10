@@ -30,5 +30,49 @@ public class HeritableStringGeneEditor extends GeneEditor
             }
         });
         hbxRangeHierarchy.getChildren().addAll(btnDomain);
+
+        hbxGenoType.setFillGenotype(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if((_geneString.genoType() != null) &&
+                        (_geneString.genoType().length > 0)) {
+                    StringBuilder sb = new StringBuilder();
+                    String[] gt = _geneString.genoType();
+
+                    sb.append(gt[0]);
+                    for(int i = 1; i < gt.length; i++) {
+                        sb.append(" | ");
+                        sb.append(gt[i]);
+                    }//end for i
+
+                    hbxGenoType.setGenotypeDisplay(sb.toString());
+                }//end if
+                else {
+                    hbxGenoType.setGenotypeDisplay("Not set");
+                }//end else
+            }
+        });
+        hbxGenoType.processGenotype();
+        hbxGenoType.setEditEvent(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GenotypeStringPicker.GenotypeString genotypeString = new GenotypeStringPicker.GenotypeString();
+
+                genotypeString.name = _genomeGene.name;
+
+                genotypeString.domain = null;
+                if(_geneString.domain() != null)
+                    genotypeString.domain = _geneString.domain().clone();
+
+                genotypeString.genotype = null;
+                if(_geneString.genoType() != null)
+                    genotypeString.genotype = _geneString.genoType().clone();
+
+                if(!GenotypeStringPicker.editStringGenotype(genotypeString, _sequencer)) {
+                    _geneString.genoType(genotypeString.genotype);
+                    hbxGenoType.processGenotype();
+                }
+            }
+        });
     }
 }
