@@ -7,11 +7,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class GenotypeIntPicker extends Stage
@@ -46,13 +48,18 @@ public class GenotypeIntPicker extends Stage
         SpinnerValueFactory<Integer> svf = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 999, 1, 1);
         svf.setConverter(new IntegerStringConverter());
         spnGenotype.setValueFactory(svf);
+        spnGenotype.setEditable(true);
         spnGenotype.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                evtAdd.handle(null);
+                if(event.getCode() == KeyCode.ENTER)
+                    evtAdd.handle(null);
             }
         });
         spnGenotype.setMaxWidth(Double.MAX_VALUE);
+        TextFormatter<Integer> textFormatter = new TextFormatter<Integer>(svf.getConverter(), svf.getValue());
+        spnGenotype.getEditor().setTextFormatter(textFormatter);
+        svf.valueProperty().bindBidirectional(textFormatter.valueProperty());
         HBox.setHgrow(spnGenotype, Priority.ALWAYS);
 
         evtAdd = new EventHandler<ActionEvent>() {
@@ -85,6 +92,11 @@ public class GenotypeIntPicker extends Stage
 
         //genotype list
         genotypeList = FXCollections.observableArrayList();
+        if(_genotypeInt.genotype != null) {
+            for(int i: _genotypeInt.genotype) {
+                genotypeList.add(i);
+            }//end for each
+        }//end if
         lstGenotype = new ListView<>(genotypeList);
         lstGenotype.setMaxHeight(Double.MAX_VALUE);
         lstGenotype.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -120,6 +132,7 @@ public class GenotypeIntPicker extends Stage
         });
 
         paneOKCancel.getChildren().addAll(btnOK, btnCancel);
+        VBox.setVgrow(paneOKCancel, Priority.NEVER);
 
         vbxEditor.getChildren().addAll(lblName, hbxSpin, lstGenotype, paneOKCancel);
 

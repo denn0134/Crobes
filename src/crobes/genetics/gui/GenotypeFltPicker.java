@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -45,12 +46,17 @@ public class GenotypeFltPicker extends Stage
         SpinnerValueFactory<Double> svf = new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 999, 1, 1);
         svf.setConverter(new DoubleStringConverter());
         spnGenotype.setValueFactory(svf);
+        spnGenotype.setEditable(true);
         spnGenotype.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                evtAdd.handle(null);
+                if(event.getCode() == KeyCode.ENTER)
+                    evtAdd.handle(null);
             }
         });
+        TextFormatter<Double> textFormatter = new TextFormatter<Double>(svf.getConverter(), svf.getValue());
+        spnGenotype.getEditor().setTextFormatter(textFormatter);
+        svf.valueProperty().bindBidirectional(textFormatter.valueProperty());
         spnGenotype.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(spnGenotype, Priority.ALWAYS);
 
@@ -84,6 +90,11 @@ public class GenotypeFltPicker extends Stage
 
         //genotype list
         genotypeList = FXCollections.observableArrayList();
+        if(_genotypeFlt.genotype != null) {
+            for(float f: _genotypeFlt.genotype) {
+                genotypeList.add((double) f);
+            }//end for each
+        }//end if
         lstGenotype = new ListView<>(genotypeList);
         lstGenotype.setMaxHeight(Double.MAX_VALUE);
         lstGenotype.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -119,6 +130,7 @@ public class GenotypeFltPicker extends Stage
         });
 
         paneOKCancel.getChildren().addAll(btnOK, btnCancel);
+        VBox.setVgrow(paneOKCancel, Priority.NEVER);
 
         vbxEditor.getChildren().addAll(lblName, hbxSpin, lstGenotype, paneOKCancel);
 

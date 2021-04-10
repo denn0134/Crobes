@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class ScalarIntGeneEditor extends GeneEditor
@@ -31,6 +32,10 @@ public class ScalarIntGeneEditor extends GeneEditor
             }
         });
         spnMutationRange.setValueFactory(vf);
+        spnMutationRange.setEditable(true);
+        TextFormatter<Integer> textFormatter = new TextFormatter<Integer>(vf.getConverter(), vf.getValue());
+        spnMutationRange.getEditor().setTextFormatter(textFormatter);
+        vf.valueProperty().bindBidirectional(textFormatter.valueProperty());
 
         hbxRangeHierarchy.getChildren().addAll(spnMutationRange);
 
