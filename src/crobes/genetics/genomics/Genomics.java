@@ -8,12 +8,14 @@ import crobes.genetics.genes.*;
 import crobes.genetics.gui.*;
 import org.reflections.Reflections;
 
+import java.util.Random;
 import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 
 public class Genomics
 {
+    private static Random _random = new Random();
     private static final String FMT_CNFE = "Class not found [%1$s]";
 
     /***
@@ -397,5 +399,46 @@ public class Genomics
         result.domain(gene.dominance());
         result.genoType(gene.genoType());
         return result;
+    }
+
+    /***
+     * Random object for use anywhere.
+     * @return Returns the global; Random object.
+     */
+    public static Random random() {
+        return _random;
+    }
+    /***
+     * Pseudo-randomly reinitializes the global Random object.
+     */
+    public static void randomize() {
+        while (_random.nextInt(100) % 2 == 0);
+
+        long seed = _random.nextLong();
+        _random = new Random(seed);
+    }
+    /***
+     * Generates a pseudo-random integer value within
+     * a specified range, inclusive.
+     * @param low  Lower bound of the range.
+     * @param high Upper bound of the range.
+     * @return Returns a random integer within the range.
+     */
+    public static int getIntRange(int low, int high) {
+        int rng = high - low + 1;
+        return low + _random.nextInt(rng);
+    }
+    /***
+     * Generates a pseudo-random float value within
+     * a specified range, inclusive with a precision
+     * of two decimal places.
+     * @param low  Lower bound of the range.
+     * @param high Upper bound of the range.
+     * @return Return a random float value within the range.
+     */
+    public static float getFltRange(float low, float high) {
+        float rng = high - low;
+        rng = (float)Math.floor(rng * 100.0f) / 100.0f + 0.01f;
+        return low + (float)Math.floor(_random.nextFloat() * rng * 100.0f) / 100.0f;
     }
 }
