@@ -104,7 +104,7 @@ public class CrobeFarm
 
 
     /***
-     * Creates a completely random Crboe from the
+     * Creates a completely random Crobe from the
      * available classes.
      */
     public static Crobe randomCrobe(String designation) {
