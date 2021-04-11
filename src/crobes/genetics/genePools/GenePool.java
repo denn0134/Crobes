@@ -1,6 +1,7 @@
 package crobes.genetics.genePools;
 
 import crobes.core.*;
+import crobes.genetics.genomics.Genomics;
 
 import java.util.ArrayList;
 
@@ -39,4 +40,5 @@ public abstract class GenePool implements IGenePool
     public abstract void initializeRandomDefault();
     public abstract GenePool recombinateGenePool(Crobe crobe, ArrayList<GenePool> genePools);
     public abstract void mutate(int stressLevel);
+    public abstract Genomics.GenePoolRandomizer getRandomizer();
 }

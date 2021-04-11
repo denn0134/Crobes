@@ -7,11 +7,7 @@ import crobes.genetics.genePools.*;
 import crobes.genetics.genes.*;
 import crobes.genetics.gui.*;
 import org.reflections.Reflections;
-
-import java.util.Random;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class Genomics
 {
@@ -234,6 +230,277 @@ public class Genomics
     public static final GenePoolClassRegister<Renderer> renderers = new GenePoolClassRegister<>();
     public static final GeneRegister genes = new GeneRegister();
 
+    //gene randomizer classes
+    public static final class GeneRange<V>
+    {
+        public V low;
+        public V high;
+
+        public String toJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("{");
+
+            sb.append(Genome.quotedString("low"));
+            sb.append(": ");
+            sb.append(low);
+            sb.append(", ");
+            sb.append(Genome.quotedString("high"));
+            sb.append(": ");
+            sb.append(high);
+
+            sb.append("}");
+
+            return sb.toString();
+        }
+    }
+    public static class GeneRandomizer
+    {
+        public String name;
+        public CrobeEnums.MutationType[] mutationTypes;
+
+        public GeneRandomizer(String geneName) {
+            name = geneName;
+        }
+
+        public String toJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("{");
+
+            sb.append(Genome.quotedString("name"));
+            sb.append(": ");
+            sb.append(Genome.quotedString(name));
+            sb.append(", ");
+
+            sb.append(Genome.quotedString("mutationTypes"));
+            sb.append(": [");
+            if(mutationTypes != null) {
+                if(mutationTypes.length > 0) {
+                    sb.append(Genome.quotedString(mutationTypes[0].name()));
+
+                    for(int i = 1; i < mutationTypes.length; i++) {
+                        sb.append(", ");
+                        sb.append(Genome.quotedString(mutationTypes[i].name()));
+                    }//end for i
+                }//end if
+            }//end if
+            sb.append("]");
+
+            sb.append(domainJson());
+            sb.append(genotypeJson());
+
+            sb.append("}");
+
+            return sb.toString();
+        }
+        public String domainJson() {
+            return "";
+        }
+        public String genotypeJson() {
+            return "";
+        }
+    }
+    public static class IntRandomizer extends GeneRandomizer
+    {
+        public GeneRange<Integer> mutationRange;
+        public GeneRange<Integer> genotype;
+
+        public IntRandomizer(String geneName) {
+            super(geneName);
+            mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.ADJACENT, CrobeEnums.MutationType.SCALAR_DISCREET};
+
+            mutationRange = new GeneRange<Integer>();
+            genotype = new GeneRange<Integer>();
+        }
+
+        @Override
+        public String domainJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(", ");
+            sb.append(Genome.quotedString("mutationRange"));
+            sb.append(": ");
+            sb.append(mutationRange.toJson());
+
+            return sb.toString();
+        }
+
+        @Override
+        public String genotypeJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(", ");
+            sb.append(Genome.quotedString("genotype"));
+            sb.append(": ");
+            sb.append(genotype.toJson());
+
+            return sb.toString();
+        }
+    }
+    public static class FltRandomizer extends GeneRandomizer
+    {
+        public GeneRange<Double> mutationRange;
+        public GeneRange<Double> genotype;
+
+        public FltRandomizer(String geneName) {
+            super(geneName);
+            mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.SCALAR_DISCREET};
+
+            mutationRange = new GeneRange<Double>();
+            genotype = new GeneRange<Double>();
+        }
+
+        @Override
+        public String domainJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(", ");
+            sb.append(Genome.quotedString("mutationRange"));
+            sb.append(": ");
+            sb.append(mutationRange.toJson());
+
+            return sb.toString();
+        }
+
+        @Override
+        public String genotypeJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(", ");
+            sb.append(Genome.quotedString("genotype"));
+            sb.append(": ");
+            sb.append(genotype.toJson());
+
+            return sb.toString();
+        }
+    }
+    public static class BoolRandomizer extends GeneRandomizer
+    {
+        public BoolRandomizer(String geneName) {
+            super(geneName);
+            mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.RANDOM};
+        }
+    }
+    public static class StringRandomizer extends GeneRandomizer
+    {
+        public String[] domain;
+
+        public StringRandomizer(String geneName) {
+            super(geneName);
+            mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.ADJACENT, CrobeEnums.MutationType.RANDOM};
+        }
+
+        @Override
+        public String domainJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(", ");
+            sb.append(Genome.quotedString("domain"));
+            sb.append(": ");
+
+            if((domain != null) && (domain.length > 0)) {
+                sb.append("[");
+                sb.append(Genome.quotedString(domain[0]));
+                for(int i = 1; i < domain.length; i++) {
+                    sb.append(", ");
+                    sb.append(Genome.quotedString(domain[i]));
+                }//end for i
+                sb.append("]");
+            }//end if
+            else {
+                sb.append("null");
+            }//end else
+
+            return sb.toString();
+        }
+    }
+    public static class EnumRandomizer extends GeneRandomizer
+    {
+        public float domainChance;
+        public Enum[] domain;
+
+        public EnumRandomizer(String geneName) {
+            super(geneName);
+            mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.ADJACENT, CrobeEnums.MutationType.RANDOM};
+        }
+
+        @Override
+        public String domainJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(", ");
+            sb.append(Genome.quotedString("domainChance"));
+            sb.append(": ");
+            sb.append(domainChance);
+
+            if(domain != null) {
+                sb.append(", ");
+                sb.append(Genome.quotedString("domain"));
+                sb.append(": [");
+                if(domain.length > 0) {
+                    sb.append(Genome.quotedString(domain[0].name()));
+                    for(int i = 1; i < domain.length; i++) {
+                        sb.append(", ");
+                        sb.append(Genome.quotedString(domain[i].name()));
+                    }//end for i
+                }//end if
+                sb.append("]");
+            }//end if
+
+            return sb.toString();
+        }
+    }
+    public static final class GenePoolRandomizer
+    {
+        private ArrayList<GeneRandomizer> genes;
+        public GeneRandomizer findByName(String name) {
+            GeneRandomizer result = null;
+            for(int i = 0; i < genes.size(); i++) {
+                if(name.equalsIgnoreCase(genes.get(i).name)) {
+                    result = genes.get(i);
+                    break;
+                }//end if
+            }//end for i
+
+            return result;
+        }
+        public void add(GeneRandomizer randomizer) {
+            genes.add(randomizer);
+        }
+
+        public GenePoolRandomizer() {
+            genes = new ArrayList<GeneRandomizer>();
+        }
+
+        public String toJson() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("{");
+
+            sb.append(Genome.quotedString("genes"));
+            sb.append(": [");
+
+            if(genes.size() > 0)
+                sb.append(genes.get(0).toJson());
+
+            for(int i = 1; i < genes.size(); i++) {
+                sb.append(", ");
+                sb.append(genes.get(i).toJson());
+            }//end for i
+
+            sb.append("]");
+
+            sb.append("}");
+
+            return sb.toString();
+        }
+
+        public String toString() {
+            return toJson();
+        }
+    }
+
     //class register static classes
     public static class GenePoolInfo
     {
@@ -241,6 +508,7 @@ public class Genomics
         public String displayName;
         public String taxanomicName;
         public String description;
+        public GenePoolRandomizer randomizer;
     }
     public static class GenePoolRegister
     {
@@ -283,6 +551,7 @@ public class Genomics
                 info.displayName = pool.displayName();
                 info.description = pool.description();
                 info.taxanomicName = pool.getNamePart();
+                info.randomizer = pool.getRandomizer();
 
                 pools.put(genePool.getSimpleName(), info);
             }//end try

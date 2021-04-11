@@ -90,6 +90,50 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
     }
 
     @Override
+    public Genomics.GenePoolRandomizer getRandomizer() {
+        Genomics.GenePoolRandomizer result = new Genomics.GenePoolRandomizer();
+
+        Genomics.EnumRandomizer mot = new Genomics.EnumRandomizer(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE);
+        mot.domain = new Enum[] {CrobeEnums.MotilityType.NON_MOTILE, CrobeEnums.MotilityType.ANCHORED};
+        result.add(mot);
+
+        Genomics.EnumRandomizer mov= new Genomics.EnumRandomizer(CrobeConstants.MOTILITY_GENE_MOVETYPE);
+        mov.domainChance = 1.00f;
+        result.add(mov);
+
+        Genomics.IntRandomizer movBase = new Genomics.IntRandomizer(CrobeConstants.MOTILITY_GENE_MOVEBASE);
+        movBase.mutationRange.low = 1;
+        movBase.mutationRange.high = 1;
+        movBase.genotype.low = 1;
+        movBase.genotype.high = 1;
+        result.add(movBase);
+
+        Genomics.IntRandomizer movRng = new Genomics.IntRandomizer(CrobeConstants.MOTILITY_GENE_MOVERANGE);
+        movRng.mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.ADJACENT};
+        movRng.mutationRange.low = 1;
+        movRng.mutationRange.high = 1;
+        movRng.genotype.low = 1;
+        movRng.genotype.high = 2;
+        result.add(movRng);
+
+        Genomics.FltRandomizer leth = new Genomics.FltRandomizer(CrobeConstants.MOTILITY_GENE_LETHARGY);
+        leth.mutationRange.low = 0.04;
+        leth.mutationRange.high = 0.06;
+        leth.genotype.low = 0.20;
+        leth.genotype.high = 0.40;
+        result.add(leth);
+
+        Genomics.FltRandomizer eff = new Genomics.FltRandomizer(CrobeConstants.MOTILITY_GENE_EFFICIENCY);
+        eff.mutationRange.low = 0.01;
+        eff.mutationRange.high = 0.03;
+        eff.genotype.low = 0.75;
+        eff.genotype.high = 1.00;
+        result.add(eff);
+
+        return result;
+    }
+
+    @Override
     public void initializeRandomDefault() {
         if((_motilityType != null) ||
                 (_moveType != null) ||

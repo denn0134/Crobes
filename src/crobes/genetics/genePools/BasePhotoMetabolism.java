@@ -86,6 +86,57 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
     }
 
     @Override
+    public Genomics.GenePoolRandomizer getRandomizer() {
+        Genomics.GenePoolRandomizer result = new Genomics.GenePoolRandomizer();
+
+        Genomics.IntRandomizer vitality = new Genomics.IntRandomizer(CrobeConstants.METABOLISM_GENE_VITALITY);
+        vitality.mutationRange.low = 3;
+        vitality.mutationRange.high = 4;
+        vitality.genotype.low = 10;
+        vitality.genotype.high = 20;
+        result.add(vitality);
+
+        Genomics.IntRandomizer vitRange = new Genomics.IntRandomizer(CrobeConstants.METABOLISM_GENE_VITALITYRANGE);
+        vitRange.mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.ADJACENT};
+        vitRange.mutationRange.low = 1;
+        vitRange.mutationRange.high = 1;
+        vitRange.genotype.low = 4;
+        vitRange.genotype.high = 6;
+        result.add(vitRange);
+
+        Genomics.FltRandomizer heal = new Genomics.FltRandomizer(CrobeConstants.METABOLISM_GENE_HEALRATE);
+        heal.mutationRange.low = 0.01;
+        heal.mutationRange.high = 0.02;
+        heal.genotype.low = 0.05;
+        heal.genotype.high = 0.15;
+        result.add(heal);
+
+        Genomics.IntRandomizer sta = new Genomics.IntRandomizer(CrobeConstants.METABOLISM_GENE_STAMINA);
+        sta.mutationRange.low = 2;
+        sta.mutationRange.high = 3;
+        sta.genotype.low = 10;
+        sta.genotype.high = 15;
+        result.add(sta);
+
+        Genomics.IntRandomizer stRng = new Genomics.IntRandomizer(CrobeConstants.METABOLISM_GENE_STAMINARANGE);
+        stRng.mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.ADJACENT};
+        stRng.mutationRange.low = 1;
+        stRng.mutationRange.high = 1;
+        stRng.genotype.low = 3;
+        stRng.genotype.high = 5;
+        result.add(stRng);
+
+        Genomics.IntRandomizer mort = new Genomics.IntRandomizer(CrobeConstants.METABOLISM_GENE_MORTALITYRATE);
+        mort.mutationRange.low = 50;
+        mort.mutationRange.high = 100;
+        mort.genotype.low = 900;
+        mort.genotype.high = 1100;
+        result.add(mort);
+
+        return result;
+    }
+
+    @Override
     public void initializeRandomDefault() {
         if ((_vitality != null) ||
                 (_vitalityRange != null) ||

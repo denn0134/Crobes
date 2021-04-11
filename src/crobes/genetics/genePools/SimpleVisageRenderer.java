@@ -66,6 +66,25 @@ public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
     }
 
     @Override
+    public Genomics.GenePoolRandomizer getRandomizer() {
+        Genomics.GenePoolRandomizer result = new Genomics.GenePoolRandomizer();
+
+        Genomics.EnumRandomizer skn = new Genomics.EnumRandomizer(CrobeConstants.RENDERER_GENE_SKIN);
+        skn.domainChance = 0.25f;
+        result.add(skn);
+
+        Genomics.StringRandomizer fc = new Genomics.StringRandomizer(CrobeConstants.RENDERER_GENE_FACE);
+        fc.domain = new String[] {"O", "X", "M", "W"};
+        result.add(fc);
+
+        Genomics.EnumRandomizer bod = new Genomics.EnumRandomizer(CrobeConstants.RENDERER_GENE_BODY);
+        bod.domainChance = 0.25f;
+        result.add(bod);
+
+        return result;
+    }
+
+    @Override
     public void initializeRandomDefault() {
         if((_skin != null) ||
                 (_face != null) ||

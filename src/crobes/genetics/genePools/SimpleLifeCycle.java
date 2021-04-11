@@ -258,6 +258,38 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
     }
 
     @Override
+    public Genomics.GenePoolRandomizer getRandomizer() {
+        Genomics.GenePoolRandomizer result = new Genomics.GenePoolRandomizer();
+
+        Genomics.IntRandomizer span = new Genomics.IntRandomizer(CrobeConstants.LIFECYCLE_GENE_SPAN);
+        span.mutationRange.low = 4;
+        span.mutationRange.high = 6;
+        span.genotype.low = 15;
+        span.genotype.high = 30;
+        result.add(span);
+
+        Genomics.IntRandomizer spanRange = new Genomics.IntRandomizer(CrobeConstants.LIFECYCLE_GENE_SPANRANGE);
+        spanRange.mutationTypes = new CrobeEnums.MutationType[] {CrobeEnums.MutationType.ADJACENT};
+        spanRange.mutationRange.low = 1;
+        spanRange.mutationRange.high = 1;
+        spanRange.genotype.low = 4;
+        spanRange.genotype.high = 6;
+        result.add(spanRange);
+
+        Genomics.FltRandomizer maturity = new Genomics.FltRandomizer(CrobeConstants.LIFECYCLE_GENE_MATURITY);
+        maturity.mutationRange.low = 0.04;
+        maturity.mutationRange.high = 0.06;
+        maturity.genotype.low = 0.20;
+        maturity.genotype.high = 0.30;
+        result.add(maturity);
+
+        Genomics.BoolRandomizer finite = new Genomics.BoolRandomizer(CrobeConstants.LIFECYCLE_GENE_FINITE);
+        result.add(finite);
+
+        return result;
+    }
+
+    @Override
     public String toString() {
         return String.format(TS_FMT,
                 _span.toString(), _spanRange.toString(),
