@@ -62,7 +62,10 @@ public class GenomeEnum extends GenomeValue
         sb.append("], ");
         sb.append(Genome.quotedString("enumClass"));
         sb.append(": ");
-        sb.append(Genome.quotedString(_enumClass.getSimpleName()));
+        if(_enumClass != null)
+            sb.append(Genome.quotedString(_enumClass.getSimpleName()));
+        else
+            sb.append("null");
 
         return sb.toString();
     }
