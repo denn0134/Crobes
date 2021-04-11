@@ -68,6 +68,12 @@ public class GeneEditor extends GridPane
 
         chkRandom = new CheckBox();
         chkRandom.setSelected(false);
+        chkRandom.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                _genomeGene.random = newValue;
+            }
+        });
         add(chkRandom, 1, 0);
 
         ObservableList<String> mtList = FXCollections.observableArrayList();
