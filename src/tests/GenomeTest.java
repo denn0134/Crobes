@@ -168,10 +168,18 @@ public class GenomeTest extends Application
         Genome genome = new Genome();
         Genome result = Sequencer.sequenceGenome(genome, true, parent);
 
-        if(result != null)
+        if(result != null) {
+            System.out.println("Pre Randomization");
             System.out.println(genome.toString());
-        else
+
+            Genomics.randomizeGenome(genome);
+
+            System.out.println("Randomized");
+            System.out.println(genome.toString());
+        }//end if
+        else {
             System.out.println("Cancelled by user");
+        }//end else
     }
 
     private void inspectGenome(Stage parent) {

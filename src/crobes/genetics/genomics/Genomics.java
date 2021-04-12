@@ -91,6 +91,10 @@ public class Genomics
      */
     public static Genome extractGenome(Crobe crobe) {
         Genome genome = new Genome();
+        genome.lifeCycle().initRandom(false);
+        genome.metabolism().initRandom(false);
+        genome.motility().initRandom(false);
+        genome.renderer().initRandom(false);
 
         ILifeCycleGenePool clc = crobe.lifeCycle();
         GenomeLifeCycle glc = genome.lifeCycle();
@@ -130,6 +134,136 @@ public class Genomics
         return genome;
     }
 
+    public static Genome randomizeGenome(Genome genome) {
+        GenomeGene gene;
+        GenePoolInfo info;
+
+        //life cycle
+        GenomeLifeCycle lc = genome.lifeCycle();
+        if(lc.genePool == null) {
+            String[] lcs = lifeCycles.getGenePools();
+            lc.genePool = lcs[random().nextInt(lcs.length)];
+        }//end if
+        info = getGenePoolInfo(lc.genePool);
+
+        //span
+        gene = lc.getGene(CrobeConstants.LIFECYCLE_GENE_SPAN);
+        if (gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+        //span range
+        gene = lc.getGene(CrobeConstants.LIFECYCLE_GENE_SPANRANGE);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+        //maturity
+        gene = lc.getGene(CrobeConstants.LIFECYCLE_GENE_MATURITY);
+        if(gene.random)
+            randomizeFlt(gene, info.randomizer.findByName(gene.name));
+        //finite
+        gene = lc.getGene(CrobeConstants.LIFECYCLE_GENE_FINITE);
+        if(gene.random)
+            randomizeBool(gene, info.randomizer.findByName(gene.name));
+
+        //metabolism
+        GenomeMetabolism mb = genome.metabolism();
+        if(mb.genePool == null) {
+            String[] mbs = metabolisms.getGenePools();
+            mb.genePool = mbs[random().nextInt(mbs.length)];
+        }//end if
+        info = getGenePoolInfo(mb.genePool);
+
+        //vitality
+        gene = mb.getGene(CrobeConstants.METABOLISM_GENE_VITALITY);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+
+        //vitality range
+        gene = mb.getGene(CrobeConstants.METABOLISM_GENE_VITALITYRANGE);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+
+        //heal rate
+        gene = mb.getGene(CrobeConstants.METABOLISM_GENE_HEALRATE);
+        if(gene.random)
+            randomizeFlt(gene, info.randomizer.findByName(gene.name));
+
+        //stamina
+        gene = mb.getGene(CrobeConstants.METABOLISM_GENE_STAMINA);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+
+        //stamina range
+        gene = mb.getGene(CrobeConstants.METABOLISM_GENE_STAMINARANGE);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+
+        //mortality rate
+        gene = mb.getGene(CrobeConstants.METABOLISM_GENE_MORTALITYRATE);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+
+        //motility
+        GenomeMotility mt = genome.motility();
+        if(mt.genePool == null) {
+            String[] mts = motilities.getGenePools();
+            mt.genePool = mts[random().nextInt(mts.length)];
+        }//end if
+        info = getGenePoolInfo(mt.genePool);
+
+        //motility type
+        gene = mt.getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE);
+        if(gene.random)
+            randomizeEnum(gene, info.randomizer.findByName(gene.name));
+
+        //movement type
+        gene = mt.getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE);
+        if(gene.random)
+            randomizeEnum(gene, info.randomizer.findByName(gene.name));
+
+        //move base
+        gene = mt.getGene(CrobeConstants.MOTILITY_GENE_MOVEBASE);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+
+        //move range
+        gene = mt.getGene(CrobeConstants.MOTILITY_GENE_MOVERANGE);
+        if(gene.random)
+            randomizeInt(gene, info.randomizer.findByName(gene.name));
+
+        //lethargy
+        gene = mt.getGene(CrobeConstants.MOTILITY_GENE_LETHARGY);
+        if(gene.random)
+            randomizeFlt(gene, info.randomizer.findByName(gene.name));
+
+        //efficiency
+        gene = mt.getGene(CrobeConstants.MOTILITY_GENE_EFFICIENCY);
+        if(gene.random)
+            randomizeFlt(gene, info.randomizer.findByName(gene.name));
+
+        //renderer
+        GenomeRenderer rd = genome.renderer();
+        if(rd.genePool == null) {
+            String[] rds = renderers.getGenePools();
+            rd.genePool = rds[random().nextInt(rds.length)];
+        }//end if
+        info = getGenePoolInfo(rd.genePool);
+
+        //skin
+        gene = rd.getGene(CrobeConstants.RENDERER_GENE_SKIN);
+        if(gene.random)
+            randomizeEnum(gene, info.randomizer.findByName(gene.name));
+
+        //face
+        gene = rd.getGene(CrobeConstants.RENDERER_GENE_FACE);
+        if(gene.random)
+            randomizeString(gene, info.randomizer.findByName(gene.name));
+
+        //body
+        gene = rd.getGene(CrobeConstants.RENDERER_GENE_BODY);
+        if(gene.random)
+            randomizeEnum(gene, info.randomizer.findByName(gene.name));
+
+        return genome;
+    }
 
     /***
      * Searches all of the gene pool registers for the
@@ -709,5 +843,136 @@ public class Genomics
         float rng = high - low;
         rng = (float)Math.floor(rng * 100.0f) / 100.0f + 0.01f;
         return low + (float)Math.floor(_random.nextFloat() * rng * 100.0f) / 100.0f;
+    }
+
+    private static void randomizeInt(GenomeGene gene, GeneRandomizer rand) {
+        IntRandomizer rInt = (IntRandomizer) rand;
+        GenomeInt gInt = (GenomeInt) gene.geneValue;
+
+        gInt.mutationType(rInt.mutationTypes[random().nextInt(rInt.mutationTypes.length)]);
+
+        gInt.mutationRange(getIntRange(rInt.mutationRange.low, rInt.mutationRange.high));
+
+        int[] gt = new int[2];
+        gt[0] = getIntRange(rInt.genotype.low, rInt.genotype.high);
+        gt[1] = getIntRange(rInt.genotype.low, rInt.genotype.high);
+        gInt.genoType(gt);
+
+        gene.random = false;
+    }
+    private static void randomizeFlt(GenomeGene gene, GeneRandomizer rand) {
+        double low, high;
+
+        FltRandomizer rFlt = (FltRandomizer) rand;
+        GenomeFlt gFlt = (GenomeFlt) gene.geneValue;
+
+        gFlt.mutationType(CrobeEnums.MutationType.SCALAR_DISCREET);
+
+        float[] gt = new float[2];
+        low = rFlt.mutationRange.low;
+        high = rFlt.mutationRange.high;
+        gt[0] = getFltRange((float) low, (float) high);
+        gt[1] = getFltRange((float) low, (float) high);
+        gFlt.genoType(gt);
+
+        gene.random = false;
+    }
+    private static void randomizeBool(GenomeGene gene, GeneRandomizer rand) {
+        BoolRandomizer rBool = (BoolRandomizer) rand;
+        GenomeBool gBool = (GenomeBool) gene.geneValue;
+
+        gBool.mutationType(CrobeEnums.MutationType.RANDOM);
+
+        boolean[] domain = new boolean[2];
+        domain[0] = (random().nextInt(2) == 0);
+        domain[1] = !domain[0];
+        gBool.domain(domain);
+
+        boolean[] gt = new boolean[2];
+        gt[0] = (random().nextInt(2) == 0);
+        gt[1] = (random().nextInt(2) == 0);
+        gBool.genoType(gt);
+
+        gene.random = false;
+    }
+    private static void randomizeString(GenomeGene gene, GeneRandomizer rand) {
+        int index, i;
+
+        StringRandomizer rString = (StringRandomizer) rand;
+        GenomeString gString = (GenomeString) gene.geneValue;
+
+        gString.mutationType(rString.mutationTypes[_random.nextInt(rString.mutationTypes.length)]);
+
+        gString.domain(new String[rString.domain.length]);
+        ArrayList<String> dom = new ArrayList<>();
+        for(String s: rString.domain)
+            dom.add(s);
+
+        i = 0;
+        while (dom.size() > 0) {
+            index = random().nextInt(dom.size());
+            gString.domain()[i++] = dom.get(index);
+            dom.remove(index);
+        }//end while
+
+        String[] gt = new String[2];
+        gt[0] = gString.domain()[random().nextInt(gString.domain().length)];
+        gt[1] = gString.domain()[random().nextInt(gString.domain().length)];
+
+        gene.random = false;
+    }
+    private static void randomizeEnum(GenomeGene gene, GeneRandomizer rand) {
+        int index, i;
+        float roll;
+
+        EnumRandomizer rEnum = (EnumRandomizer) rand;
+        GenomeEnum gEnum = (GenomeEnum) gene.geneValue;
+
+        gEnum.mutationType(rEnum.mutationTypes[random().nextInt(rEnum.mutationTypes.length)]);
+
+        if(rEnum.domain != null) {
+            gEnum.domain(new Enum[rEnum.domain.length]);
+            ArrayList<Enum> dom = new ArrayList<>();
+            for(Enum e: rEnum.domain)
+                dom.add(e);
+
+            i = 0;
+            while(dom.size() > 0) {
+                index = random().nextInt(dom.size());
+                gEnum.domain()[i++] = dom.get(index);
+                dom.remove(index);
+            }//end while
+        }//end if
+        else {
+            ArrayList<Enum> domArray = new ArrayList<>();
+            Enum[] dom = gEnum.enumClass().getEnumConstants();
+
+            while (domArray.size() == 0) {
+                for (Enum e : dom) {
+                    roll = random().nextFloat();
+                    if (roll < rEnum.domainChance)
+                        domArray.add(e);
+                }//end for each
+            }//end while
+
+            ArrayList<Enum> rndArray = new ArrayList<>();
+            while (domArray.size() > 0) {
+                int idx = random().nextInt(domArray.size());
+                rndArray.add(domArray.get(idx));
+                domArray.remove(idx);
+            }//end while
+
+            i = 0;
+            gEnum.domain(new Enum[rndArray.size()]);
+            for(Enum e: rndArray)
+                gEnum.domain()[i++] = e;
+        }//end else
+
+        Enum[] gt = new Enum[2];
+        gt[0] = gEnum.domain()[random().nextInt(gEnum.domain().length)];
+        gt[1] = gEnum.domain()[random().nextInt(gEnum.domain().length)];
+        gEnum.genoType(gt);
+
+        gene.random = false;
     }
 }
