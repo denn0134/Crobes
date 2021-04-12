@@ -14,7 +14,7 @@ public class GenomeGene
 
     public GenomeGene(String geneName, String type) {
         name = geneName;
-        random = false;
+        random = true;
         geneType = type;
         geneValue = Genomics.createGenomeValue(type);
     }

@@ -49,6 +49,11 @@ public abstract class GenomePool
         _genes = new ArrayList<GenomeGene>();
     }
 
+    public void initRandom(boolean randomize) {
+        for(GenomeGene g: _genes)
+            g.random = randomize;
+    }
+
     public String getTaxa() {
         Genomics.GenePoolInfo gpi = Genomics.getGenePoolInfo(genePool);
         if(gpi != null)
