@@ -98,7 +98,7 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
         result.add(mot);
 
         Genomics.EnumRandomizer mov= new Genomics.EnumRandomizer(CrobeConstants.MOTILITY_GENE_MOVETYPE);
-        mov.domainChance = 1.00f;
+        mov.domainChance = 0.50f;
         result.add(mov);
 
         Genomics.IntRandomizer movBase = new Genomics.IntRandomizer(CrobeConstants.MOTILITY_GENE_MOVEBASE);
