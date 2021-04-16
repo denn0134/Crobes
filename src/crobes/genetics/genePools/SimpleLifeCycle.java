@@ -61,17 +61,29 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
     public ScalarGeneInt span() {
         return _span;
     }
+    @Override
+    public void span(ScalarGeneInt value) {
+        _span = value;
+    }
 
     private ScalarGeneInt _spanRange;
     @Override
     public ScalarGeneInt spanRange() {
         return _spanRange;
     }
+    @Override
+    public void spanRange(ScalarGeneInt value) {
+        _spanRange = value;
+    }
 
     private ScalarGeneFlt _maturity;
     @Override
     public ScalarGeneFlt maturity() {
         return _maturity;
+    }
+    @Override
+    public void maturity(ScalarGeneFlt value) {
+        _maturity = value;
     }
 
     private HeritableGeneBool _finite;

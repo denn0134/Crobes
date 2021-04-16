@@ -1,5 +1,7 @@
 package crobes.core;
 
+import crobes.genetics.genomics.Genomics;
+
 import java.util.ArrayList;
 
 public class World
@@ -25,6 +27,7 @@ public class World
     }
 
     public World(int environmentalRadix) {
+        Genomics.initializeGenomics();
         _age = 0;
         _factors = new ArrayList<Factor>();
         _environment = new Environment(environmentalRadix);

@@ -134,6 +134,12 @@ public class Genomics
         return genome;
     }
 
+    /***
+     * Randomizes all genes in a Genome which are marked
+     * as requiring randomization.
+     * @param genome The Genome to randomize.
+     * @return Returns the randomized Genome.
+     */
     public static Genome randomizeGenome(Genome genome) {
         GenomeGene gene;
         GenePoolInfo info;
@@ -263,6 +269,118 @@ public class Genomics
             randomizeEnum(gene, info.randomizer.findByName(gene.name));
 
         return genome;
+    }
+
+    /***
+     * Creates a new Crobe from a Genome object.  The
+     * Genome will be randomized prior to creating the
+     * Crobe if required.
+     * @param genome Genome object defining the genitic
+     *               makeup of the Crobe.
+     * @param designation Designation of the Crobe.
+     * @return Returns the new Crobe.
+     */
+    public static Crobe incubateCrobe(Genome genome, String designation) {
+        GenomeInt gInt;
+        GenomeFlt gFlt;
+        GenomeBool gBool;
+        GenomeEnum gEnum;
+        GenomeString gString;
+
+        Crobe crobe = new Crobe(designation);
+
+        //check if the Genome require randomization
+        if(genome.randomizable())
+            randomizeGenome(genome);
+
+        //build the life cycle
+        GenomePool lcp = genome.lifeCycle();
+        ILifeCycleGenePool lc = lifeCycles.createGenePool(lcp.genePool, crobe);
+        crobe.lifeCycle(lc);
+
+        gInt = (GenomeInt) lcp.getGene(CrobeConstants.LIFECYCLE_GENE_SPAN).geneValue;
+        lc.span(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gInt = (GenomeInt) lcp.getGene(CrobeConstants.LIFECYCLE_GENE_SPANRANGE).geneValue;
+        lc.spanRange(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gFlt = (GenomeFlt) lcp.getGene(CrobeConstants.LIFECYCLE_GENE_MATURITY).geneValue;
+        lc.maturity(new ScalarGeneFlt(gFlt.genoType(),
+                gFlt.mutationRange()));
+        gBool = (GenomeBool) lcp.getGene(CrobeConstants.LIFECYCLE_GENE_FINITE).geneValue;
+        lc.finite(new HeritableGeneBool(gBool.genoType(),
+                gBool.domain(), gBool.mutationType()));
+
+        //build the metabolism
+        GenomePool mbp = genome.metabolism();
+        IMetabolicGenePool mb = metabolisms.createGenePool(genome.metabolism().genePool, crobe);
+        crobe.metabolism(mb);
+
+        gInt = (GenomeInt) mbp.getGene(CrobeConstants.METABOLISM_GENE_VITALITY).geneValue;
+        mb.vitality(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gInt = (GenomeInt) mbp.getGene(CrobeConstants.METABOLISM_GENE_VITALITYRANGE).geneValue;
+        mb.vitalityRange(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gFlt = (GenomeFlt) mbp.getGene(CrobeConstants.METABOLISM_GENE_HEALRATE).geneValue;
+        mb.healRate(new ScalarGeneFlt(gFlt.genoType(),
+                gFlt.mutationRange()));
+        gInt = (GenomeInt) mbp.getGene(CrobeConstants.METABOLISM_GENE_STAMINA).geneValue;
+        mb.stamina(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gInt = (GenomeInt) mbp.getGene(CrobeConstants.METABOLISM_GENE_STAMINARANGE).geneValue;
+        mb.staminaRange(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gInt = (GenomeInt) mbp.getGene(CrobeConstants.METABOLISM_GENE_MORTALITYRATE).geneValue;
+        mb.mortalityRate(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+
+        //build the motility
+        GenomePool mtp = genome.motility();
+        IMotilityGenePool mt = motilities.createGenePool(genome.motility().genePool, crobe);
+        crobe.motility(mt);
+
+        gEnum = (GenomeEnum) mtp.getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE).geneValue;
+        mt.motilityType(new HeritableGeneEnum(gEnum.enumClass(),
+                gEnum.genoType(), gEnum.domain(),
+                gEnum.mutationType()));
+        gEnum = (GenomeEnum) mtp.getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE).geneValue;
+        mt.moveType(new HeritableGeneEnum(gEnum.enumClass(),
+                gEnum.genoType(), gEnum.domain(),
+                gEnum.mutationType()));
+        gInt = (GenomeInt) mtp.getGene(CrobeConstants.MOTILITY_GENE_MOVEBASE).geneValue;
+        mt.moveBase(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gInt = (GenomeInt) mtp.getGene(CrobeConstants.MOTILITY_GENE_MOVERANGE).geneValue;
+        mt.moveRange(new ScalarGeneInt(gInt.genoType(),
+                gInt.mutationType(), gInt.mutationRange()));
+        gFlt = (GenomeFlt) mtp.getGene(CrobeConstants.MOTILITY_GENE_LETHARGY).geneValue;
+        mt.lethargy(new ScalarGeneFlt(gFlt.genoType(),
+                gFlt.mutationRange()));
+        gFlt = (GenomeFlt) mtp.getGene(CrobeConstants.MOTILITY_GENE_EFFICIENCY).geneValue;
+        mt.efficiency(new ScalarGeneFlt(gFlt.genoType(),
+                gFlt.mutationRange()));
+
+        //build renderer
+        GenomePool rdp = genome.renderer();
+        IRenderGenePool rd = renderers.createGenePool(genome.renderer().genePool, crobe);
+        crobe.renderer(rd);
+
+        gEnum = (GenomeEnum) rdp.getGene(CrobeConstants.RENDERER_GENE_SKIN).geneValue;
+        rd.skin(new HeritableGeneEnum(gEnum.enumClass(),
+                gEnum.genoType(), gEnum.domain(),
+                gEnum.mutationType()));
+        gString = (GenomeString) rdp.getGene(CrobeConstants.RENDERER_GENE_FACE).geneValue;
+        rd.face(new HeritableGeneString(gString.genoType(),
+                gString.domain(), gString.mutationType()));
+        gEnum = (GenomeEnum) rdp.getGene(CrobeConstants.RENDERER_GENE_BODY).geneValue;
+        rd.body(new HeritableGeneEnum(gEnum.enumClass(),
+                gEnum.genoType(), gEnum.domain(),
+                gEnum.mutationType()));
+
+        crobe.init();
+
+        return crobe;
     }
 
     /***
@@ -868,9 +986,13 @@ public class Genomics
 
         gFlt.mutationType(CrobeEnums.MutationType.SCALAR_DISCREET);
 
-        float[] gt = new float[2];
         low = rFlt.mutationRange.low;
         high = rFlt.mutationRange.high;
+        gFlt.mutationRange(getFltRange((float) low, (float) high));
+
+        float[] gt = new float[2];
+        low = rFlt.genotype.low;
+        high = rFlt.genotype.high;
         gt[0] = getFltRange((float) low, (float) high);
         gt[1] = getFltRange((float) low, (float) high);
         gFlt.genoType(gt);
@@ -918,6 +1040,7 @@ public class Genomics
         String[] gt = new String[2];
         gt[0] = gString.domain()[random().nextInt(gString.domain().length)];
         gt[1] = gString.domain()[random().nextInt(gString.domain().length)];
+        gString.genoType(gt);
 
         gene.random = false;
     }

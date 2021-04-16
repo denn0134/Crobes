@@ -54,11 +54,19 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
     public ScalarGeneInt vitality() {
         return _vitality;
     }
+    @Override
+    public void vitality(ScalarGeneInt value) {
+        _vitality = value;
+    }
 
     private ScalarGeneInt _vitalityRange;
     @Override
     public ScalarGeneInt vitalityRange() {
         return _vitalityRange;
+    }
+    @Override
+    public void vitalityRange(ScalarGeneInt value) {
+        _vitalityRange = value;
     }
 
     private ScalarGeneFlt _healRate;
@@ -66,11 +74,19 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
     public ScalarGeneFlt healRate() {
         return _healRate;
     }
+    @Override
+    public void healRate(ScalarGeneFlt value) {
+        _healRate = value;
+    }
 
     private ScalarGeneInt _stamina;
     @Override
     public ScalarGeneInt stamina() {
         return _stamina;
+    }
+    @Override
+    public void stamina(ScalarGeneInt value) {
+        _stamina = value;
     }
 
     private ScalarGeneInt _staminaRange;
@@ -78,11 +94,19 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
     public ScalarGeneInt staminaRange() {
         return _staminaRange;
     }
+    @Override
+    public void staminaRange(ScalarGeneInt value) {
+        _staminaRange = value;
+    }
 
     private ScalarGeneInt _mortalityRate;
     @Override
     public ScalarGeneInt mortalityRate() {
         return _mortalityRate;
+    }
+    @Override
+    public void mortalityRate(ScalarGeneInt value) {
+        _mortalityRate = value;
     }
 
     @Override

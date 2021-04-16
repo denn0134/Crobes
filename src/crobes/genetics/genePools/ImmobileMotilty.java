@@ -70,11 +70,19 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
     public ScalarGeneInt moveBase() {
         return _moveBase;
     }
+    @Override
+    public void moveBase(ScalarGeneInt value) {
+        _moveBase = value;
+    }
 
     private ScalarGeneInt _moveRange;
     @Override
     public ScalarGeneInt moveRange() {
         return _moveRange;
+    }
+    @Override
+    public void moveRange(ScalarGeneInt value) {
+        _moveRange = value;
     }
 
     private ScalarGeneFlt _lethargy;
@@ -82,11 +90,19 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
     public ScalarGeneFlt lethargy() {
         return _lethargy;
     }
+    @Override
+    public void lethargy(ScalarGeneFlt value) {
+        _lethargy = value;
+    }
 
     private ScalarGeneFlt _efficiency;
     @Override
     public ScalarGeneFlt efficiency() {
         return _efficiency;
+    }
+    @Override
+    public void efficiency(ScalarGeneFlt value) {
+        _efficiency = value;
     }
 
     @Override

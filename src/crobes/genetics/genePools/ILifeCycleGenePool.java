@@ -10,17 +10,20 @@ public interface ILifeCycleGenePool extends IGenePool
      * The base life span of the crobe.
      */
     ScalarGeneInt span();
+    void span(ScalarGeneInt value);
 
     /***
      * The lifespan variability range for the crobe.
      */
     ScalarGeneInt spanRange();
+    void spanRange(ScalarGeneInt value);
 
     /***
      * The maturity age for the crobes expressed as a
      * percentage of the crobe's actual lifespan.
      */
     ScalarGeneFlt maturity();
+    void maturity(ScalarGeneFlt value);
 
     /***
      * Determines whether the crobe has a finite lifespan

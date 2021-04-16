@@ -398,7 +398,9 @@ public class Microscope extends Application
                     return;
                 }//end if
 
-                Crobe c = CrobeFarm.randomCrobe("Rnd");
+                Genome genome = new Genome();
+                Genomics.randomizeGenome(genome);
+                Crobe c = Genomics.incubateCrobe(genome, "Random");
                 c.world(world);
                 world.crobes().add(c);
                 c.position(lens.selection().point());
