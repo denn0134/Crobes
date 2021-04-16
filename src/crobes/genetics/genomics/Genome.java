@@ -43,6 +43,25 @@ public class Genome
                 _renderer.getTaxa());
     }
 
+    public void initRandom(boolean randomize) {
+        _lifeCycle.initRandom(randomize);
+        _metabolism.initRandom(randomize);
+        _motility.initRandom(randomize);
+        _renderer.initRandom(randomize);
+    }
+    public boolean randomizable() {
+        if(_lifeCycle.randomizable())
+            return true;
+        if(_metabolism.randomizable())
+            return true;
+        if(_motility.randomizable())
+            return true;
+        if(_renderer.randomizable())
+            return true;
+
+        return false;
+    }
+
     @Override
     public String toString() {
         return toJson();
