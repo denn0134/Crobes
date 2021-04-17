@@ -67,7 +67,7 @@ public class GeneEditor extends GridPane
         add(txtGeneName, 0, 0);
 
         chkRandom = new CheckBox();
-        chkRandom.setSelected(false);
+        chkRandom.setSelected(gene.random);
         chkRandom.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
