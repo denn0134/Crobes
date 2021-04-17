@@ -3,6 +3,7 @@ package crobes;
 import crobes.core.*;
 import crobes.genetics.genomics.Genome;
 import crobes.genetics.genomics.Genomics;
+import crobes.genetics.gui.Sequencer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -15,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -34,31 +36,12 @@ import java.util.TimerTask;
 public class Microscope extends Application
 {
     //panels
-    private BorderPane root;
-    private BorderPane pnlBottom;
-    private BorderPane pnlTop;
-    private GridPane pnlControls;
-    private BorderPane pnlScope;
-    private BorderPane pnlLocation;
-    private BorderPane pnlCrobeDetail;
+    private VBox root;
 
     //buttons, edits, combos, etc.
-    private Button btnZoomIn;
-    private Button btnZoomOut;
-    private Button btnPanUp;
-    private Button btnPanDown;
-    private Button btnPanLeft;
-    private Button btnPanRight;
-    private ChoiceBox<String> cmbMode;
-    private TextArea txtLocation;
-    private Button btnAddRandom;
-    private Button btnAddCrobe;
-    private TextArea txtCrobeDetail;
-    private RadioButton btnPause;
-    private Button btnStep;
-    private RadioButton btnSlow;
-    private RadioButton btnMedium;
-    private RadioButton btnFast;
+    TextArea txtLocation;
+    TextArea txtCrobeDetail;
+
     private Timer tmrClock;
 
     //microscope objects
@@ -98,22 +81,17 @@ public class Microscope extends Application
 
     @Override
     public void start(Stage primaryStage) {
-        root = new BorderPane();
+        root = new VBox();
 
-        //set up the bottom pane for the info panel
-        configureBottomPane();
-        root.setBottom(pnlBottom);
+        HBox hbxTop = new HBox();
+        initTopPane(hbxTop);
+        VBox.setVgrow(hbxTop, Priority.ALWAYS);
 
-        //set up the top pane for the controls and the scope
-        configureTopPane();
-        root.setCenter(pnlTop);
+        HBox hbxBottom = new HBox();
+        initBottomPane(hbxBottom);
+        VBox.setVgrow(hbxBottom, Priority.NEVER);
 
-        //set up the scope pane including the world and lens
-        world = new World(_radix);
-        world.environment().setAmbience();
-        lens = new Lens(world);
-        lens.mode(Lens.Mode.LIGHT);
-        cmbMode.setValue(lens.mode().name());
+        root.getChildren().addAll(hbxTop, hbxBottom);
 
         ChangeListener<Number> stageResize = (observable, oldValue, newValue) -> {
             refreshLens();
@@ -130,85 +108,141 @@ public class Microscope extends Application
         refreshLens();
     }
 
-    private void configureBottomPane() {
-        pnlBottom = new BorderPane();
-        pnlBottom.setPrefSize(0, 200);
-        BackgroundFill fill = new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY);
-        pnlBottom.setBackground(new Background(fill));
+    private void initTopPane(HBox pane) {
+        //set the background to Tan
+        BackgroundFill fill = new BackgroundFill(Color.TAN, CornerRadii.EMPTY, Insets.EMPTY);
+        pane.setBackground(new Background(fill));
 
-        pnlLocation = new BorderPane();
-        pnlLocation.setPrefSize(200, 0);
+        //control panel
+        VBox vbxControls = new VBox();
+        HBox.setHgrow(vbxControls, Priority.NEVER);
+        buildControls(vbxControls);
+
+        //microscope lens
+        BorderPane pnlScope = new BorderPane();
+        HBox.setHgrow(pnlScope, Priority.ALWAYS);
+        buildScope(pnlScope);
+
+        pane.getChildren().addAll(vbxControls, pnlScope);
+    }
+    private void initBottomPane(HBox pane) {
+        //set the background to Beige
+        BackgroundFill fill = new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY);
+        pane.setBackground(new Background(fill));
+
+        //location report
         txtLocation = new TextArea();
+        txtLocation.setMaxWidth(200);
         txtLocation.setEditable(false);
         txtLocation.setFont(Font.font("monospace", 14));
-        pnlLocation.setCenter(txtLocation);
-        pnlBottom.setLeft(pnlLocation);
+        HBox.setHgrow(txtLocation, Priority.NEVER);
 
-        pnlCrobeDetail = new BorderPane();
+        //crobe detail
         txtCrobeDetail = new TextArea();
         txtCrobeDetail.setEditable(false);
         txtCrobeDetail.setFont(Font.font("monospace", 14));
-        pnlCrobeDetail.setCenter(txtCrobeDetail);
-        pnlBottom.setCenter(pnlCrobeDetail);
-    }
-    private void configureTopPane() {
-        pnlTop = new BorderPane();
-        BackgroundFill fill = new BackgroundFill(Color.TAN, CornerRadii.EMPTY, Insets.EMPTY);
-        pnlTop.setBackground(new Background(fill));
+        HBox.setHgrow(txtCrobeDetail, Priority.ALWAYS);
 
-        //set up the left pane for the controls
-        configureControlPane();
-        pnlTop.setLeft(pnlControls);
-
-        //set up the right pane for the microscope viewer
-        configureScopePane();
-        pnlTop.setCenter(pnlScope);
+        pane.getChildren().addAll(txtLocation, txtCrobeDetail);
     }
 
-    private Button createButton(String text, boolean fill) {
-        Button result = new Button(text);
-        result.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        return result;
-    }
-    private ColumnConstraints createColumn(double pctWidth, boolean fill) {
-        ColumnConstraints result = new ColumnConstraints();
-        result.setPercentWidth(pctWidth);
-        result.setFillWidth(fill);
-        return result;
-    }
-    private RowConstraints createRow(double pctHeight, boolean fill) {
-        RowConstraints result = new RowConstraints();
-        result.setPercentHeight(pctHeight);
-        result.setFillHeight(fill);
-        return result;
-    }
-    private void setToggleButtonSkin(RadioButton rb) {
-        rb.getStyleClass().remove("radio-button");
-        rb.getStyleClass().add("toggle-button");
-    }
-    private void setButtonIcon(Labeled button, String iconResource) {
-        Image img = new Image(getClass().getResourceAsStream(iconResource));
-        button.setGraphic(new ImageView(img));
-    }
-
-    private void configureControlPane() {
-        pnlControls = new GridPane();
-        pnlControls.setPrefSize(200, 0);
-
-        for(int i = 0; i < 3; i++) {
-            pnlControls.getRowConstraints().add(createRow(100.0 / 3.0, false));
-        }//end for i
-
-        BorderPane ctrPaneTop = new BorderPane();
-        GridPane ctrPaneMid = new GridPane();
-        BorderPane ctrPaneBot = new BorderPane();
-
-        //top pane - turn buttons
+    private void buildControls(VBox pane) {
+        //toolbar for simulation speed
         FlowPane pnlSpeedToolbar = new FlowPane();
+        pnlSpeedToolbar.setMaxSize(200, 20);
+        VBox.setVgrow(pnlSpeedToolbar, Priority.NEVER);
+        buildSpeedBar(pnlSpeedToolbar);
+
+        //controls for the environment
+        VBox vbxEnvironment = new VBox();
+        VBox.setVgrow(vbxEnvironment, Priority.ALWAYS);
+        buildEnvironmentControls(vbxEnvironment);
+
+        //pan and zoom controls
+        GridPane pnlPanZoom = new GridPane();
+        pnlPanZoom.setMaxSize(200, 200);
+        VBox.setVgrow(pnlPanZoom, Priority.NEVER);
+        buildPanZoomControls(pnlPanZoom);
+
+        //controls for crobe interaction
+        VBox vbxInteraction = new VBox();
+        VBox.setVgrow(vbxInteraction, Priority.ALWAYS);
+        buildInteractionControls(vbxInteraction);
+
+        pane.getChildren().addAll(pnlSpeedToolbar, vbxEnvironment, pnlPanZoom, vbxInteraction);
+    }
+    private void buildScope(BorderPane pane) {
+        //initialize the world
+        world = new World(_radix);
+        world.environment().setAmbience();
+        lens = new Lens(world);
+        lens.mode(Lens.Mode.LIGHT);
+
+        lensPane = new WebView();
+
+        //set the cursor on the WebView to be a crosshair
+        lensPane.getEngine().getLoadWorker().stateProperty().addListener(
+                (observable, oldState, newState) -> {
+                    if(newState != Worker.State.SUCCEEDED) {
+                        return;
+                    }//end if
+
+                    Document doc = lensPane.getEngine().getDocument();
+                    Element body = (Element)doc.getElementsByTagName("body").item(0);
+                    String style = body.getAttribute("style");
+                    body.setAttribute("style", "cursor: crosshair;" + style);
+                });
+        //set the selection event
+        lensPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //get the x,y clicked
+                double x = event.getX();
+                double y = event.getY();
+
+                //convert the screen coordinates to a mixel
+                int wBase = (int)Math.round(Math.floor(lens.fontSize() / 4 * 2.5)) + 7;
+                int hBase = (int)Math.round(lens.fontSize() / 4 * 1.5) * 3 + 7;
+
+                int mixelX = (int)Math.round(Math.floor((x - wBase) / calcWidthIncrement())) + 1;
+                int mixelY = (int)Math.round(Math.floor((y - hBase) / calcHeightIncrement())) + 2;
+
+                //adjust for the lens origin
+                mixelX += lens.origin().x - 1;
+                mixelY += lens.origin().y - 1;
+
+                //set the mixel location as selected
+                Location mixel = world.getLocation(mixelX, mixelY);
+                if(lens.selection() == null) {
+                    if(mixel != null) {
+                        lens.selection(mixel);
+                        mixel.selected(true);
+                    }//end if
+                }//end if
+                else {
+                    //deselect the current selection
+                    Location current = lens.selection();
+                    current.selected(false);
+                    lens.selection(null);
+
+                    if((mixel != null) && (mixel != current)) {
+                        lens.selection(mixel);
+                        mixel.selected(true);
+                    }//end if
+                }//end else
+
+                setSelectedLocation(lens.selection());
+                refreshLens();
+            }
+        });
+
+        pane.setCenter(lensPane);
+    }
+    private void buildSpeedBar(FlowPane pane) {
         ToggleGroup tglSpeed = new ToggleGroup();
 
         //pause button
-        btnPause = new RadioButton();
+        RadioButton btnPause = new RadioButton();
         setToggleButtonSkin(btnPause);
         setButtonIcon(btnPause, "pause.png");
         btnPause.setTooltip(new Tooltip("Pause simulation"));
@@ -222,7 +256,7 @@ public class Microscope extends Application
         });
 
         //step button
-        btnStep = new Button();
+        Button btnStep = new Button();
         setButtonIcon(btnStep, "step.png");
         btnStep.setTooltip(new Tooltip("Advance one day"));
         btnStep.setOnAction(new EventHandler<ActionEvent>() {
@@ -233,7 +267,7 @@ public class Microscope extends Application
         });
 
         //slow button
-        btnSlow = new RadioButton();
+        RadioButton btnSlow = new RadioButton();
         setToggleButtonSkin(btnSlow);
         setButtonIcon(btnSlow, "slow.png");
         btnSlow.setTooltip(new Tooltip("Slow speed"));
@@ -247,7 +281,7 @@ public class Microscope extends Application
         });
 
         //medium button
-        btnMedium = new RadioButton();
+        RadioButton btnMedium = new RadioButton();
         setToggleButtonSkin(btnMedium);
         setButtonIcon(btnMedium, "medium.png");
         btnMedium.setTooltip(new Tooltip("Medium speed"));
@@ -261,7 +295,7 @@ public class Microscope extends Application
         });
 
         //fast button
-        btnFast = new RadioButton();
+        RadioButton btnFast = new RadioButton();
         setToggleButtonSkin(btnFast);
         setButtonIcon(btnFast, "fast.png");
         btnFast.setTooltip(new Tooltip("Fast speed"));
@@ -274,31 +308,52 @@ public class Microscope extends Application
             }
         });
 
-        pnlSpeedToolbar.getChildren().addAll(btnPause, btnStep, btnSlow, btnMedium, btnFast);
-        pnlTop.setTop(pnlSpeedToolbar);
+        pane.getChildren().addAll(btnPause, btnStep, btnSlow, btnMedium, btnFast);
+    }
+    private void buildEnvironmentControls(VBox pane) {
+        //environment mode
+        Label lblEvironmentMode = new Label("Environment Mode");
 
-        //middle pane - pan and zoom buttons
-        ctrPaneMid.getColumnConstraints().add(createColumn(100.0 / 3.0, true));
-        ctrPaneMid.getColumnConstraints().add(createColumn(100.0 / 6.0, true));
-        ctrPaneMid.getColumnConstraints().add(createColumn(100.0 / 6.0, true));
-        ctrPaneMid.getColumnConstraints().add(createColumn(100.0 / 3.0, true));
+        ChoiceBox<String> cmbMode = new ChoiceBox<>();
+        for(Lens.Mode mode : Lens.Mode.values()) {
+            cmbMode.getItems().add(mode.name());
+        }//end for mode
+        cmbMode.setMaxWidth(Double.MAX_VALUE);
+        cmbMode.setValue(Lens.Mode.LIGHT.name());
+
+        ChangeListener<String> cmbModeChange = (observable, oldValue, newValue) -> {
+            if(!newValue.equalsIgnoreCase(oldValue)) {
+                lens.mode(Lens.Mode.valueOf(newValue));
+                refreshLens();
+            }//end if
+        };
+        cmbMode.valueProperty().addListener(cmbModeChange);
+
+        pane.getChildren().addAll(lblEvironmentMode, cmbMode);
+    }
+    private void buildPanZoomControls(GridPane pane) {
+        //pan and zoom buttons
+        pane.getColumnConstraints().add(createColumn(100.0 / 3.0, true));
+        pane.getColumnConstraints().add(createColumn(100.0 / 6.0, true));
+        pane.getColumnConstraints().add(createColumn(100.0 / 6.0, true));
+        pane.getColumnConstraints().add(createColumn(100.0 / 3.0, true));
 
         for(int i = 0; i < 3; i++) {
-            ctrPaneMid.getRowConstraints().add(createRow(100.0 / 3.0, true));
+            pane.getRowConstraints().add(createRow(100.0 / 3.0, true));
         }//end for i
 
-        btnPanUp = createButton("UP", true);
-        ctrPaneMid.add(btnPanUp, 1, 0, 2, 1);
-        btnPanLeft = createButton("<", true);
-        ctrPaneMid.add(btnPanLeft, 0, 1, 1, 1);
-        btnZoomIn = createButton("+", true);
-        ctrPaneMid.add(btnZoomIn, 1, 1, 1, 1);
-        btnZoomOut = createButton("-", true);
-        ctrPaneMid.add(btnZoomOut, 2, 1, 1, 1);
-        btnPanRight = createButton(">", true);
-        ctrPaneMid.add(btnPanRight, 3, 1, 1, 1);
-        btnPanDown = createButton("Down", true);
-        ctrPaneMid.add(btnPanDown, 1, 2, 2, 1);
+        Button btnPanUp = createButton("˄", true);
+        pane.add(btnPanUp, 1, 0, 2, 1);
+        Button btnPanLeft = createButton("<", true);
+        pane.add(btnPanLeft, 0, 1, 1, 1);
+        Button btnZoomIn = createButton("+", true);
+        pane.add(btnZoomIn, 1, 1, 1, 1);
+        Button btnZoomOut = createButton("-", true);
+        pane.add(btnZoomOut, 2, 1, 1, 1);
+        Button btnPanRight = createButton(">", true);
+        pane.add(btnPanRight, 3, 1, 1, 1);
+        Button btnPanDown = createButton("˅", true);
+        pane.add(btnPanDown, 1, 2, 2, 1);
 
         btnZoomIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -365,26 +420,9 @@ public class Microscope extends Application
         btnPanDown.setOnAction(panClick);
         btnPanLeft.setOnAction(panClick);
         btnPanRight.setOnAction(panClick);
-
-        //bottom pane - mode dropdown and add crobe buttons
-        VBox vb = new VBox();
-
-        Label label = new Label("Environment Mode");
-
-        cmbMode = new ChoiceBox<>();
-        for(Lens.Mode mode : Lens.Mode.values()) {
-            cmbMode.getItems().add(mode.name());
-        }//end for mode
-
-        ChangeListener<String> cmbModeChange = (observable, oldValue, newValue) -> {
-            if(!newValue.equalsIgnoreCase(oldValue)) {
-                lens.mode(Lens.Mode.valueOf(newValue));
-                refreshLens();
-            }//end if
-        };
-        cmbMode.valueProperty().addListener(cmbModeChange);
-
-        btnAddRandom = new Button("Add Random");
+    }
+    private void buildInteractionControls(VBox pane) {
+        Button btnAddRandom = new Button("Add Crobe");
         btnAddRandom.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -398,97 +436,51 @@ public class Microscope extends Application
                     return;
                 }//end if
 
-                Genome genome = new Genome();
-                Genomics.randomizeGenome(genome);
-                Crobe c = Genomics.incubateCrobe(genome, "Random");
-                c.world(world);
-                world.crobes().add(c);
-                c.position(lens.selection().point());
-                txtCrobeDetail.setText(c.toString());
-                refreshLens();
-            }
-        });
-
-        btnAddCrobe = new Button("Genome");
-        btnAddCrobe.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(lens.selection().crobe() != null) {
-                    Genome genome = Genomics.extractGenome(lens.selection().crobe());
-                    System.out.println(genome.toString());
+                Genome genome = Sequencer.sequenceGenome(new Genome(), true, (Stage) root.getScene().getWindow());
+                if(genome != null) {
+                    Genomics.randomizeGenome(genome);
+                    Crobe c = Genomics.incubateCrobe(genome, "Random");
+                    c.world(world);
+                    world.crobes().add(c);
+                    c.position(lens.selection().point());
+                    txtCrobeDetail.setText(c.toString());
+                    refreshLens();
                 }//end if
             }
         });
 
-        vb.getChildren().addAll(label, cmbMode, btnAddRandom, btnAddCrobe);
-        ctrPaneBot.setCenter(vb);
+        pane.getChildren().addAll(btnAddRandom);
 
-        pnlControls.add(ctrPaneTop, 0, 0);
-        pnlControls.add(ctrPaneMid, 0, 1);
-        pnlControls.add(ctrPaneBot, 0, 2);
     }
-    private void configureScopePane() {
-        pnlScope = new BorderPane();
-        lensPane = new WebView();
 
-        //set the cursor on the WebView to be a crosshair
-        lensPane.getEngine().getLoadWorker().stateProperty().addListener(
-                (observable, oldState, newState) -> {
-                    if(newState != Worker.State.SUCCEEDED) {
-                        return;
-                    }//end if
 
-                    Document doc = lensPane.getEngine().getDocument();
-                    Element body = (Element)doc.getElementsByTagName("body").item(0);
-                    String style = body.getAttribute("style");
-                    body.setAttribute("style", "cursor: crosshair;" + style);
-                });
-        //set the selection event
-        lensPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                //get the x,y clicked
-                double x = event.getX();
-                double y = event.getY();
 
-                //convert the screen coordinates to a mixel
-                int wBase = (int)Math.round(Math.floor(lens.fontSize() / 4 * 2.5)) + 7;
-                int hBase = (int)Math.round(lens.fontSize() / 4 * 1.5) * 3 + 7;
-
-                int mixelX = (int)Math.round(Math.floor((x - wBase) / calcWidthIncrement())) + 1;
-                int mixelY = (int)Math.round(Math.floor((y - hBase) / calcHeightIncrement())) + 2;
-
-                //adjust for the lens origin
-                mixelX += lens.origin().x - 1;
-                mixelY += lens.origin().y - 1;
-
-                //set the mixel location as selected
-                Location mixel = world.getLocation(mixelX, mixelY);
-                if(lens.selection() == null) {
-                    if(mixel != null) {
-                        lens.selection(mixel);
-                        mixel.selected(true);
-                    }//end if
-                }//end if
-                else {
-                    //deselect the current selection
-                    Location current = lens.selection();
-                    current.selected(false);
-                    lens.selection(null);
-
-                    if((mixel != null) && (mixel != current)) {
-                        lens.selection(mixel);
-                        mixel.selected(true);
-                    }//end if
-                }//end else
-
-                setSelectedLocation(lens.selection());
-                refreshLens();
-            }
-        });
-
-        pnlScope.setCenter(lensPane);
+    private Button createButton(String text, boolean fill) {
+        Button result = new Button(text);
+        result.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        return result;
     }
+    private ColumnConstraints createColumn(double pctWidth, boolean fill) {
+        ColumnConstraints result = new ColumnConstraints();
+        result.setPercentWidth(pctWidth);
+        result.setFillWidth(fill);
+        return result;
+    }
+    private RowConstraints createRow(double pctHeight, boolean fill) {
+        RowConstraints result = new RowConstraints();
+        result.setPercentHeight(pctHeight);
+        result.setFillHeight(fill);
+        return result;
+    }
+    private void setToggleButtonSkin(RadioButton rb) {
+        rb.getStyleClass().remove("radio-button");
+        rb.getStyleClass().add("toggle-button");
+    }
+    private void setButtonIcon(Labeled button, String iconResource) {
+        Image img = new Image(getClass().getResourceAsStream(iconResource));
+        button.setGraphic(new ImageView(img));
+    }
+
 
     private double calcWidthIncrement() {
         return lens.fontSize() * FONT_WIDTH_COEFFICIENT;
