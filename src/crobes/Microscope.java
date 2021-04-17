@@ -422,8 +422,15 @@ public class Microscope extends Application
         btnPanRight.setOnAction(panClick);
     }
     private void buildInteractionControls(VBox pane) {
-        Button btnAddRandom = new Button("Add Crobe");
-        btnAddRandom.setOnAction(new EventHandler<ActionEvent>() {
+        HBox hbxAdd = new HBox();
+
+        TextField txtDesignation = new TextField();
+        HBox.setHgrow(txtDesignation, Priority.ALWAYS);
+
+        Button btnIncubate = new Button("Incubate");
+        btnIncubate.setMinWidth(80);
+        HBox.setHgrow(btnIncubate, Priority.NEVER);
+        btnIncubate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if(lens.selection() == null) {
@@ -438,8 +445,11 @@ public class Microscope extends Application
 
                 Genome genome = Sequencer.sequenceGenome(new Genome(), true, (Stage) root.getScene().getWindow());
                 if(genome != null) {
+                    String designation = txtDesignation.getText();
+                    txtDesignation.setText("");
+
                     Genomics.randomizeGenome(genome);
-                    Crobe c = Genomics.incubateCrobe(genome, "Random");
+                    Crobe c = Genomics.incubateCrobe(genome, designation);
                     c.world(world);
                     world.crobes().add(c);
                     c.position(lens.selection().point());
@@ -449,12 +459,11 @@ public class Microscope extends Application
             }
         });
 
-        pane.getChildren().addAll(btnAddRandom);
+        hbxAdd.getChildren().addAll(txtDesignation, btnIncubate);
+        pane.getChildren().addAll(hbxAdd);
 
     }
-
-
-
+    
     private Button createButton(String text, boolean fill) {
         Button result = new Button(text);
         result.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
