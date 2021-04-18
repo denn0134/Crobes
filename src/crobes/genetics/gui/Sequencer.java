@@ -87,6 +87,23 @@ public class Sequencer extends Stage
         return result;
     }
 
+    /***
+     * Show the Genome of a Crobe within an editor form
+     * to allow the user to examine/modify the genomic
+     * configuration. The form can allow editing or be set
+     * to read only mode. If in read only mode the method
+     * will return null.
+     * @param crobe The Crobe to sequence.
+     * @param allowEdit Whether to allow editing.
+     * @param parentStage Parent stage for the modal form.
+     * @return Returns the edited Genome object; returns
+     *         null if in read only mode.
+     */
+    public static Genome sequenceCrobe(Crobe crobe, boolean allowEdit, Stage parentStage) {
+        Genome genome = Genomics.extractGenome(crobe);
+        return sequenceGenome(genome, allowEdit, parentStage);
+    }
+
     private BorderPane root;
     private HBox topPane;
     private VBox leftPane;
