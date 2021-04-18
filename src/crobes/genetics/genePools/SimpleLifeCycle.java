@@ -28,7 +28,6 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
         return "Basic child to adult lifecycle.";
     }
 
-    private static final String TS_FMT = "    span: %1$s spanRange: %2$s maturity: %3$s finite: %4$s reproInt: %5$s";
     private static final int SLCGP_ELDER_STRESS = 5;
     private static final int SLCGP_ELDER_DAMAGE = 20;
 
@@ -37,10 +36,6 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
     private static final double RPD_MIN_HEALTH = 0.90f;
     private static final double RPD_CHANCE = 0.50f;
     private static final int RPD_INTERVAL = 5;
-
-    private int reproInterval;
-    private int reproMinEnergy;
-    private int reproMinHealth;
 
     public SimpleLifeCycle() {}
     public SimpleLifeCycle(Crobe crobe) {
@@ -56,6 +51,7 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
         _maturity = maturity;
     }
 
+<<<<<<< HEAD
     @Override
     public void initializeGenePool(int[] span, int[] spanRange, float[] maturity) {
         _span = new ScalarGeneInt(span, CrobeEnums.MutationType.SCALAR_DISCREET);
@@ -64,18 +60,12 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
         reproInterval = 0;
     }
 
+=======
+>>>>>>> 4d42c4f... Refactored the gene pools to be more generic
     @Override
     public void initializeReproduction() {
         reproMinEnergy = (int) Math.round(_crobe.energy() * RPD_ENERGY_PCT);
         reproMinHealth = (int) Math.round(_crobe.health() * RPD_MIN_HEALTH);
-    }
-
-    @Override
-    public void mutate(int stressLevel) {
-        _span.mutate(stressLevel);
-        _spanRange.mutate(stressLevel);
-        _maturity.mutate(stressLevel);
-        _finite.mutate(stressLevel);
     }
 
     @Override
@@ -164,33 +154,6 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
     }
 
     @Override
-    public GenePool recombinateGenePool(Crobe crobe, ArrayList<GenePool> genePools) {
-        SimpleLifeCycle pool = new SimpleLifeCycle(crobe);
-        ArrayList<Gene> sGenes = new ArrayList<Gene>();
-        ArrayList<Gene> srGenes = new ArrayList<Gene>();
-        ArrayList<Gene> mGenes = new ArrayList<Gene>();
-        ArrayList<Gene> fGenes = new ArrayList<Gene>();
-
-        for(GenePool gp : genePools) {
-            SimpleLifeCycle slc = (SimpleLifeCycle) gp;
-            sGenes.add(slc._span);
-            srGenes.add(slc._spanRange);
-            mGenes.add(slc._maturity);
-            fGenes.add(slc._finite);
-        }//end for gp
-
-        pool._span = (ScalarGeneInt) this._span.recombinate(sGenes);
-        pool._spanRange = (ScalarGeneInt) this._spanRange.recombinate(srGenes);
-        pool._maturity = (ScalarGeneFlt) this._maturity.recombinate(mGenes);
-        pool._finite = (HeritableGeneBool) this._finite.recombinate(fGenes);
-        pool.reproInterval = 0;
-
-        pool.initializeGeneNames();
-
-        return pool;
-    }
-
-    @Override
     public void processDeath(CrobeEnums.LifeStage stage) {
         //no special death action
     }
@@ -225,13 +188,5 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
         result.add(finite);
 
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(TS_FMT,
-                _span.toString(), _spanRange.toString(),
-                _maturity.toString(), _finite.toString(),
-                reproInterval);
     }
 }
