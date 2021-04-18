@@ -37,7 +37,6 @@ public abstract class GenePool implements IGenePool
     public abstract String displayName();
     public abstract String getNamePart();
     public abstract String description();
-    public abstract void initializeRandomDefault();
     public abstract GenePool recombinateGenePool(Crobe crobe, ArrayList<GenePool> genePools);
     public abstract void mutate(int stressLevel);
     public abstract Genomics.GenePoolRandomizer getRandomizer();

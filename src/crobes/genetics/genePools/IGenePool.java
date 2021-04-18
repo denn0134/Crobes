@@ -45,12 +45,4 @@ public interface IGenePool
      *                    the carrying parent.
      */
     void mutate(int stressLevel);
-
-    /***
-     * Initializes the gene pool from default ranges
-     * specific to the gene pool class.  This will only
-     * work if the genes are all uninstantiated,
-     * otherwise this does nothing.
-     */
-    void initializeRandomDefault();
 }

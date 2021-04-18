@@ -85,36 +85,6 @@ public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
     }
 
     @Override
-    public void initializeRandomDefault() {
-        if((_skin != null) ||
-                (_face != null) ||
-                (_body != null)) {
-            return;
-        }//end if
-
-        //skin
-        _skin = new HeritableGeneEnum(
-                CrobeEnums.CrobeColor.class,
-                new Enum[] {CrobeEnums.CrobeColor.black, CrobeEnums.CrobeColor.brown},
-                new Enum[] {CrobeEnums.CrobeColor.brown, CrobeEnums.CrobeColor.maroon, CrobeEnums.CrobeColor.black},
-                CrobeEnums.MutationType.RANDOM);
-
-        //face
-        String[] faces = new String[] {"O", "W", "M", "X"};
-        _face = new HeritableGeneString(new String[] {faces[0], faces[3]},
-                faces, CrobeEnums.MutationType.RANDOM);
-
-        //body
-        _body = new HeritableGeneEnum(
-                CrobeEnums.CrobeColor.class,
-                new Enum[] {CrobeEnums.CrobeColor.yellow, CrobeEnums.CrobeColor.yellow},
-                new Enum[] {CrobeEnums.CrobeColor.lightblue, CrobeEnums.CrobeColor.pink, CrobeEnums.CrobeColor.yellow},
-                CrobeEnums.MutationType.RANDOM);
-
-        initializeGeneNames();
-    }
-
-    @Override
     public void renderCrobe(Point location,
                             RenderContext renderContext) {
         renderContext.foreground = (CrobeEnums.CrobeColor) _skin.phenotype();

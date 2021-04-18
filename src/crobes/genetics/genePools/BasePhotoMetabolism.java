@@ -161,53 +161,6 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
     }
 
     @Override
-    public void initializeRandomDefault() {
-        if ((_vitality != null) ||
-                (_vitalityRange != null) ||
-                (_healRate != null) ||
-                (_stamina != null) ||
-                (_staminaRange != null) ||
-                (_mortalityRate != null)) {
-            return;
-        }
-
-        //vitality  10-20
-        int int1 = getIntRange(10, 20);
-        int int2 = getIntRange(10, 20);
-        _vitality = new ScalarGeneInt(new int[] {int1, int2},
-                CrobeEnums.MutationType.SCALAR_DISCREET,
-                4);
-
-        //vitalityRange 5
-        _vitalityRange = new ScalarGeneInt(new int[] {5, 5},
-                CrobeEnums.MutationType.ADJACENT);
-
-        //healRate 5% - 15%
-        float flt1 = getFloatRange(0.05f, 0.15f);
-        float flt2 = getFloatRange(0.05f, 0.15f);
-        _healRate = new ScalarGeneFlt(new float[] {flt1, flt2},
-                0.01f);
-
-        //stamina 10-15
-        int1 = getIntRange(10, 15);
-        int2 = getIntRange(10, 15);
-        _stamina = new ScalarGeneInt(new int[] {int1, int2},
-                CrobeEnums.MutationType.SCALAR_DISCREET,
-                3);
-
-        //staminaRange 4
-        _staminaRange = new ScalarGeneInt(new int[] {4, 4},
-                CrobeEnums.MutationType.ADJACENT);
-
-        //mortalityRate 1000
-        _mortalityRate = new ScalarGeneInt(new int[] {1000, 1000},
-                CrobeEnums.MutationType.SCALAR_DISCREET,
-                100);
-
-        initializeGeneNames();
-    }
-
-    @Override
     public void initializeGenePool(int[] vitality, int[] vitalityRange, float[] healRate, int[] stamina, int[] staminaRange, int[] mortalityRate) {
         _vitality = new ScalarGeneInt(vitality, CrobeEnums.MutationType.SCALAR_DISCREET);
         _vitalityRange = new ScalarGeneInt(vitalityRange, CrobeEnums.MutationType.ADJACENT);
