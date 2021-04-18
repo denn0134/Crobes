@@ -1,5 +1,7 @@
 package crobes.core;
 
+import crobes.core.factors.Factor;
+
 import java.awt.*;
 
 /***

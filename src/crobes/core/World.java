@@ -1,5 +1,6 @@
 package crobes.core;
 
+import crobes.core.factors.Factor;
 import crobes.genetics.genomics.Genomics;
 
 import java.util.ArrayList;
