@@ -56,46 +56,6 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
         _maturity = maturity;
     }
 
-    private ScalarGeneInt _span;
-    @Override
-    public ScalarGeneInt span() {
-        return _span;
-    }
-    @Override
-    public void span(ScalarGeneInt value) {
-        _span = value;
-    }
-
-    private ScalarGeneInt _spanRange;
-    @Override
-    public ScalarGeneInt spanRange() {
-        return _spanRange;
-    }
-    @Override
-    public void spanRange(ScalarGeneInt value) {
-        _spanRange = value;
-    }
-
-    private ScalarGeneFlt _maturity;
-    @Override
-    public ScalarGeneFlt maturity() {
-        return _maturity;
-    }
-    @Override
-    public void maturity(ScalarGeneFlt value) {
-        _maturity = value;
-    }
-
-    private HeritableGeneBool _finite;
-    @Override
-    public HeritableGeneBool finite() {
-        return _finite;
-    }
-    @Override
-    public void finite(HeritableGeneBool value) {
-        _finite = value;
-    }
-    
     @Override
     public void initializeGenePool(int[] span, int[] spanRange, float[] maturity) {
         _span = new ScalarGeneInt(span, CrobeEnums.MutationType.SCALAR_DISCREET);

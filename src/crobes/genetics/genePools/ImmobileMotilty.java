@@ -45,66 +45,6 @@ public class ImmobileMotilty extends Motility implements IMotilityGenePool
         _efficiency = efficiency;
     }
 
-    private HeritableGeneEnum _motilityType;
-    @Override
-    public HeritableGeneEnum motilityType() {
-        return _motilityType;
-    }
-    @Override
-    public void motilityType(HeritableGeneEnum motilityType) {
-        _motilityType = motilityType;
-    }
-
-    private HeritableGeneEnum _moveType;
-    @Override
-    public HeritableGeneEnum moveType() {
-        return _moveType;
-    }
-    @Override
-    public void moveType(HeritableGeneEnum moveType) {
-        _moveType = moveType;
-    }
-
-    private ScalarGeneInt _moveBase;
-    @Override
-    public ScalarGeneInt moveBase() {
-        return _moveBase;
-    }
-    @Override
-    public void moveBase(ScalarGeneInt value) {
-        _moveBase = value;
-    }
-
-    private ScalarGeneInt _moveRange;
-    @Override
-    public ScalarGeneInt moveRange() {
-        return _moveRange;
-    }
-    @Override
-    public void moveRange(ScalarGeneInt value) {
-        _moveRange = value;
-    }
-
-    private ScalarGeneFlt _lethargy;
-    @Override
-    public ScalarGeneFlt lethargy() {
-        return _lethargy;
-    }
-    @Override
-    public void lethargy(ScalarGeneFlt value) {
-        _lethargy = value;
-    }
-
-    private ScalarGeneFlt _efficiency;
-    @Override
-    public ScalarGeneFlt efficiency() {
-        return _efficiency;
-    }
-    @Override
-    public void efficiency(ScalarGeneFlt value) {
-        _efficiency = value;
-    }
-
     @Override
     public Genomics.GenePoolRandomizer getRandomizer() {
         Genomics.GenePoolRandomizer result = new Genomics.GenePoolRandomizer();

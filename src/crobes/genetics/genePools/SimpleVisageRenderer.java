@@ -35,36 +35,6 @@ public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
         super(crobe);
     }
 
-    private HeritableGeneEnum _skin;
-    @Override
-    public HeritableGeneEnum skin() {
-        return _skin;
-    }
-    @Override
-    public void skin(HeritableGeneEnum skin) {
-        _skin = skin;
-    }
-
-    private HeritableGeneString _face;
-    @Override
-    public HeritableGeneString face() {
-        return _face;
-    }
-    @Override
-    public void face(HeritableGeneString face) {
-        _face = face;
-    }
-
-    private HeritableGeneEnum _body;
-    @Override
-    public HeritableGeneEnum body() {
-        return _body;
-    }
-    @Override
-    public void body(HeritableGeneEnum body) {
-        _body = body;
-    }
-
     @Override
     public Genomics.GenePoolRandomizer getRandomizer() {
         Genomics.GenePoolRandomizer result = new Genomics.GenePoolRandomizer();
