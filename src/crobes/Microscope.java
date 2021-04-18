@@ -459,9 +459,22 @@ public class Microscope extends Application
             }
         });
 
-        hbxAdd.getChildren().addAll(txtDesignation, btnIncubate);
-        pane.getChildren().addAll(hbxAdd);
+        Button btnInspect = new Button("Inspect");
+        btnInspect.setMaxWidth(Double.MAX_VALUE);
+        btnInspect.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(lens.selection() != null) {
+                    Crobe crobe = lens.selection().crobe();
+                    if(crobe != null) {
+                        Sequencer.sequenceCrobe(crobe, false, (Stage) root.getScene().getWindow());
+                    }//end if
+                }//end if
+            }
+        });
 
+        hbxAdd.getChildren().addAll(txtDesignation, btnIncubate);
+        pane.getChildren().addAll(hbxAdd, btnInspect);
     }
     
     private Button createButton(String text, boolean fill) {

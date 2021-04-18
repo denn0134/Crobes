@@ -66,4 +66,9 @@ public class GenePoolPicker extends VBox
             _listView.getSelectionModel().select(this);
         }//end if
     }
+    public void setcontrolState(boolean readOnly) {
+        cmbClass.setDisable(readOnly);
+        if(readOnly)
+            cmbClass.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: white;");
+    }
 }

@@ -72,6 +72,15 @@ public class GeneEditor extends GridPane
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 _genomeGene.random = newValue;
+
+                boolean readOnly = false;
+                if(_sequencer.readOnly())
+                    readOnly = true;
+                else
+                    readOnly = newValue;
+
+                setControlStates(readOnly);
+
             }
         });
         add(chkRandom, 1, 0);
@@ -100,5 +109,13 @@ public class GeneEditor extends GridPane
 
         hbxGenoType = new GenotypeEditor();
         add(hbxGenoType, 4, 0);
+    }
+
+    public void setControlStates(boolean readOnly) {
+        cmbMutationType.setDisable(readOnly);
+        if(cmbMutationType.isDisabled())
+            cmbMutationType.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: white;");
+
+        hbxGenoType.setControlState(readOnly);
     }
 }

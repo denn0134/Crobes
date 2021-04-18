@@ -79,4 +79,13 @@ public class ScalarIntGeneEditor extends GeneEditor
             }
         });
     }
+
+    @Override
+    public void setControlStates(boolean readOnly) {
+        super.setControlStates(readOnly);
+
+        spnMutationRange.setDisable(readOnly);
+        if(spnMutationRange.isDisabled())
+            spnMutationRange.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: white;");
+    }
 }

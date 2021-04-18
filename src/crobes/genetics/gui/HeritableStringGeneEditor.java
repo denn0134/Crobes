@@ -9,13 +9,14 @@ import javafx.scene.control.Button;
 public class HeritableStringGeneEditor extends GeneEditor
 {
     private GenomeString _geneString;
+    private Button btnDomain;
 
     public HeritableStringGeneEditor(GenomeGene gene, Sequencer sequencer) {
         super(gene, sequencer);
 
         _geneString = (GenomeString) gene.geneValue;
 
-        Button btnDomain = new Button("Domain");
+        btnDomain = new Button("Domain");
         btnDomain.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -74,5 +75,14 @@ public class HeritableStringGeneEditor extends GeneEditor
                 }
             }
         });
+    }
+
+    @Override
+    public void setControlStates(boolean readOnly) {
+        super.setControlStates(readOnly);
+
+        btnDomain.setDisable(readOnly);
+        if(btnDomain.isDisabled())
+            btnDomain.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: white;");
     }
 }

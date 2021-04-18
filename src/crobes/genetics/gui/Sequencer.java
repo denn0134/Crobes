@@ -40,6 +40,8 @@ public class Sequencer extends Stage
     public static final double GENE_GENOTYPE_WIDTH = 400;
     public static final double GENE_WIDTH_MODIFIER = 20;
 
+    private ObservableList<GenePoolPicker> gpl;
+
     private double getSequencerWidth() {
         return GENE_PICKER_WIDTH + GENE_NAME_WIDTH +
                 GENE_RAND_WIDTH + GENE_MT_WIDTH +
@@ -59,6 +61,11 @@ public class Sequencer extends Stage
         return _cancelled;
     }
 
+    private boolean _readOnly;
+    public boolean readOnly() {
+        return _readOnly;
+    }
+
     /***
      * Shows a Genome within an editor form to allow
      * the user to examine/modify the genomic configuration.
@@ -76,6 +83,8 @@ public class Sequencer extends Stage
 
         Sequencer centrifuge = new Sequencer(genome);
 
+        centrifuge._readOnly = !allowEdit;
+        centrifuge.setControlStates();
         centrifuge.initOwner(parentStage);
         centrifuge.initModality(Modality.APPLICATION_MODAL);
 
@@ -139,7 +148,7 @@ public class Sequencer extends Stage
 
         Label lblGenePools = new Label("Gene Pools");
 
-        ObservableList<GenePoolPicker> gpl = FXCollections.observableArrayList();
+        gpl = FXCollections.observableArrayList();
 
         gpl.add(new GenePoolPicker(Genomics.genePools.getInfo(LifeCycle.class.getSimpleName()).displayName,
                 Genomics.lifeCycles.getGenePools(),
@@ -211,6 +220,11 @@ public class Sequencer extends Stage
         Scene scene = new Scene(root, getSequencerWidth(), 400);
         setScene(scene);
         setMinWidth(scene.getWidth() + 2 * GENE_WIDTH_MODIFIER);
+    }
+
+    public void setControlStates() {
+        for(GenePoolPicker gpp: gpl)
+            gpp.setcontrolState(_readOnly);
     }
 
     public void updateTaxonomy() {

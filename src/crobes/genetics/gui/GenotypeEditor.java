@@ -23,6 +23,7 @@ public class GenotypeEditor extends HBox
 
     public GenotypeEditor() {
         txtGenotype = new TextField();
+        txtGenotype.setEditable(false);
         txtGenotype.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(txtGenotype, Priority.ALWAYS);
 
@@ -40,5 +41,11 @@ public class GenotypeEditor extends HBox
         if(_evtFillGenotype != null) {
             _evtFillGenotype.handle(null);
         }//end if
+    }
+
+    public void setControlState(boolean readOnly) {
+        btnGenotype.setDisable(readOnly);
+        if(btnGenotype.isDisabled())
+            btnGenotype.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: white;");
     }
 }

@@ -98,7 +98,7 @@ public class Genomics
 
         ILifeCycleGenePool clc = crobe.lifeCycle();
         GenomeLifeCycle glc = genome.lifeCycle();
-        glc.genePool = clc.getClass().getName();
+        glc.genePool = clc.getClass().getSimpleName();
         glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPAN).geneValue = makeInt(clc.span());
         glc.getGene(CrobeConstants.LIFECYCLE_GENE_SPANRANGE).geneValue = makeInt(clc.spanRange());
         glc.getGene(CrobeConstants.LIFECYCLE_GENE_MATURITY).geneValue = makeFlt(clc.maturity());
@@ -106,7 +106,7 @@ public class Genomics
 
         IMetabolicGenePool cmb = crobe.metabolism();
         GenomeMetabolism gmb = genome.metabolism();
-        gmb.genePool = cmb.getClass().getName();
+        gmb.genePool = cmb.getClass().getSimpleName();
         gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITY).geneValue = makeInt(cmb.vitality());
         gmb.getGene(CrobeConstants.METABOLISM_GENE_VITALITYRANGE).geneValue = makeInt(cmb.vitalityRange());
         gmb.getGene(CrobeConstants.METABOLISM_GENE_STAMINA).geneValue = makeInt(cmb.stamina());
@@ -116,7 +116,7 @@ public class Genomics
 
         IMotilityGenePool cmt = crobe.motility();
         GenomeMotility gmt = genome.motility();
-        gmt.genePool = cmt.getClass().getName();
+        gmt.genePool = cmt.getClass().getSimpleName();
         gmt.getGene(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE).geneValue = makeEnum(cmt.motilityType());
         gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVETYPE).geneValue = makeEnum(cmt.moveType());
         gmt.getGene(CrobeConstants.MOTILITY_GENE_MOVEBASE).geneValue = makeInt(cmt.moveBase());
@@ -126,7 +126,7 @@ public class Genomics
 
         IRenderGenePool crd = crobe.renderer();
         GenomeRenderer grd = genome.renderer();
-        grd.genePool = crd.getClass().getName();
+        grd.genePool = crd.getClass().getSimpleName();
         grd.getGene(CrobeConstants.RENDERER_GENE_SKIN).geneValue = makeEnum(crd.skin());
         grd.getGene(CrobeConstants.RENDERER_GENE_FACE).geneValue = makeString(crd.face());
         grd.getGene(CrobeConstants.RENDERER_GENE_BODY).geneValue = makeEnum(crd.body());
@@ -447,6 +447,8 @@ public class Genomics
                 result = new HeritableEnumGeneEditor(gene, sequencer);
             else if(info.geneEditorClass == HeritableStringGeneEditor.class)
                 result = new HeritableStringGeneEditor(gene, sequencer);
+
+            result.setControlStates(gene.random);
         }//end if
 
         return result;

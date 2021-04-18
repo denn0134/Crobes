@@ -94,7 +94,19 @@ public class HeritableBoolGeneEditor extends GeneEditor
             sb.append(" : ");
             sb.append(_geneBool.domain()[1] ? "T":"F");
         }//end if
+        else {
+            sb.append("Dom");
+        }//end else
 
         return sb.toString();
+    }
+
+    @Override
+    public void setControlStates(boolean readOnly) {
+        super.setControlStates(readOnly);
+
+        btnDomain.setDisable(readOnly);
+        if(btnDomain.isDisabled())
+            btnDomain.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: white;");
     }
 }

@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 public class HeritableEnumGeneEditor extends GeneEditor
 {
     private GenomeEnum _geneEnum;
+    private Button btnDomain;
 
     public HeritableEnumGeneEditor(GenomeGene gene,
                                    Sequencer sequencer) {
@@ -16,7 +17,7 @@ public class HeritableEnumGeneEditor extends GeneEditor
 
         _geneEnum = (GenomeEnum) gene.geneValue;
 
-        Button btnDomain = new Button("Domain");
+        btnDomain = new Button("Domain");
         btnDomain.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -77,5 +78,14 @@ public class HeritableEnumGeneEditor extends GeneEditor
                 }//end if
             }
         });
+    }
+
+    @Override
+    public void setControlStates(boolean readOnly) {
+        super.setControlStates(readOnly);
+
+        btnDomain.setDisable(readOnly);
+        if(btnDomain.isDisabled())
+            btnDomain.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: white;");
     }
 }
