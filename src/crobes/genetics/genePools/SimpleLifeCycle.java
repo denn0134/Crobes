@@ -137,8 +137,9 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
             //is open to be the childs position
             ArrayList<Location> locs = new ArrayList<Location>(Arrays.asList(_crobe.adjacent()));
             for(int i = locs.size() - 1; i > -1; i--) {
-                if(locs.get(i).crobe() != null) {
+                if(locs.get(i).blocking()) {
                     locs.remove(i);
+                    continue;
                 }//end if
             }//end for i
 
@@ -151,11 +152,6 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
                 _crobe.exert(reproMinEnergy);
             }//end if
         }//end if
-    }
-
-    @Override
-    public void processDeath(CrobeEnums.LifeStage stage) {
-        //no special death action
     }
 
     @Override

@@ -3,6 +3,7 @@ package crobes.core;
 import crobes.core.factors.Factor;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /***
  * A single location within the world map.
@@ -72,16 +73,14 @@ public class Location
         _crobe = crobe;
     }
 
-    private Factor[] _factors;
-    public Factor[] factors() {
+    private ArrayList<Factor> _factors;
+    public ArrayList<Factor> factors() {
         return _factors;
-    }
-    public void factors(Factor[] factors) {
-        _factors = factors;
     }
 
     public Location(int X, int Y) {
         _point = new Point(X, Y);
+        _factors = new ArrayList<Factor>();
     }
 
     private CrobeEnums.CrobeColor getBackgroundByMode(Lens.Mode mode) {
@@ -127,6 +126,25 @@ public class Location
         return bg;
     }
 
+    public boolean blocking() {
+        boolean result = false;
+
+        //check if there is a crobe in the location
+        if(_crobe != null) {
+            result = true;
+        }//end if
+        else {
+            for(Factor f: _factors) {
+                if(f.blocking()) {
+                    result = true;
+                    break;
+                }//end if
+            }//end for each
+        }//end else
+
+        return result;
+    }
+
     public RenderContext render(Lens.Mode mode) {
         RenderContext rc = new RenderContext();
 
@@ -134,6 +152,25 @@ public class Location
         //crobes and environmental objects in the location
         //first get the background color based on the mode
         rc.background = getBackgroundByMode(mode);
+
+        if(_factors.size() > 0) {
+            RenderContext frc = new RenderContext();
+
+            //get the factor with the lowest priority
+            Factor factor = null;
+            for(int i = 0; i < _factors.size(); i++) {
+                if((factor == null) ||
+                        (_factors.get(i).priority() < factor.priority())) {
+                    factor = _factors.get(i);
+                }//end if
+            }//end for i
+
+            factor.render(point(), frc);
+
+            rc.foreground = frc.foreground;
+            rc.content = frc.content;
+            rc.background = frc.background;
+        }//end if
 
         if(_crobe != null) {
             RenderContext crc = new RenderContext();
@@ -174,8 +211,15 @@ public class Location
         sb.append(String.format("  amb: %1$d  cur: %2$d", _ambientHeat, _thermalLevel));
         sb.append("\n");
 
+        if(_factors.size() > 0) {
+            sb.append("====================\n");
+            sb.append("Factors:\n");
+            for(Factor f: _factors)
+                sb.append(f.toString());
+        }//end if
+
         if(_crobe != null) {
-            sb.append("\n");
+            sb.append("====================\n");
             sb.append("Crobe:\n");
             sb.append("  " + _crobe.getTaxa());
         }//end if

@@ -70,6 +70,18 @@ public class World
         _environment.updateLocations();
     }
     public void updateFactors() {
+        //process all factors
+        for(Factor f: _factors) {
+            f.process();
+        }//end for each
 
+        //remove any factor with a ttl of zero
+        for(int i = _factors.size(); i > 0; i--) {
+            Factor f = _factors.get(i - 1);
+            if(f.timeToLive() == 0) {
+                f.location().factors().remove(f);
+                _factors.remove(f);
+            }//end if
+        }//end for i
     }
 }

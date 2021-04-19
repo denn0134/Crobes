@@ -8,11 +8,15 @@ import crobes.genetics.genes.ScalarGeneFlt;
 import crobes.genetics.genes.ScalarGeneInt;
 =======
 import crobes.core.CrobeEnums;
+import crobes.core.Location;
+import crobes.core.factors.Corpse;
 import crobes.genetics.genes.Gene;
 import crobes.genetics.genes.HeritableGeneBool;
 import crobes.genetics.genes.ScalarGeneFlt;
 import crobes.genetics.genes.ScalarGeneInt;
+import crobes.genetics.genomics.Genomics;
 
+import java.awt.*;
 import java.util.ArrayList;
 >>>>>>> 4d42c4f... Refactored the gene pools to be more generic
 
@@ -125,6 +129,18 @@ public abstract class LifeCycle extends GenePool implements ILifeCycleGenePool
         _spanRange.mutate(stressLevel);
         _maturity.mutate(stressLevel);
         _finite.mutate(stressLevel);
+    }
+
+    @Override
+    public void processDeath(CrobeEnums.LifeStage stage) {
+        Corpse corpse = new Corpse();
+        corpse.timeToLive(Genomics.getIntRange(4, 10));
+
+        Point p = _crobe.position();
+        Location l = _crobe.world().getLocation(p.x, p.y);
+        corpse.location(l);
+        l.factors().add(corpse);
+        _crobe.world().factors().add(corpse);
     }
 
     @Override
