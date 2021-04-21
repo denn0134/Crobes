@@ -2,19 +2,13 @@ package crobes.genetics.genePools;
 
 import crobes.core.Crobe;
 import crobes.core.CrobeConstants;
-<<<<<<< HEAD
 import crobes.genetics.genes.HeritableGeneEnum;
 import crobes.genetics.genes.ScalarGeneFlt;
 import crobes.genetics.genes.ScalarGeneInt;
-=======
 import crobes.core.CrobeEnums;
 import crobes.genetics.genes.Gene;
-import crobes.genetics.genes.HeritableGeneEnum;
-import crobes.genetics.genes.ScalarGeneFlt;
-import crobes.genetics.genes.ScalarGeneInt;
 
 import java.util.ArrayList;
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
 
 public abstract class Motility extends GenePool implements IMotilityGenePool
 {
@@ -88,10 +82,6 @@ public abstract class Motility extends GenePool implements IMotilityGenePool
         _efficiency = value;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
     @Override
     protected void initializeGeneNames() {
         motilityType().name(CrobeConstants.MOTILITY_GENE_MOTILITYTYPE);

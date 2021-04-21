@@ -2,17 +2,12 @@ package crobes.genetics.genePools;
 
 import crobes.core.Crobe;
 import crobes.core.CrobeConstants;
-<<<<<<< HEAD
 import crobes.genetics.genes.ScalarGeneFlt;
 import crobes.genetics.genes.ScalarGeneInt;
-=======
 import crobes.core.CrobeEnums;
 import crobes.genetics.genes.Gene;
-import crobes.genetics.genes.ScalarGeneFlt;
-import crobes.genetics.genes.ScalarGeneInt;
 
 import java.util.ArrayList;
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
 
 public abstract class Metabolism extends GenePool implements IMetabolicGenePool
 {
@@ -86,8 +81,6 @@ public abstract class Metabolism extends GenePool implements IMetabolicGenePool
         _mortalityRate = value;
     }
 
-<<<<<<< HEAD
-=======
     @Override
     public void initializeGenePool(int[] vitality, int[] vitalityRange, float[] healRate, int[] stamina, int[] staminaRange, int[] mortalityRate) {
         _vitality = new ScalarGeneInt(vitality, CrobeEnums.MutationType.SCALAR_DISCREET);
@@ -138,7 +131,6 @@ public abstract class Metabolism extends GenePool implements IMetabolicGenePool
         _stamina.mutate(stressLevel);
         _staminaRange.mutate(stressLevel);
     }
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
 
     @Override
     protected void initializeGeneNames() {

@@ -2,23 +2,17 @@ package crobes.genetics.genePools;
 
 import crobes.core.Crobe;
 import crobes.core.CrobeConstants;
-<<<<<<< HEAD
 import crobes.genetics.genes.HeritableGeneBool;
 import crobes.genetics.genes.ScalarGeneFlt;
 import crobes.genetics.genes.ScalarGeneInt;
-=======
 import crobes.core.CrobeEnums;
 import crobes.core.Location;
 import crobes.core.factors.Corpse;
 import crobes.genetics.genes.Gene;
-import crobes.genetics.genes.HeritableGeneBool;
-import crobes.genetics.genes.ScalarGeneFlt;
-import crobes.genetics.genes.ScalarGeneInt;
 import crobes.genetics.genomics.Genomics;
 
 import java.awt.*;
 import java.util.ArrayList;
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
 
 public abstract class LifeCycle extends GenePool implements ILifeCycleGenePool
 {
@@ -76,10 +70,6 @@ public abstract class LifeCycle extends GenePool implements ILifeCycleGenePool
         _finite = value;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
     @Override
     protected void initializeGeneNames() {
         span().name(CrobeConstants.LIFECYCLE_GENE_SPAN);

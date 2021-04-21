@@ -51,17 +51,6 @@ public class SimpleLifeCycle extends LifeCycle implements ILifeCycleGenePool
         _maturity = maturity;
     }
 
-<<<<<<< HEAD
-    @Override
-    public void initializeGenePool(int[] span, int[] spanRange, float[] maturity) {
-        _span = new ScalarGeneInt(span, CrobeEnums.MutationType.SCALAR_DISCREET);
-        _spanRange = new ScalarGeneInt(spanRange, CrobeEnums.MutationType.ADJACENT);
-        _maturity = new ScalarGeneFlt(maturity);
-        reproInterval = 0;
-    }
-
-=======
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
     @Override
     public void initializeReproduction() {
         reproMinEnergy = (int) Math.round(_crobe.energy() * RPD_ENERGY_PCT);

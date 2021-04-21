@@ -2,16 +2,11 @@ package crobes.genetics.genePools;
 
 import crobes.core.Crobe;
 import crobes.core.CrobeConstants;
-<<<<<<< HEAD
 import crobes.genetics.genes.HeritableGeneEnum;
 import crobes.genetics.genes.HeritableGeneString;
-=======
 import crobes.genetics.genes.Gene;
-import crobes.genetics.genes.HeritableGeneEnum;
-import crobes.genetics.genes.HeritableGeneString;
 
 import java.util.ArrayList;
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
 
 public abstract class Renderer extends GenePool implements IRenderGenePool
 {
@@ -55,10 +50,6 @@ public abstract class Renderer extends GenePool implements IRenderGenePool
         _body = body;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4d42c4f... Refactored the gene pools to be more generic
     @Override
     protected void initializeGeneNames() {
         skin().name(CrobeConstants.RENDERER_GENE_SKIN);
