@@ -43,15 +43,15 @@ public class Flow extends Factor
             _slope = (double) _rise / _run;
 
         if(_slope == Double.NaN) {
-            _axisOrder = AxisOrder.XY;
+            _axisOrder = AxisOrder.YX;
             _processOrder = (_rise < 0 ? ProcessOrder.FORWARD: ProcessOrder.REVERSE);
         }//end if
         else if((_slope < 1) && (_slope > -1)) {
-            _axisOrder = AxisOrder.YX;
+            _axisOrder = AxisOrder.XY;
             _processOrder = (_run < 0) ? ProcessOrder.FORWARD : ProcessOrder.REVERSE;
         }//end else if
         else {
-            _axisOrder = AxisOrder.XY;
+            _axisOrder = AxisOrder.YX;
             _processOrder = (_rise < 0) ? ProcessOrder.FORWARD : ProcessOrder.REVERSE;
         }//end else
 
@@ -89,7 +89,7 @@ public class Flow extends Factor
             while (indexX != -1) {
                 //solve for y
                 low = solveForY(indexX, _pointA);
-                high = solveForX(indexX, _pointB);
+                high = solveForY(indexX, _pointB);
 
                 //check for swap
                 if (low.y > high.y) {
@@ -99,9 +99,9 @@ public class Flow extends Factor
                 }//end if
 
                 //loop through the range of y values
-                for (indexY = getFirstY(); indexY != -1; indexY = getNextY(indexY)) {
+                for (indexY = low.y; indexY <= high.y; indexY++) {
                     if (indexY < 0) continue;
-                    if (indexY > _world.getWidth() - 1) continue;
+                    if (indexY > _world.getHeight() - 1) continue;
 
                     _coverage.add(new Point(indexX, indexY));
                 }//end for indexY
@@ -128,7 +128,7 @@ public class Flow extends Factor
                 //loop through the x values
                 for (indexX = low.x; indexX <= high.x; indexX++) {
                     if (indexX < 0) continue;
-                    if (indexX > _world.getHeight() - 1) continue;
+                    if (indexX > _world.getWidth() - 1) continue;
 
                     _coverage.add(new Point(indexX, indexY));
                 }//end for indexX
@@ -143,13 +143,13 @@ public class Flow extends Factor
         if (_processOrder == ProcessOrder.FORWARD)
             return 0;
         else
-            return _world.getHeight() - 1;
+            return _world.getWidth() - 1;
     }
     private int getFirstY() {
         if (_processOrder == ProcessOrder.FORWARD)
             return 0;
         else
-            return _world.getWidth() - 1;
+            return _world.getHeight() - 1;
     }
     private int getNextX(int index) {
         int result = index;
@@ -158,7 +158,7 @@ public class Flow extends Factor
         else
             result--;
 
-        if (result > _world.getHeight()) result = -1;
+        if (result > _world.getWidth()) result = -1;
 
         return result;
     }
@@ -169,7 +169,7 @@ public class Flow extends Factor
         else
             result--;
 
-        if (result > _world.getWidth()) result = -1;
+        if (result > _world.getHeight()) result = -1;
 
         return result;
     }
