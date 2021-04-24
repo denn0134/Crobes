@@ -123,8 +123,9 @@ public abstract class LifeCycle extends GenePool implements ILifeCycleGenePool
 
     @Override
     public void processDeath(CrobeEnums.LifeStage stage) {
-        Corpse corpse = new Corpse();
-        corpse.timeToLive(Genomics.getIntRange(4, 10));
+        Corpse corpse = new Corpse(_crobe.world(),
+                Genomics.getIntRange(4, 10),
+                1, false);
 
         Point p = _crobe.position();
         Location l = _crobe.world().getLocation(p.x, p.y);
