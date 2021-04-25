@@ -7,8 +7,10 @@ import java.util.ArrayList;
 public class Lens
 {
     public enum Mode {
+        NONE,
         LIGHT,
-        TEMPERATURE
+        TEMPERATURE,
+        FLOW
     }
 
     public static final String FMT_FONT_STYLE = "<span style='font-family: %1$s; font-size: %2$d'>";

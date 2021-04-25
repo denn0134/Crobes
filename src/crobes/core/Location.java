@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Location
 {
     private static final CrobeEnums.CrobeColor BG_SELECTED = CrobeEnums.CrobeColor.fuchsia;
+    private static final CrobeEnums.CrobeColor BG_NONE = CrobeEnums.CrobeColor.lightgray;
     private static final CrobeEnums.CrobeColor BG_LIGHT_0 = CrobeEnums.CrobeColor.darkgray;
     private static final CrobeEnums.CrobeColor BG_LIGHT_1 = CrobeEnums.CrobeColor.silver;
     private static final CrobeEnums.CrobeColor BG_LIGHT_2 = CrobeEnums.CrobeColor.lightgray;
@@ -87,6 +88,9 @@ public class Location
         CrobeEnums.CrobeColor bg = CrobeEnums.CrobeColor.white;
 
         switch (mode) {
+            case NONE:
+                bg = BG_NONE;
+                break;
             case LIGHT:
                 switch (_lightLevel) {
                     case 0:
@@ -121,6 +125,10 @@ public class Location
                         bg = BG_TEMP_4;
                         break;
                 }//end switch tempLevel
+                break;
+            case FLOW:
+                bg = BG_NONE;
+                break;
         }//end switch mode
 
         return bg;
