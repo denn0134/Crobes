@@ -1,6 +1,8 @@
 package crobes;
 
 import crobes.core.*;
+import crobes.core.factors.Flow;
+import crobes.core.factors.gui.FlowEditor;
 import crobes.genetics.genomics.Genome;
 import crobes.genetics.genomics.Genomics;
 import crobes.genetics.gui.Sequencer;
@@ -320,7 +322,6 @@ public class Microscope extends Application
         }//end for mode
         cmbMode.setMaxWidth(Double.MAX_VALUE);
         cmbMode.setValue(Lens.Mode.LIGHT.name());
-
         ChangeListener<String> cmbModeChange = (observable, oldValue, newValue) -> {
             if(!newValue.equalsIgnoreCase(oldValue)) {
                 lens.mode(Lens.Mode.valueOf(newValue));
@@ -329,7 +330,26 @@ public class Microscope extends Application
         };
         cmbMode.valueProperty().addListener(cmbModeChange);
 
-        pane.getChildren().addAll(lblEvironmentMode, cmbMode);
+        Button btnFlow = new Button("Add Flow");
+        btnFlow.setMaxWidth(Double.MAX_VALUE);
+        btnFlow.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Location location = lens.selection();
+                if (location != null) {
+                    FlowEditor.FlowInfo info = FlowEditor.getFlowInfo((Stage) root.getScene().getWindow());
+
+                    if (info != null) {
+                        Flow flow = new Flow(world, info.rise, info.run, info.widthCoefficient, info.speed);
+                        flow.location(location);
+                        world.factors().add(flow);
+                        location.factors().add(flow);
+                    }//end if
+                }//end if
+            }
+        });
+
+        pane.getChildren().addAll(lblEvironmentMode, cmbMode, btnFlow);
     }
     private void buildPanZoomControls(GridPane pane) {
         //pan and zoom buttons
