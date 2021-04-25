@@ -2,6 +2,10 @@ package tests;
 
 import crobes.core.CrobeConstants;
 import crobes.core.CrobeEnums;
+import crobes.core.Location;
+import crobes.core.World;
+import crobes.core.factors.Flow;
+import crobes.core.factors.gui.FlowEditor;
 import crobes.genetics.genePools.*;
 import crobes.genetics.genomics.Genome;
 import crobes.genetics.genomics.GenomeEnum;
@@ -154,7 +158,16 @@ public class GenomeTest extends Application
             }
         });
 
-        pane.getChildren().addAll(btnConfig, btnInspect, btnRand);
+        Button btnFlow = new Button("Flow");
+        btnFlow.setMaxWidth(Double.MAX_VALUE);
+        btnFlow.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                createFlow(primaryStage);
+            }
+        });
+
+        pane.getChildren().addAll(btnConfig, btnInspect, btnRand, btnFlow);
 
         root.setCenter(pane);
 
@@ -184,5 +197,18 @@ public class GenomeTest extends Application
 
     private void inspectGenome(Stage parent) {
 
+    }
+
+    private void createFlow(Stage parent) {
+        FlowEditor.FlowInfo info = FlowEditor.getFlowInfo(parent);
+
+        if (info != null) {
+            World world = new World(20);
+
+            Flow flow = new Flow(world, info.rise, info.run, info.widthCoefficient, info.speed);
+            Location location = world.getLocation(world.getWidth() / 2, world.getHeight() / 2);
+            flow.location(location);
+            System.out.println(flow.toJson());
+        }//end if
     }
 }

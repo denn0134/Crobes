@@ -42,7 +42,7 @@ public class Flow extends Factor
         else
             _slope = (double) _rise / _run;
 
-        if(_slope == Double.NaN) {
+        if(Double.isNaN(_slope)) {
             _axisOrder = AxisOrder.YX;
             _processOrder = (_rise < 0 ? ProcessOrder.FORWARD: ProcessOrder.REVERSE);
         }//end if
@@ -158,7 +158,7 @@ public class Flow extends Factor
         else
             result--;
 
-        if (result > _world.getWidth()) result = -1;
+        if (result > _world.getWidth() - 1) result = -1;
 
         return result;
     }
@@ -169,16 +169,24 @@ public class Flow extends Factor
         else
             result--;
 
-        if (result > _world.getHeight()) result = -1;
+        if (result > _world.getHeight() - 1) result = -1;
 
         return result;
     }
     private Point solveForX(int y, Point p) {
-        int x = (int)((y - p.y + _slope * p.x) / _slope);
+        int x;
+        if (Double.isNaN(_slope))
+            x = p.x;
+        else
+            x = (int)((y - p.y + _slope * p.x) / _slope);
         return new Point(x, y);
     }
     private Point solveForY(int x, Point p) {
-        int y = (int)(_slope * (x - p.x) + p.y);
+        int y;
+        if (Double.isNaN(_slope))
+            y = p.y;
+        else
+            y = (int)(_slope * (x - p.x) + p.y);
         return new Point(x, y);
     }
 
