@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class FlowEditor extends Stage
 {
     private BorderPane root;
+    private Label lblAngle;
     private Button btnOK;
     private Button btnCancel;
     private Canvas cnvAngle;
@@ -57,8 +58,8 @@ public class FlowEditor extends Stage
         _cancelled = true;
 
         _info = new FlowInfo();
-        _info.rise = 1;
-        _info.run = -1;
+        _info.rise = 0;
+        _info.run = 1;
         _info.widthCoefficient = 1;
         _info.speed = 1;
 
@@ -66,12 +67,12 @@ public class FlowEditor extends Stage
         {
             //set the points for the arrow polygon
             int arrowButt, arrowTip, arrowHead,
-                    arrowTop, arrorBottom;
+                    arrowTop, arrowBottom;
             arrowButt = (CANVAS_SIZE - ARROW_LENGTH) / 2;
             arrowTip = CANVAS_SIZE - arrowButt;
             arrowHead = 3 * ARROW_WIDTH / 2;
             arrowTop = CANVAS_SIZE / 2 - ARROW_WIDTH / 2;
-            arrorBottom = CANVAS_SIZE / 2 + ARROW_WIDTH / 2;
+            arrowBottom = CANVAS_SIZE / 2 + ARROW_WIDTH / 2;
 
             _arrow_pts = new ArrayList<Point2D>();
             _arrow_pts.add(new Point2D(arrowButt, arrowTop));
@@ -83,8 +84,8 @@ public class FlowEditor extends Stage
             _arrow_pts.add(new Point2D(arrowTip - arrowHead,
                     CANVAS_SIZE / 2 + arrowHead / 2));
             _arrow_pts.add(new Point2D(arrowTip - arrowHead,
-                    arrorBottom));
-            _arrow_pts.add(new Point2D(arrowButt, arrorBottom));
+                    arrowBottom));
+            _arrow_pts.add(new Point2D(arrowButt, arrowBottom));
 
             //set the angel interval points
             _intervals = new ArrayList<AngleInterval>();
@@ -121,7 +122,10 @@ public class FlowEditor extends Stage
         });
         pnlAngle.setCenter(cnvAngle);
 
-        drawAngle();
+        lblAngle = new Label();
+        lblAngle.setMaxWidth(Double.MAX_VALUE);
+        lblAngle.setAlignment(Pos.CENTER);
+        VBox.setVgrow(lblAngle, Priority.NEVER);
 
         HBox hbxWidth = new HBox();
         VBox.setVgrow(hbxWidth, Priority.NEVER);
@@ -165,7 +169,7 @@ public class FlowEditor extends Stage
 
         hbxSpeed.getChildren().addAll(lblSpeed, spnSpeed);
 
-        vbxTop.getChildren().addAll(pnlAngle, hbxWidth, hbxSpeed);
+        vbxTop.getChildren().addAll(pnlAngle, lblAngle, hbxWidth, hbxSpeed);
 
         //ok and cancel buttons
         FlowPane pnlBottom = new FlowPane();
@@ -191,6 +195,8 @@ public class FlowEditor extends Stage
 
         pnlBottom.getChildren().addAll(btnOK, btnCancel);
 
+        drawAngle();
+
         root.setCenter(vbxTop);
         root.setBottom(pnlBottom);
 
@@ -199,6 +205,8 @@ public class FlowEditor extends Stage
     }
 
     private void drawAngle() {
+        lblAngle.setText(String.format("Rise/Run: %0$d/%2$d", _info.rise, _info.run));
+
         GraphicsContext gc = cnvAngle.getGraphicsContext2D();
 
         gc.setFill(Color.BLACK);
@@ -232,34 +240,20 @@ public class FlowEditor extends Stage
     private static double getRotationAngle(int rise, int run) {
         double hyp = Math.sqrt(Math.pow(rise, 2.0) + Math.pow(run, 2.0));
         double angle = Math.abs(Math.asin(rise / hyp));
-        double mod;
 
-        if (rise == 0) {
-            if(run < 0)
-                mod = Math.PI;
-            else
-                mod = 0.0;
-        }//end if
-        else if (run == 0) {
-            if (rise < 0)
-                mod = 0.0;
-            else
-                mod = Math.PI;
-        }//end else if
-        else if (rise < 0) {
+        //modify the angle based on quadrant
+        if (rise < 0) {
             if (run < 0)
-                mod = Math.PI;
+                angle += Math.PI;
             else
-                mod = 3 * Math.PI / 2;
+                angle = 2 * Math.PI - angle;
         }//end else if
         else {
             if (run < 0)
-                mod = Math.PI / 2;
-            else
-                mod = 0.0;
+                angle = Math.PI - angle;
         }//end else
 
-        return Math.toDegrees(angle + mod);
+        return Math.toDegrees(angle);
     }
 
     private AngleInterval getAngleInterval(Point2D point) {
@@ -381,7 +375,7 @@ public class FlowEditor extends Stage
     public static FlowInfo getFlowInfo(Stage parentStage) {
         FlowInfo result = null;
 
-        FlowEditor edit = new FlowEditor(300, 300);
+        FlowEditor edit = new FlowEditor(300, 310);
         edit.initOwner(parentStage);
         edit.initModality(Modality.APPLICATION_MODAL);
 
