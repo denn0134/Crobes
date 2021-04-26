@@ -343,7 +343,6 @@ public class Microscope extends Application
                         Flow flow = new Flow(world, info.rise, info.run, info.widthCoefficient, info.speed);
                         flow.location(location);
                         world.factors().add(flow);
-                        location.factors().add(flow);
                     }//end if
                 }//end if
             }

@@ -1,9 +1,6 @@
 package crobes.core.factors;
 
-import crobes.core.CrobeEnums;
-import crobes.core.Location;
-import crobes.core.RenderContext;
-import crobes.core.World;
+import crobes.core.*;
 
 import java.awt.*;
 
@@ -27,7 +24,7 @@ public class Corpse extends Factor
     }
 
     @Override
-    public void render(Point location, RenderContext context) {
+    public void render(Point location, Lens.Mode mode, RenderContext context) {
         context.background = CrobeEnums.CrobeColor.black;
         context.foreground = CrobeEnums.CrobeColor.crimson;
         context.content = "X";

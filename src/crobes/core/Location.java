@@ -160,9 +160,11 @@ public class Location
         //crobes and environmental objects in the location
         //first get the background color based on the mode
         rc.background = getBackgroundByMode(mode);
+        rc.foreground = CrobeEnums.CrobeColor.black;
+        rc.content = "&nbsp;";
 
         if(_factors.size() > 0) {
-            RenderContext frc = new RenderContext();
+            RenderContext frc = new RenderContext(rc);
 
             //get the factor with the lowest priority
             Factor factor = null;
@@ -173,7 +175,7 @@ public class Location
                 }//end if
             }//end for i
 
-            factor.render(point(), frc);
+            factor.render(point(), mode, frc);
 
             rc.foreground = frc.foreground;
             rc.content = frc.content;
@@ -188,10 +190,6 @@ public class Location
             rc.content = crc.content;
             rc.background = crc.background;
         }//end if
-        else {
-            rc.foreground = CrobeEnums.CrobeColor.black;
-            rc.content = "&nbsp;";
-        }//end else
 
         //if the location is selected set the background
         if(selected()) {

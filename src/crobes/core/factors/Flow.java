@@ -1,7 +1,6 @@
 package crobes.core.factors;
 
-import crobes.core.Location;
-import crobes.core.World;
+import crobes.core.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class Flow extends Factor
 
         if(Double.isNaN(_slope)) {
             _axisOrder = AxisOrder.YX;
-            _processOrder = (_rise < 0 ? ProcessOrder.FORWARD: ProcessOrder.REVERSE);
+            _processOrder = (_rise < 0) ? ProcessOrder.FORWARD: ProcessOrder.REVERSE;
         }//end if
         else if((_slope < 1) && (_slope > -1)) {
             _axisOrder = AxisOrder.XY;
@@ -63,6 +62,35 @@ public class Flow extends Factor
     public void location(Location location) {
         super.location(location);
         buildCoverage();
+
+        //add the covered locations
+        for (Point p: _coverage) {
+            Location l = _world.getLocation(p.x, p.y);
+
+            if (!l.factors().contains(this))
+                l.factors().add(this);
+        }//end for each
+    }
+
+    @Override
+    public void render(Point location, Lens.Mode mode, RenderContext context) {
+        if (mode != Lens.Mode.FLOW) return;
+
+        context.background = CrobeEnums.CrobeColor.skyblue;
+        context.foreground = CrobeEnums.CrobeColor.cornflowerblue;
+
+        if (_axisOrder == AxisOrder.XY) {
+            if (_processOrder == ProcessOrder.FORWARD)
+                context.content = "<";
+            else
+                context.content = ">";
+        }//end if
+        else {
+            if (_processOrder == ProcessOrder.FORWARD)
+                context.content = "˄";
+            else
+                context.content = "˅";
+        }//end if
     }
 
     private void buildCoverage() {
@@ -264,5 +292,12 @@ public class Flow extends Factor
         sb.append("]}");
 
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                String.format(" rs=%1$d rn=%2$d wc=%3$d sp=%4$d",
+                        _rise, _run, _widthCoefficient, _speed);
     }
 }

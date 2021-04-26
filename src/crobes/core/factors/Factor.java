@@ -1,5 +1,6 @@
 package crobes.core.factors;
 
+import crobes.core.Lens;
 import crobes.core.Location;
 import crobes.core.RenderContext;
 import crobes.core.World;
@@ -78,7 +79,7 @@ public abstract class Factor
 
     public void process() {}
 
-    public void render(Point location, RenderContext context) {}
+    public void render(Point location, Lens.Mode mode, RenderContext context) {}
 
     @Override
     public String toString() {
