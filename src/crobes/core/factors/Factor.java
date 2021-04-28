@@ -1,9 +1,6 @@
 package crobes.core.factors;
 
-import crobes.core.Lens;
-import crobes.core.Location;
-import crobes.core.RenderContext;
-import crobes.core.World;
+import crobes.core.*;
 
 import java.awt.*;
 
@@ -78,8 +75,12 @@ public abstract class Factor
     }
 
     public void process() {}
-
     public void render(Point location, Lens.Mode mode, RenderContext context) {}
+    public void drift(Drift.DriftDirection direction) {
+        //by default assume factors do not drift
+        //override this method for those factors
+        //which can drift
+    }
 
     @Override
     public String toString() {

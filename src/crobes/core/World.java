@@ -27,6 +27,11 @@ public class World
         return _factors;
     }
 
+    private Drift.DriftList _driftList = new Drift.DriftList();
+    public Drift.DriftList driftList() {
+        return _driftList;
+    }
+
     public World(int environmentalRadix) {
         Genomics.initializeGenomics();
         _age = 0;
@@ -83,5 +88,27 @@ public class World
                 _factors.remove(f);
             }//end if
         }//end for i
+    }
+    public void processDrift() {
+        for (Drift d: _driftList) {
+            d.location().drift(d.direction());
+        }//end for each
+    }
+    public void brownianMotion() {
+        //brownian motion is always first
+        //therefore we should reset the drift list prior
+        //to generating the brownian motion
+        _driftList.clear();
+
+        for (ArrayList<Location> row: _environment) {
+            for (Location l: row) {
+                if(Genomics.random().nextInt(100) == 0) {
+                    Drift.DriftDirection d = Drift.randomDrift();
+                    if (d != Drift.DriftDirection.NONE) {
+                        _driftList.addDrift(l, Drift.DriftType.BROWNIAN, d);
+                    }//end if
+                }//end if
+            }//end for each
+        }//end for each
     }
 }

@@ -203,6 +203,16 @@ public class Location
         _lightLevel = 0;
     }
 
+    public void drift(Drift.DriftDirection direction) {
+        //drift crobes first
+        if (_crobe != null)
+            _crobe.drift(direction);
+
+        //then factors
+        for (Factor f: _factors)
+            f.drift(direction);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

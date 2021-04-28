@@ -18,6 +18,8 @@ public class Flow extends Factor
     protected int _run;
     protected int _widthCoefficient;
     protected int _speed;
+    protected int _delay;
+    protected Drift.DriftDirection _direction;
     protected ArrayList<Point> _coverage;
     protected AxisOrder _axisOrder = AxisOrder.XY;
     protected ProcessOrder _processOrder = ProcessOrder.FORWARD;
@@ -35,6 +37,7 @@ public class Flow extends Factor
         _run = run;
         _widthCoefficient = widthCoefficient;
         _speed = speed;
+        _delay = _speed;
 
         if(_run == 0)
             _slope = Double.NaN;
@@ -52,6 +55,23 @@ public class Flow extends Factor
         else {
             _axisOrder = AxisOrder.YX;
             _processOrder = (_rise < 0) ? ProcessOrder.FORWARD : ProcessOrder.REVERSE;
+        }//end else
+
+        //set the drift direction
+        if (Math.abs(_slope) < (2.0 / 3.0)) {
+            //direction is horizontal
+            _direction = (_run < 0) ? Drift.DriftDirection.LEFT : Drift.DriftDirection.RIGHT;
+        }//end if
+        else if (Math.abs(_slope) <= (3.0 / 2.0)) {
+            //direction is diagonal
+            if (_slope < 0)
+                _direction = (_run < 0) ? Drift.DriftDirection.DOWNLEFT : Drift.DriftDirection.UPRIGHT;
+            else
+                _direction = (_run < 0) ? Drift.DriftDirection.UPLEFT : Drift.DriftDirection.DOWNRIGHT;
+        }//end else if
+        else {
+            //direction is vertical
+            _direction = (_rise < 0) ? Drift.DriftDirection.UP : Drift.DriftDirection.DOWN;
         }//end else
 
         //build the coverage area
@@ -90,6 +110,20 @@ public class Flow extends Factor
                 context.content = "˄";
             else
                 context.content = "˅";
+        }//end if
+    }
+
+    @Override
+    public void process() {
+        _delay--;
+        if (_delay == 0) {
+            for (Point p : _coverage) {
+                Location location = _world.getLocation(p.x, p.y);
+                if (location != null)
+                    _world.driftList().addDrift(location, Drift.DriftType.FLOW, _direction);
+            }//end for each
+
+            _delay = _speed;
         }//end if
     }
 

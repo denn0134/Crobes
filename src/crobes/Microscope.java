@@ -577,8 +577,14 @@ public class Microscope extends Application
         //remove any dead crobes from the colony
         world.crobes().purge();
 
+        //generate any random drift
+        world.brownianMotion();
+
         //update all environmental factors
         world.updateFactors();
+
+        //process any drift accumulated
+        world.processDrift();
 
         //update the environment
         world.updateEnvironment();
