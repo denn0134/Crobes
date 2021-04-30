@@ -203,14 +203,14 @@ public class Location
         _lightLevel = 0;
     }
 
-    public void drift(Drift.DriftDirection direction) {
+    public void drift(World.Direction direction) {
         //drift crobes first
         if (_crobe != null)
-            _crobe.drift(direction);
+            _crobe.world().move(_crobe, direction);
 
         //then factors
         for (Factor f: _factors)
-            f.drift(direction);
+            f.world().move(f, direction);
     }
 
     @Override

@@ -76,10 +76,8 @@ public abstract class Factor
 
     public void process() {}
     public void render(Point location, Lens.Mode mode, RenderContext context) {}
-    public void drift(Drift.DriftDirection direction) {
-        //by default assume factors do not drift
-        //override this method for those factors
-        //which can drift
+    public boolean move(World.Direction direction) {
+        return false;
     }
 
     @Override

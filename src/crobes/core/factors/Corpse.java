@@ -31,27 +31,35 @@ public class Corpse extends Factor
     }
 
     @Override
-    public void drift(Drift.DriftDirection direction) {
+    public boolean move(World.Direction direction) {
+        boolean result = false;
+
         //calculate the point to drift to
-        Point driftPoint = Drift.getDriftPoint(location().point(), direction);
+        Point movePoint = World.movePoint(location().point(), direction);
 
         //get the location
-        Location driftLoc = world().getLocation(driftPoint.x, driftPoint.y);
-        if (driftLoc != null) {
+        Location moveLoc = world().getLocation(movePoint.x, movePoint.y);
+        if (moveLoc != null) {
             //check if there is anything blocking the drift
-            if (!driftLoc.blocking()) {
+            if (!moveLoc.blocking()) {
                 //we can drift here
                 location().factors().remove(this);
-                driftLoc.factors().add(this);
-                location(driftLoc);
+                moveLoc.factors().add(this);
+                location(moveLoc);
+
+                result = true;
             }//end if
         }//end if
         else {
-            //if the location came back that means we
+            //if the location came back null that means we
             //drifted off the map, remove this corpse
             location().factors().remove(this);
             world().factors().remove(this);
+
+            result = false;
         }//end else
+
+        return result;
     }
 
     @Override

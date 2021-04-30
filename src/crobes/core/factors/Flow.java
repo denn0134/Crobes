@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class Flow extends Factor
 {
+    protected static final int PRIORITY_FLOW = 3;
+
     protected enum AxisOrder {
         XY, YX
     }
@@ -19,7 +21,7 @@ public class Flow extends Factor
     protected int _widthCoefficient;
     protected int _speed;
     protected int _delay;
-    protected Drift.DriftDirection _direction;
+    protected World.Direction _direction;
     protected ArrayList<Point> _coverage;
     protected AxisOrder _axisOrder = AxisOrder.XY;
     protected ProcessOrder _processOrder = ProcessOrder.FORWARD;
@@ -31,7 +33,7 @@ public class Flow extends Factor
                 int run,
                 int widthCoefficient,
                 int speed) {
-        super(world, -1, 2, true);
+        super(world, -1, PRIORITY_FLOW, true);
 
         _rise = rise;
         _run = run;
@@ -60,18 +62,18 @@ public class Flow extends Factor
         //set the drift direction
         if (Math.abs(_slope) < (2.0 / 3.0)) {
             //direction is horizontal
-            _direction = (_run < 0) ? Drift.DriftDirection.LEFT : Drift.DriftDirection.RIGHT;
+            _direction = (_run < 0) ? World.Direction.LEFT : World.Direction.RIGHT;
         }//end if
         else if (Math.abs(_slope) <= (3.0 / 2.0)) {
             //direction is diagonal
             if (_slope < 0)
-                _direction = (_run < 0) ? Drift.DriftDirection.DOWNLEFT : Drift.DriftDirection.UPRIGHT;
+                _direction = (_run < 0) ? World.Direction.DOWNLEFT : World.Direction.UPRIGHT;
             else
-                _direction = (_run < 0) ? Drift.DriftDirection.UPLEFT : Drift.DriftDirection.DOWNRIGHT;
+                _direction = (_run < 0) ? World.Direction.UPLEFT : World.Direction.DOWNRIGHT;
         }//end else if
         else {
             //direction is vertical
-            _direction = (_rise < 0) ? Drift.DriftDirection.UP : Drift.DriftDirection.DOWN;
+            _direction = (_rise < 0) ? World.Direction.UP : World.Direction.DOWN;
         }//end else
 
         //build the coverage area

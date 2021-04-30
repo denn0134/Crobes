@@ -3,10 +3,69 @@ package crobes.core;
 import crobes.core.factors.Factor;
 import crobes.genetics.genomics.Genomics;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class World
 {
+    public enum Direction {
+        NONE,
+        RANDOM,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        UPLEFT,
+        UPRIGHT,
+        DOWNLEFT,
+        DOWNRIGHT
+    }
+    public static Direction randomDirection() {
+        Direction d = Direction.RANDOM;
+        while (d == Direction.RANDOM) {
+            Direction[] ds = Direction.values();
+            d = ds[Genomics.random().nextInt(ds.length)];
+        }//end while
+
+        return d;
+    }
+    public static Point movePoint(Point point, Direction direction) {
+        Point result = new Point(point);
+        switch (direction) {
+            case UP:
+                result.y--;
+                break;
+            case DOWN:
+                result.y++;
+                break;
+            case LEFT:
+                result.x--;
+                break;
+            case RIGHT:
+                result.x++;
+                break;
+            case UPLEFT:
+                result.x--;
+                result.y--;
+                break;
+            case UPRIGHT:
+                result.x++;
+                result.y--;
+                break;
+            case DOWNLEFT:
+                result.x--;
+                result.y++;
+                break;
+            case DOWNRIGHT:
+                result.x++;
+                result.y++;
+                break;
+        }//end switch
+
+        return result;
+    }
+
     private int _age;
     public int age() {
         return _age;
@@ -70,11 +129,63 @@ public class World
             return null;
     }
 
+    public boolean move(Crobe crobe, Direction direction) {
+        boolean result = false;
+
+        //find the location to move to
+        Location loc = getLocation(crobe.position().x, crobe.position().y);
+        Point pt = movePoint(crobe.position(), direction);
+        if (pt != null) {
+            Location moveLoc = getLocation(pt.x, pt.y);
+            if ((moveLoc != null) &&
+                    (!moveLoc.blocking())) {
+                loc.crobe(null);
+                moveLoc.crobe(crobe);
+                crobe.position(pt);
+
+                result = true;
+            }//end if
+        }//end if
+
+        return result;
+    }
+    public boolean move(Crobe crobe, Direction direction, int distance) {
+        boolean result = false;
+
+        for (int i = 0; i < distance; i++) {
+            result = move(crobe, direction);
+            if (!result) break;
+        }//end for i
+
+        return result;
+    }
+    public boolean move(Factor factor, Direction direction) {
+        return factor.move(direction);
+    }
+    public boolean move(Factor factor, Direction direction, int distance) {
+        boolean result = false;
+
+        for (int i = 0; i < distance; i++) {
+            result = move(factor, direction);
+            if (!result) break;
+        }//end for i
+
+        return result;
+    }
+
     public void updateEnvironment() {
         _environment.reset();
         _environment.updateLocations();
     }
     public void updateFactors() {
+        //sort the factors by priority
+        _factors.sort(new Comparator<Factor>() {
+            @Override
+            public int compare(Factor o1, Factor o2) {
+                return o1.priority() - o2.priority();
+            }
+        });
+
         //process all factors
         for(Factor f: _factors) {
             f.process();
@@ -103,8 +214,8 @@ public class World
         for (ArrayList<Location> row: _environment) {
             for (Location l: row) {
                 if(Genomics.random().nextInt(100) == 0) {
-                    Drift.DriftDirection d = Drift.randomDrift();
-                    if (d != Drift.DriftDirection.NONE) {
+                    World.Direction d = randomDirection();
+                    if (d != World.Direction.NONE) {
                         _driftList.addDrift(l, Drift.DriftType.BROWNIAN, d);
                     }//end if
                 }//end if

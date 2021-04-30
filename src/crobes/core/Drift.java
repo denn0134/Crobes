@@ -11,64 +11,9 @@ import java.util.Comparator;
  */
 public class Drift
 {
-    /***
-     * Enumeration of possible drift directions.
-     */
-    public enum DriftDirection {
-        NONE,
-        UP,
-        UPLEFT,
-        UPRIGHT,
-        LEFT,
-        RIGHT,
-        DOWNLEFT,
-        DOWNRIGHT,
-        DOWN
-    }
-
     public enum DriftType {
         BROWNIAN,
         FLOW
-    }
-
-    public static DriftDirection randomDrift() {
-        int index = Genomics.random().nextInt(DriftDirection.values().length);
-        return DriftDirection.values()[index];
-    }
-    public static Point getDriftPoint(Point point, DriftDirection direction) {
-        Point result = new Point(point);
-        switch (direction) {
-            case UP:
-                result.y--;
-                break;
-            case DOWN:
-                result.y++;
-                break;
-            case LEFT:
-                result.x--;
-                break;
-            case RIGHT:
-                result.x++;
-                break;
-            case UPLEFT:
-                result.x--;
-                result.y--;
-                break;
-            case UPRIGHT:
-                result.x++;
-                result.y--;
-                break;
-            case DOWNLEFT:
-                result.x--;
-                result.y++;
-                break;
-            case DOWNRIGHT:
-                result.x++;
-                result.y++;
-                break;
-        }//end switch
-
-        return result;
     }
 
     private Location _location;
@@ -81,12 +26,12 @@ public class Drift
         return _type;
     }
 
-    private DriftDirection _direction;
-    public DriftDirection direction() {
+    private World.Direction _direction;
+    public World.Direction direction() {
         return _direction;
     }
 
-    public Drift(Location location, DriftType type, DriftDirection direction) {
+    public Drift(Location location, DriftType type, World.Direction direction) {
         _location = location;
         _type = type;
         _direction = direction;
@@ -110,7 +55,7 @@ public class Drift
             }
         };
 
-        public boolean addDrift(Location location, DriftType type, DriftDirection direction) {
+        public boolean addDrift(Location location, DriftType type, World.Direction direction) {
             boolean result;
 
             Drift drift = this.findByLocation(location);

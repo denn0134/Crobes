@@ -260,21 +260,6 @@ public class Crobe
         _lifeCycle.initializeReproduction();
     }
 
-    public void drift(Drift.DriftDirection direction) {
-        //motility type ANCHORED will never drift
-        if (_motility.motilityType().phenotype() != CrobeEnums.MotilityType.ANCHORED) {
-            //find the location to drift to
-            Location location = _world.getLocation(position().x, position().y);
-            Point driftPt = Drift.getDriftPoint(position(), direction);
-            Location driftLoc = _world.getLocation(driftPt.x, driftPt.y);
-            if (driftLoc != null) {
-                location.crobe(null);
-                driftLoc.crobe(this);
-                position(driftPt);
-            }//end if
-        }//end if
-    }
-
     /***
      * Returns an array of the Locations which this
      * Crobe inhabits.
