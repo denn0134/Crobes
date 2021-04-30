@@ -31,8 +31,8 @@ public class Corpse extends Factor
     }
 
     @Override
-    public boolean move(World.Direction direction) {
-        boolean result = false;
+    public int move(World.Direction direction) {
+        int result = 0;
 
         //calculate the point to drift to
         Point movePoint = World.movePoint(location().point(), direction);
@@ -47,15 +47,11 @@ public class Corpse extends Factor
                 moveLoc.factors().add(this);
                 location(moveLoc);
 
-                result = true;
+                result = 1;
             }//end if
         }//end if
         else {
-            //if the location came back null that means we
-            //drifted off the map, remove this corpse
-            _world.remove(this);
-
-            result = false;
+            result = -1;
         }//end else
 
         return result;

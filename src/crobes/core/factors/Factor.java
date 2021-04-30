@@ -76,8 +76,24 @@ public abstract class Factor
 
     public void process() {}
     public void render(Point location, Lens.Mode mode, RenderContext context) {}
-    public boolean move(World.Direction direction) {
-        return false;
+
+    /***
+     * Moves the Factor one space in the specified direction.
+     * The move can be affected by blocking objects or the edge
+     * of the World.
+     * @param direction The direction to move.  Passing RANDOM
+     *                  will result in a random direction being
+     *                  generated, which be NONE.
+     * @return Returns zero(0) if the move was not blocked, one(1)
+     * if the move was blocked by an object, negative one(-1) if
+     * the move would have resulted in move off the edge of the
+     * World.
+     */
+    public int move(World.Direction direction) {
+        //the default behaviour is that Factors do not
+        //move, return a success by default as nothing
+        //was blocked
+        return 0;
     }
 
     @Override

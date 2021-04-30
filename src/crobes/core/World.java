@@ -30,6 +30,128 @@ public class World
 
         return d;
     }
+    public Direction reflect(Point point, Direction direction) {
+        Direction result = null;
+
+        boolean top, bottom, left, right;
+        top = (point.y == 0);
+        bottom = (point.y == getHeight() - 1);
+        left = (point.x == 0);
+        right = (point.x == getWidth() - 1);
+
+        if (top) {
+            if (left) {
+                switch (direction) {
+                    case UPLEFT:
+                        result = Direction.DOWNRIGHT;
+                        break;
+                    case UP:
+                        result = Direction.DOWN;
+                        break;
+                    case UPRIGHT:
+                        result = Direction.DOWNRIGHT;
+                        break;
+                }//end switch
+            }//end if
+            else if (right) {
+                switch (direction) {
+                    case UPLEFT:
+                        result = Direction.DOWNLEFT;
+                        break;
+                    case UP:
+                        result = Direction.DOWN;
+                        break;
+                    case UPRIGHT:
+                        result = Direction.DOWNLEFT;
+                        break;
+                }//end switch
+            }//end else if
+            else {
+                switch (direction) {
+                    case UPLEFT:
+                        result = Direction.DOWNLEFT;
+                        break;
+                    case UP:
+                        result = Direction.DOWN;
+                        break;
+                    case UPRIGHT:
+                        result = Direction.DOWNRIGHT;
+                        break;
+                }//end switch
+            }//end else
+        }//end if
+        else if (bottom) {
+            if (left) {
+                switch (direction) {
+                    case DOWNLEFT:
+                        result = Direction.UPRIGHT;
+                        break;
+                    case DOWN:
+                        result = Direction.UP;
+                        break;
+                    case DOWNRIGHT:
+                        result = Direction.UPRIGHT;
+                        break;
+                }//end switch
+            }//end if
+            else if (right) {
+                switch (direction) {
+                    case DOWNLEFT:
+                        result = Direction.UPLEFT;
+                        break;
+                    case DOWN:
+                        result = Direction.UP;
+                        break;
+                    case DOWNRIGHT:
+                        result = Direction.UPLEFT;
+                        break;
+                }//end switch
+            }//end else if
+            else {
+                switch (direction) {
+                    case DOWNLEFT:
+                        result = Direction.UPLEFT;
+                        break;
+                    case DOWN:
+                        result = Direction.UP;
+                        break;
+                    case DOWNRIGHT:
+                        result = Direction.UPRIGHT;
+                        break;
+                }//end switch
+            }//end else
+        }//end else if
+        else {
+            if (left) {
+                switch (direction) {
+                    case UPLEFT:
+                        result = Direction.UPRIGHT;
+                        break;
+                    case LEFT:
+                        result = Direction.RIGHT;
+                        break;
+                    case DOWNLEFT:
+                        result = Direction.DOWNRIGHT;
+                        break;
+                }//end switch
+            }//end if
+            else if (right) {
+                switch (direction) {
+                    case UPRIGHT:
+                        result = Direction.UPLEFT;
+                        break;
+                    case RIGHT:
+                        result = Direction.LEFT;
+                        break;
+                    case DOWNRIGHT:
+                        result = Direction.DOWNLEFT;
+                        break;
+                }//end switch
+            }//end else if
+        }//end else
+
+        return result;
+    }
     public static Point movePoint(Point point, Direction direction) {
         Point result = new Point(point);
         switch (direction) {
@@ -129,26 +251,59 @@ public class World
             return null;
     }
 
+    /***
+     * Moves the specified Crobe one space in the specified
+     * direction.  The movement of the Crobe can be affected
+     * by blocking objects or the edge of the World.
+     * @param crobe The Crobe to move.
+     * @param direction The direction to move the Crobe.
+     *                  Passing RANDOM will result in a random
+     *                  direction being generated; this random
+     *                  direction could be NONE.
+     * @return Returns true if the Crobe was successfully
+     * moved.  Returns false if the Crobes was not able to
+     * be moved, or if the direction was NONE.
+     */
     public boolean move(Crobe crobe, Direction direction) {
         boolean result = false;
 
-        //find the location to move to
-        Location loc = getLocation(crobe.position().x, crobe.position().y);
-        Point pt = movePoint(crobe.position(), direction);
-        if (pt != null) {
-            Location moveLoc = getLocation(pt.x, pt.y);
-            if ((moveLoc != null) &&
-                    (!moveLoc.blocking())) {
-                loc.crobe(null);
-                moveLoc.crobe(crobe);
-                crobe.position(pt);
+        Direction dir = (direction == Direction.RANDOM) ? randomDirection() : direction;
 
-                result = true;
+        if (dir != Direction.NONE) {
+            //find the location to move to
+            Location loc = getLocation(crobe.position().x, crobe.position().y);
+            Point pt = movePoint(crobe.position(), dir);
+            if (pt != null) {
+                Location moveLoc = getLocation(pt.x, pt.y);
+                if ((moveLoc != null) &&
+                        (!moveLoc.blocking())) {
+                    loc.crobe(null);
+                    moveLoc.crobe(crobe);
+                    crobe.position(pt);
+
+                    result = true;
+                }//end if
             }//end if
         }//end if
 
         return result;
     }
+    /***
+     * Moves the specified Crobe up to the specified distance
+     * in the specified direction.  The movement of the Crobe
+     * can be affected by blocking objects or the edge of the
+     * World.
+     * @param crobe The Crobe to move.
+     * @param direction The direction to move the Crobe.
+     *                  Passing RANDOM will result in a random
+     *                  direction being generated; this random
+     *                  direction could be NONE.
+     * @param distance The distance in spaces to move the Crobe.
+     * @return Returns true if the Crobe was successfully moved
+     * the entire distance requested.  Returns false if the
+     * Crobe was not able to be moved the entire distance, or if
+     * the direction was NONE.
+     */
     public boolean move(Crobe crobe, Direction direction, int distance) {
         boolean result = false;
 
@@ -159,18 +314,88 @@ public class World
 
         return result;
     }
-    public boolean move(Factor factor, Direction direction) {
+    /***
+     * Moves the specified Factor one space in the specified
+     * direction.  The movement of the Factor can be affected
+     * by blocking objects or the edge of the World.
+     * @param factor The Factor to be moved.
+     * @param direction The direction to move the Factor.
+     *                  Passing RANDOM will result in a random
+     *                  direction being generated; this random
+     *                  direction could be NONE.
+     * @return Returns an integer from -1 to 1 as follows:
+     * <ul>
+     *     <li>
+     *         -1: Returns negative one(-1) if the Factor failed
+     *         to move due to the edge of the World.
+     *     </li>
+     *     <li>
+     *         0: Returns zero(0) if the move was successful.
+     *     </li>
+     *     <li>
+     *         1: Returns one(1) if the move was blocked by an
+     *         object.
+     *     </li>
+     * </ul>
+     */
+    public int move(Factor factor, Direction direction) {
         return factor.move(direction);
     }
-    public boolean move(Factor factor, Direction direction, int distance) {
-        boolean result = false;
+    /***
+     * Moves the specified Factor up to the specified distance in
+     * the specified direction.  The movement of the Factor can be
+     * affected by blocking objects and the edge of the World.
+     * @param factor The Factor to move.
+     * @param direction The direction to move the Factor.
+     *                  Passing RANDOM will result in a random
+     *                  direction being generated; this random
+     *                  direction could be NONE.
+     * @param distance The distance to move the Factor.
+     * @return Returns an integer representing how many spaces
+     * are left in order to move the entire requested distance
+     * as follows:
+     * <ul>
+     *     <li>
+     *         A negative value indicates that the Factor failed
+     *         to move the entire requested distance due to encountering
+     *         the edge of the World; the result is the number of
+     *         spaces beyond the edge the Factor would have been moved.
+     *     </li>
+     *     <li>
+     *         Zero(0) indicates that the Factor was successfully
+     *         moved the entire requested distance.
+     *     </li>
+     *     <li>
+     *         A positive value indicates that the Factor failed
+     *         to move the entire requested distance due to encountering
+     *         a blocking object; the result is the number of spaces
+     *         the factor has left in order to move the requested
+     *         distance.
+     *     </li>
+     * </ul>
+     */
+    public int move(Factor factor, Direction direction, int distance) {
+        boolean done = false;
+        int dist = distance;
 
-        for (int i = 0; i < distance; i++) {
-            result = move(factor, direction);
-            if (!result) break;
-        }//end for i
+        while (!done) {
+            int move = move(factor, direction);
 
-        return result;
+            switch (move) {
+                case -1:
+                    dist *= -1;
+                    done = true;
+                    break;
+                case 0:
+                    dist -= 1;
+                    break;
+                case 1:
+                    done = true;
+                    break;
+            }//end switch
+        }//end while
+
+        return dist;
     }
 
     public void remove(Crobe crobe) {
