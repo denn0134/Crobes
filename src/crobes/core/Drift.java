@@ -1,8 +1,5 @@
 package crobes.core;
 
-import crobes.genetics.genomics.Genomics;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 

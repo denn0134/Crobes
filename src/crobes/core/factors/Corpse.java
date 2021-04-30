@@ -53,8 +53,7 @@ public class Corpse extends Factor
         else {
             //if the location came back null that means we
             //drifted off the map, remove this corpse
-            location().factors().remove(this);
-            world().factors().remove(this);
+            _world.remove(this);
 
             result = false;
         }//end else

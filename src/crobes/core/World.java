@@ -173,6 +173,15 @@ public class World
         return result;
     }
 
+    public void remove(Crobe crobe) {
+        crobe.stage(CrobeEnums.LifeStage.DEAD);
+        crobes().purge();
+    }
+    public void remove(Factor factor) {
+        factor.location().factors().remove(factor);
+        _factors.remove(factor);
+    }
+
     public void updateEnvironment() {
         _environment.reset();
         _environment.updateLocations();
