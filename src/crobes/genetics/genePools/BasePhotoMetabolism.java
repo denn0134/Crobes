@@ -106,8 +106,8 @@ public class BasePhotoMetabolism extends Metabolism implements IMetabolicGenePoo
         Location[] locs = _crobe.inhabits();
         int light = 0;
         for(Location l : locs) {
-            if(l.lightLevel() > light) {
-                light = l.lightLevel();
+            if(l.elements().lightLevel() > light) {
+                light = l.elements().lightLevel();
             }//end if
         }//end for l
 

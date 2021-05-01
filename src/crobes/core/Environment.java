@@ -44,25 +44,6 @@ public class Environment extends ArrayList<ArrayList<Location>>
         return get(p.x, p.y);
     }
 
-    public void reset() {
-        for(ArrayList<Location> row: this) {
-            for(Location loc: row) {
-                loc.reset();
-            }//end for loc
-        }//end for row
-    }
-    public void updateLocations() {
-        for(ArrayList<Location> row: this) {
-            for(Location loc: row) {
-                //set the various properties for the location
-                //based on the ambient properties and the
-                //environmental factors
-                loc.lightLevel(loc.ambientLight());
-                loc.thermalLevel(loc.ambientHeat());
-            }//end for loc
-        }//end for row
-    }
-
     private boolean inBounds(int row, int col) {
         boolean result = true;
 
@@ -167,8 +148,7 @@ public class Environment extends ArrayList<ArrayList<Location>>
                         double dist = Math.sqrt((Math.pow(c - lightSource.x, 2) + Math.pow(r - lightSource.y, 2)));
                         if (dist <= radius) {
                             Location l = get(c, r);
-                            if (l.ambientLight() < lightLevel)
-                                l.ambientLight(lightLevel);
+                            l.elements().ambientLight(lightLevel);
                         }//end if
                     }//end if
                 }//end for k
@@ -240,8 +220,7 @@ public class Environment extends ArrayList<ArrayList<Location>>
                         double dist = Math.sqrt(Math.pow(c - thermalCenter.x, 2) + Math.pow(r - thermalCenter.y, 2));
                         if(dist < (radius + bleed)) {
                             Location loc = get(c, r);
-                            if(loc.ambientHeat() < heat)
-                                loc.ambientHeat(heat);
+                            loc.elements().ambientTemperature(heat);
                         }//end if
                     }//end if
                 }//end for j

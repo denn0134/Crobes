@@ -407,9 +407,12 @@ public class World
         _factors.remove(factor);
     }
 
-    public void updateEnvironment() {
-        _environment.reset();
-        _environment.updateLocations();
+    public void resetElements() {
+        for (ArrayList<Location> row: _environment) {
+            for (Location loc: row) {
+                loc.elements().reset();
+            }//end for each
+        }//end for each
     }
     public void updateFactors() {
         //sort the factors by priority

@@ -1,5 +1,6 @@
 package tests;
 
+import crobes.core.Elements;
 import crobes.core.World;
 import crobes.core.factors.Corpse;
 import crobes.core.factors.Factor;
@@ -25,6 +26,22 @@ public class FactorTest
         System.out.println("1/-2: " + getAngle(1, -2));
         System.out.println("-1/-2: " + getAngle(-1, -2));
         System.out.println("-1/2: " + getAngle(-1, 2));
+
+        Elements e = new Elements();
+
+        e.ambientLight(2);
+        e.ambientLight(1);
+        e.ambientTemperature(1);
+        e.ambientTemperature(2);
+
+        int temp = 2;
+
+        for (int i = 0; i < 7; i++) {
+            e.environmentalLight(1);
+            e.environmentalTemperature(temp++);
+
+            System.out.println(String.format("light = %1$d : temp = %2$d", e.lightLevel(), e.temperatureLevel()));
+        }//end for i
     }
 
     private static double getAngle(int rise, int run) {

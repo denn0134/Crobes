@@ -92,7 +92,7 @@ public class BaseThermoMetabolism extends Metabolism implements IMetabolicGenePo
         Location[] locs = _crobe.inhabits();
         int heat = 0;
         for(Location l: locs) {
-            heat += l.thermalLevel();
+            heat += l.elements().temperatureLevel();
         }//end for each
 
         _crobe.recharge(heat / 2);

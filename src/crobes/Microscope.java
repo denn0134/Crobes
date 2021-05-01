@@ -106,7 +106,7 @@ public class Microscope extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        world.updateEnvironment();
+        world.resetElements();
         refreshLens();
     }
 
@@ -577,6 +577,9 @@ public class Microscope extends Application
         //remove any dead crobes from the colony
         world.crobes().purge();
 
+        //reset the elements in all Locations
+        world.resetElements();
+
         //generate any random drift
         world.brownianMotion();
 
@@ -585,9 +588,6 @@ public class Microscope extends Application
 
         //process any drift accumulated
         world.processDrift();
-
-        //update the environment
-        world.updateEnvironment();
 
         //rerender everything
         refreshLens();

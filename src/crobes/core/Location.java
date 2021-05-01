@@ -24,57 +24,63 @@ public class Location
 
 
     private Point _point;
+    private boolean _selected;
+    private Elements _elements;
+    private Crobe _crobe;
+    private ArrayList<Factor> _factors;
+
+    /***
+     * The coordinates of the Location in the World.
+     * @return Returns the Point coordinates of the
+     * Location within the World.
+     */
     public Point point() {
         return _point;
     }
-
-    private boolean _selected;
+    /***
+     * The selected state of the location.
+     * @return Returnms the selected state of the Location.
+     */
     public boolean selected() {
         return _selected;
     }
+    /***
+     * Sets the selected state of the Location.
+     * @param selected The selected state of the Location.
+     */
     public void selected(boolean selected) {
         _selected = selected;
     }
-
-    private int _ambientLight;
-    public int ambientLight() {
-        return _ambientLight;
-    }
-    public void ambientLight(int light) {
-        _ambientLight = light;
-    }
-    private int _lightLevel;
-    public int lightLevel() {
-        return _lightLevel;
-    }
-    public void lightLevel(int light) {
-        _lightLevel = light;
+    /***
+     * The evironmental conditions within the Location.
+     * @return Returns the Elements of the Location.
+     */
+    public Elements elements() {
+        return _elements;
     }
 
-    private int _ambientHeat;
-    public int ambientHeat() {
-        return _ambientHeat;
-    }
-    public void ambientHeat(int ambientHeat) {
-        _ambientHeat = ambientHeat;
-    }
-    private int _thermalLevel;
-    public int thermalLevel() {
-        return _thermalLevel;
-    }
-    public void thermalLevel(int thermalLevel) {
-        _thermalLevel = thermalLevel;
-    }
-
-    private Crobe _crobe;
+    /***
+     * The single Crobe (if any) which exists in this
+     * Location.
+     * @return Returns the Crobes which exists in this
+     * Location; returns null if there is no Crobe
+     * within the Location.
+     */
     public Crobe crobe() {
         return _crobe;
     }
+    /***
+     * Sets the Crobe which exists within this Location.
+     * @param crobe The Crobe.
+     */
     public void crobe(Crobe crobe) {
         _crobe = crobe;
     }
-
-    private ArrayList<Factor> _factors;
+    /***
+     * Environmental Factors which effect this Location.
+     * @return Returns a list of Factors which have an
+     * effect within this Location.
+     */
     public ArrayList<Factor> factors() {
         return _factors;
     }
@@ -82,6 +88,7 @@ public class Location
     public Location(int X, int Y) {
         _point = new Point(X, Y);
         _factors = new ArrayList<Factor>();
+        _elements = new Elements();
     }
 
     private CrobeEnums.CrobeColor getBackgroundByMode(Lens.Mode mode) {
@@ -92,7 +99,7 @@ public class Location
                 bg = BG_NONE;
                 break;
             case LIGHT:
-                switch (_lightLevel) {
+                switch (_elements.lightLevel()) {
                     case 0:
                         bg = BG_LIGHT_0;
                         break;
@@ -108,7 +115,7 @@ public class Location
                 }//end switch lightLevel
                 break;
             case TEMPERATURE:
-                switch (_thermalLevel) {
+                switch (_elements.temperatureLevel()) {
                     case 0:
                         bg = BG_TEMP_0;
                         break;
@@ -199,10 +206,6 @@ public class Location
         return rc;
     }
 
-    public void reset() {
-        _lightLevel = 0;
-    }
-
     public void drift(World.Direction direction) {
         //drift crobes first
         if (_crobe != null)
@@ -223,13 +226,8 @@ public class Location
 
         sb.append(String.format("Location ( %1$d, %2$d )", _point.x, _point.y));
         sb.append("\n");
-        sb.append("====================\n");
-        sb.append("Light level:\n");
-        sb.append(String.format("  amb: %1$d  cur: %2$d", _ambientLight, _lightLevel));
-        sb.append("\n");
-        sb.append("Thermal level:\n");
-        sb.append(String.format("  amb: %1$d  cur: %2$d", _ambientHeat, _thermalLevel));
-        sb.append("\n");
+
+        sb.append(_elements.toString());
 
         if(_factors.size() > 0) {
             sb.append("====================\n");
