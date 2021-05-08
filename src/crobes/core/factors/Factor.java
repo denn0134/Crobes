@@ -1,12 +1,18 @@
 package crobes.core.factors;
 
 import crobes.core.*;
+import crobes.core.factors.gui.PodEditor;
 
 import java.awt.*;
 
 public abstract class Factor
 {
     protected World _world;
+    protected int _ttl;
+    protected boolean _anchored;
+    protected int _priority;
+    protected Location _location;
+
     /***
      * The World object which this Factor is part of.
      * @return Returns the World object.
@@ -14,8 +20,6 @@ public abstract class Factor
     public World world() {
         return _world;
     }
-
-    protected int _ttl;
     /***
      * The amount of time before this Factor will
      * disappear or decay.
@@ -24,7 +28,6 @@ public abstract class Factor
     public int timeToLive() {
         return _ttl;
     }
-
     /***
      * Determines whether this Factor object blocks
      * other objects from inhabiting the same location.
@@ -33,8 +36,6 @@ public abstract class Factor
     public boolean blocking() {
         return false;
     }
-
-    protected boolean _anchored;
     /***
      * Determines whether this Factor is allowed
      * to drift.
@@ -43,8 +44,6 @@ public abstract class Factor
     public boolean anchored() {
         return _anchored;
     }
-
-    protected int _priority;
     /***
      * The rendering/processing priority for this
      * Factor in situations where more than a single
@@ -54,15 +53,12 @@ public abstract class Factor
     public int priority() {
         return _priority;
     }
-
-    protected Location _location;
     public Location location() {
         return _location;
     }
     public void location(Location location) {
         _location = location;
     }
-
 
     public Factor(World world,
                   int timeToLive,
@@ -103,7 +99,7 @@ public abstract class Factor
                 _priority, _anchored);
     }
 
-    protected String quotedString(String s) {
+    protected static String quotedString(String s) {
         return "\"" + s + "\"";
     }
     protected String worldJson(World w) {

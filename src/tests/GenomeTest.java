@@ -5,7 +5,10 @@ import crobes.core.CrobeEnums;
 import crobes.core.Location;
 import crobes.core.World;
 import crobes.core.factors.Flow;
+import crobes.core.factors.Pod;
+import crobes.core.factors.ThermoPod;
 import crobes.core.factors.gui.FlowEditor;
+import crobes.core.factors.gui.ThermoPodEditor;
 import crobes.genetics.genePools.*;
 import crobes.genetics.genomics.Genome;
 import crobes.genetics.genomics.GenomeEnum;
@@ -167,7 +170,16 @@ public class GenomeTest extends Application
             }
         });
 
-        pane.getChildren().addAll(btnConfig, btnInspect, btnRand, btnFlow);
+        Button btnPod = new Button("Pod");
+        btnPod.setMaxWidth(Double.MAX_VALUE);
+        btnPod.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                createPod(primaryStage);
+            }
+        });
+
+        pane.getChildren().addAll(btnConfig, btnInspect, btnRand, btnFlow, btnPod);
 
         root.setCenter(pane);
 
@@ -209,6 +221,26 @@ public class GenomeTest extends Application
             Location location = world.getLocation(world.getWidth() / 2, world.getHeight() / 2);
             flow.location(location);
             System.out.println(flow.toJson());
+        }//end if
+    }
+
+    private void createPod(Stage parent) {
+        ThermoPodEditor.ThermoPodInfo info = ThermoPodEditor.getPodInfo(parent);
+
+        if (info != null) {
+            World world = new World(20);
+
+            Pod.MotionType mType;
+            if (info.motility == CrobeEnums.MotilityType.NON_MOTILE)
+                mType = null;
+            else
+                mType = new Pod.MotionType(info.motility,
+                        info.motion, info.speed, info.direction);
+            ThermoPod pod = new ThermoPod(world, info.timeToLive,
+                    info.size, mType, info.thermalValue, info.range);
+            Location location = world.getLocation(world.getWidth() / 2, world.getHeight() / 2);
+            pod.location(location);
+            System.out.println(pod.toJson());
         }//end if
     }
 }

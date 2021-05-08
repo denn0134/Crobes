@@ -1,5 +1,8 @@
 package crobes.core;
 
+import crobes.core.factors.Pod;
+import crobes.core.factors.ThermoPod;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -207,7 +210,7 @@ public class Environment extends ArrayList<ArrayList<Location>>
 
         for(int heat = 1; heat <= intensity; heat++) {
             int bleed = (intensity - heat);
-            int diameter = (2 * (radius + bleed)) + 1;
+            int diameter = 2 * ThermoPod.intensityRange(intensity, heat, radius, Pod.PodSize.SMALL) + 1;
 
             int col, row;
             col = thermalCenter.x - (radius + bleed);

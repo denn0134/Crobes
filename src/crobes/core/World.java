@@ -250,6 +250,28 @@ public class World
         else
             return null;
     }
+    public double distance(Point p1, Point p2) {
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+    }
+    public ArrayList<Location> getInRange(Point point, int range) {
+        ArrayList<Location> result = new ArrayList<Location>();
+
+        int minX, minY, maxX, maxY;
+        minX = (point.x - range < 0) ? 0 : point.x - range;
+        minY = (point.y - range < 0) ? 0 : point.y - range;
+        maxX = (point.x + range < getWidth()) ? point.x + range : getWidth();
+        maxY = (point.y + range < getHeight()) ? point.y + range : getHeight();
+
+        for (int x = minX; x < maxX; x++) {
+            for (int y = minY; y < maxY; y++) {
+                if (distance(point, new Point(x, y)) < range) {
+                    result.add(getLocation(x, y));
+                }//end if
+            }//end for y
+        }//end for x
+
+        return result;
+    }
 
     /***
      * Moves the specified Crobe one space in the specified

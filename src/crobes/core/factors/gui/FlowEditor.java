@@ -53,7 +53,6 @@ public class FlowEditor extends Stage
 
     public FlowEditor(double width, double height) {
         root = new BorderPane();
-        //gCenter = new Point2D(CANVAS_SIZE / 2.0, CANVAS_SIZE / 2.0);
 
         _cancelled = true;
 
