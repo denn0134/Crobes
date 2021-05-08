@@ -10,7 +10,7 @@ public class Lens
         NONE,
         LIGHT,
         TEMPERATURE,
-        FLOW
+        FACTORS
     }
 
     public static final String FMT_FONT_STYLE = "<span style='font-family: %1$s; font-size: %2$d'>";

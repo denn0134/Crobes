@@ -133,7 +133,7 @@ public class Location
                         break;
                 }//end switch tempLevel
                 break;
-            case FLOW:
+            case FACTORS:
                 bg = BG_NONE;
                 break;
         }//end switch mode

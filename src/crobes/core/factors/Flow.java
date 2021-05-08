@@ -96,7 +96,7 @@ public class Flow extends Factor
 
     @Override
     public void render(Point location, Lens.Mode mode, RenderContext context) {
-        if (mode != Lens.Mode.FLOW) return;
+        if (mode != Lens.Mode.FACTORS) return;
 
         context.background = CrobeEnums.CrobeColor.skyblue;
         context.foreground = CrobeEnums.CrobeColor.cornflowerblue;
