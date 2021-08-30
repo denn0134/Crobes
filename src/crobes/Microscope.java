@@ -35,6 +35,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/***
+ * Main GUI form for the Crobes application.  Contains the "main" mmethod.
+ */
 public class Microscope extends Application
 {
     //panels
@@ -64,6 +67,20 @@ public class Microscope extends Application
     private static final long DELAY_MEDIUM = 5000;
     private static final long DELAY_FAST = 1000;
 
+    /***
+     * The "main" method for the Crobes application.  Used for starting up the
+     * application.
+     * @param args <p>Space delimited list of command line arguments for running
+     *             the application.  The command line arguments are as follows:</p>
+     *             <ul>
+     *                  <li>
+     *                      <p>radix: This integer value is used during world generation to determine how large the world will be.</p>
+     *                  </li>
+     *                  <li>
+     *                      <p>mutationRate: This integer value represents how likely mutations are to happen; essentially the chance of a mutation occurring is functionally equivalent to 1 in m where m = mutationRate.</p>
+     *                  </li>
+     *             </ul>
+     */
     public static void main(String[] args) {
         launch(args);
     }
