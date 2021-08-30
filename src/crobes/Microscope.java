@@ -56,6 +56,9 @@ public class Microscope extends Application
 
     private int _radix;
 
+    /***
+     * The font name for rendering the world within the microscope.
+     */
     public static final String FONT_NAME = "monospace";
     private static final int FONT_WIDTH_CONSTANT = 27;
     private static final int FONT_HEIGHT_CONSTANT = 63;
