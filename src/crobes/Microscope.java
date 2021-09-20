@@ -70,6 +70,20 @@ public class Microscope extends Application
     private static final long DELAY_MEDIUM = 5000;
     private static final long DELAY_FAST = 1000;
 
+    private static String RESOURCE_PREFIX = "";
+
+    /***
+     * Gets the resource identifier for a given resource name.  This is a work around
+     * for an issue which I do not understand where when running the application in
+     * IntelliJ Idea the resources are resolving correctly, but in Eclipse for some
+     * reason a slash("/") must be prepended in order to get it to resolve ocrrectly.
+     * @param resourceName  The name of the resource.
+     * @return Returns the ID for the resource based on the command line parameters.
+     */
+    public static String getResourceId(String resourceName) {
+        return RESOURCE_PREFIX + resourceName;
+    }
+
     /***
      * The "main" method for the Crobes application.  Used for starting up the
      * application.
@@ -81,6 +95,9 @@ public class Microscope extends Application
      *                  </li>
      *                  <li>
      *                      <p>mutationRate: This integer value represents how likely mutations are to happen; essentially the chance of a mutation occurring is functionally equivalent to 1 in m where m = mutationRate.</p>
+     *                  </li>
+     *                  <li>
+     *                      <p>resourcePrefix: Optional prefix for telling Microscope where to find resources.  This is needed to add a leading forward slash("/") in Eclipse.</p>
      *                  </li>
      *             </ul>
      */
@@ -98,6 +115,8 @@ public class Microscope extends Application
                 (list.size() > 0)) {
             _radix = Integer.parseInt(list.get(0));
             Crobe.MUTATION_RATE = Integer.parseInt(list.get(1));
+            if(list.size() > 2)
+                RESOURCE_PREFIX = list.get(2);
         }//end if
     }
 
@@ -538,7 +557,7 @@ public class Microscope extends Application
         rb.getStyleClass().add("toggle-button");
     }
     private void setButtonIcon(Labeled button, String iconResource) {
-        Image img = new Image(getClass().getResourceAsStream(iconResource));
+        Image img = new Image(getClass().getResourceAsStream(getResourceId(iconResource)));
         button.setGraphic(new ImageView(img));
     }
 
