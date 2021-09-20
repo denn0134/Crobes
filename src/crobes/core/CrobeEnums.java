@@ -95,6 +95,14 @@ public class CrobeEnums
         mediumblue, darkblue, navy, midnightblue
     }
 
+    /***
+     * Retrieves a specific CrobeEnum value based on the enum type name and the
+     * enum value name.
+     * @param enumName Name of the enum type to look up.
+     * @param name Name of the enum value to look up.
+     * @return Returns the enum value requested; may return null if the enum
+     * requested is invalid.
+     */
     public static Enum getEnum(String enumName, String name) {
         Enum result = null;
 

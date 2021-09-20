@@ -2,6 +2,9 @@ package crobes.core;
 
 import java.util.ArrayList;
 
+/***
+ * Collection of crobes.
+ */
 public class CrobeColony extends ArrayList<Crobe>
 {
     @Override
@@ -11,11 +14,18 @@ public class CrobeColony extends ArrayList<Crobe>
         return result;
     }
 
+    /***
+     * Tells each crobe in the collection to perform its live() functionality.
+     */
     public void live() {
         for(Crobe c : this) {
             c.live();
         }//end for c
     }
+
+    /***
+     * Tells each crobe in the collection to perform its reproduce() functionality.
+     */
     public void reproduce() {
         ArrayList<Crobe> children = new ArrayList<Crobe>();
 
@@ -27,6 +37,11 @@ public class CrobeColony extends ArrayList<Crobe>
             add(c);
         }//end for c
     }
+
+    /***
+     * Removes any crobes from the collection which have died.
+     * @return Returns True if any corbes have been removed; False if not.
+     */
     public boolean purge() {
         boolean result = false;
 

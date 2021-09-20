@@ -8,26 +8,47 @@ import java.util.Comparator;
  */
 public class Drift
 {
+    /***
+     * Enumeration of the basic drift mechanisms available.
+     */
     public enum DriftType {
         BROWNIAN,
         FLOW
     }
 
     private Location _location;
+    /***
+     * The location where the drift is occurring.
+     * @return
+     */
     public Location location() {
         return _location;
     }
 
     private DriftType _type;
+    /***
+     * The type of drift which is occurring.
+     * @return
+     */
     public DriftType type() {
         return _type;
     }
 
     private World.Direction _direction;
+    /***
+     * The direction of the drift motion.
+     * @return
+     */
     public World.Direction direction() {
         return _direction;
     }
 
+    /***
+     * Constructor for a Drift object.
+     * @param location Location where the drift is occurring.
+     * @param type Type of drift to occur.
+     * @param direction Direction of the drift motion.
+     */
     public Drift(Location location, DriftType type, World.Direction direction) {
         _location = location;
         _type = type;

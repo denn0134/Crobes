@@ -1,5 +1,8 @@
 package crobes.core;
 
+/***
+ * Constants for gene names.
+ */
 public class CrobeConstants
 {
     public static final String LIFECYCLE_GENE_SPAN = "Span";
