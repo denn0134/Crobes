@@ -49,8 +49,12 @@ public class Genome
     }
 
     /***
-     *
-     * @param randomize
+     * Initializes the random property of the all of the genePools in the
+     * Genome.  The random property is used to allow a Genome to be randomly
+     * generated upon creation instead of requiring the coder to set each
+     * and every gene property in the genePool.
+     * @param randomize Pass in True to randomize the genePool; False to
+     *                  require the genes to be set individually.
      */
     public void initRandom(boolean randomize) {
         _lifeCycle.initRandom(randomize);
