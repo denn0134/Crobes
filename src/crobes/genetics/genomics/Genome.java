@@ -49,6 +49,11 @@ public class Genome
         _motility.initRandom(randomize);
         _renderer.initRandom(randomize);
     }
+
+    /***
+     * Determines if this Genome is allowed to randomly generated.
+     * @return Returns True if the Genome can be randomly generated; False if not.
+     */
     public boolean randomizable() {
         if(_lifeCycle.randomizable())
             return true;
