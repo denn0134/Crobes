@@ -35,6 +35,11 @@ public class Genome
         _renderer = new GenomeRenderer();
     }
 
+    /***
+     * Calulates the taxonomic name of the genome.
+     * @return Returns the taxonomic name of the genome, which is made up
+     * from the taxonomies of the constituent genePools.
+     */
     public String getTaxonomy() {
         return String.format("%1$s %2$s %3$s %4$s",
                 _lifeCycle.getTaxa(),
@@ -43,6 +48,10 @@ public class Genome
                 _renderer.getTaxa());
     }
 
+    /***
+     *
+     * @param randomize
+     */
     public void initRandom(boolean randomize) {
         _lifeCycle.initRandom(randomize);
         _metabolism.initRandom(randomize);
@@ -72,6 +81,10 @@ public class Genome
         return toJson();
     }
 
+    /***
+     * Serializes the Genome to a Json string.
+     * @return Returns the serialization of the genome as a Json string.
+     */
     String toJson() {
         StringBuilder sb = new StringBuilder();
 
