@@ -400,17 +400,21 @@ public class Microscope extends Application
             pane.getRowConstraints().add(createRow(100.0 / 3.0, true));
         }//end for i
 
-        Button btnPanUp = createButton("˄", true);
+        Button btnPanUp = createButton("", true);
+        setButtonIcon(btnPanUp, "up.png");
         pane.add(btnPanUp, 1, 0, 2, 1);
-        Button btnPanLeft = createButton("<", true);
+        Button btnPanLeft = createButton("", true);
+        setButtonIcon(btnPanLeft, "left.png");
         pane.add(btnPanLeft, 0, 1, 1, 1);
         Button btnZoomIn = createButton("+", true);
         pane.add(btnZoomIn, 1, 1, 1, 1);
         Button btnZoomOut = createButton("-", true);
         pane.add(btnZoomOut, 2, 1, 1, 1);
-        Button btnPanRight = createButton(">", true);
+        Button btnPanRight = createButton("", true);
+        setButtonIcon(btnPanRight, "right.png");
         pane.add(btnPanRight, 3, 1, 1, 1);
-        Button btnPanDown = createButton("˅", true);
+        Button btnPanDown = createButton("", true);
+        setButtonIcon(btnPanDown, "down.png");
         pane.add(btnPanDown, 1, 2, 2, 1);
 
         btnZoomIn.setOnAction(new EventHandler<ActionEvent>() {
