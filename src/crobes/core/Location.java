@@ -212,12 +212,21 @@ public class Location
             _crobe.world().move(_crobe, direction);
 
         //then factors
+        /*
         for (Factor f: _factors) {
             if (f.world().move(f, direction) == -1) {
                 //remove the Factor if it has left the World
                 f.world().remove(f);
             }//end if
         }//end if
+        */
+        for (int i = 0; i< _factors.size(); i++) {
+            if (_factors.get(i).world().move(_factors.get(i), direction) == -1) {
+                //remove the Factor if it has left the World
+            	_factors.get(i).world().remove(_factors.get(i));
+            }//end if
+        }
+        
     }
 
     @Override
