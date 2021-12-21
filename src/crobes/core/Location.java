@@ -213,11 +213,15 @@ public class Location
 
         //then factors
         for (Factor f: _factors) {
+        	System.out.println("HERE " + _factors.size());
             if (f.world().move(f, direction) == -1) {
+            	System.out.println("Something happens with Factor" + f.toString());
                 //remove the Factor if it has left the World
+            	//System.out.println("HERE" + _factors.size());
                 f.world().remove(f);
             }//end if
         }//end if
+        System.out.println("");
     }
 
     @Override
