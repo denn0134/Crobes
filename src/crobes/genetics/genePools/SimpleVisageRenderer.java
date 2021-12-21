@@ -78,8 +78,8 @@ public class SimpleVisageRenderer extends Renderer implements IRenderGenePool
         //check if we are on the edge of the environment
         Point p = _crobe.position();
         int maxW, maxH;
-        maxW = _crobe.world().environment().width();
-        maxH = _crobe.world().environment().height();
+        maxW = _crobe.world().environment().width() - 1;
+        maxH = _crobe.world().environment().height() - 1;
 
         if(p.x == 0) {
             count -= 2;
