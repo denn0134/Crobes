@@ -212,16 +212,20 @@ public class Location
             _crobe.world().move(_crobe, direction);
 
         //then factors
+        //System.out.println("HERE " + _factors.toString());
         for (Factor f: _factors) {
-        	System.out.println("HERE " + _factors.size());
+        	//System.out.println(_factors.size());
             if (f.world().move(f, direction) == -1) {
-            	System.out.println("Something happens with Factor" + f.toString());
+            	//System.out.println("Something happens with Factor" + f.toString());
                 //remove the Factor if it has left the World
             	//System.out.println("HERE" + _factors.size());
-                f.world().remove(f);
+                f.world().markRemove(f);
             }//end if
-        }//end if
-        System.out.println("");
+        }
+        if(_factors.size() > 0) {
+        	_factors.get(0).world().removeMarked();
+        }
+        //System.out.println("");
     }
 
     @Override

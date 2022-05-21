@@ -12,6 +12,7 @@ public abstract class Factor
     protected boolean _anchored;
     protected int _priority;
     protected Location _location;
+    public boolean markedRemoved = false;
 
     /***
      * The World object which this Factor is part of.

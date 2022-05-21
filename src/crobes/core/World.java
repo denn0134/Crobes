@@ -421,12 +421,24 @@ public class World
     }
 
     public void remove(Crobe crobe) {
+    	System.out.println("A removal is attempted");
         crobe.stage(CrobeEnums.LifeStage.DEAD);
         crobes().purge();
     }
     public void remove(Factor factor) {
         factor.location().factors().remove(factor);
         _factors.remove(factor);
+        //System.out.println("Factor Version");
+    }
+    public void markRemove(Factor factor) {
+    	factor.markedRemoved = true;
+    }
+    public void removeMarked() {
+    	for(int i = _factors.size()-1; i >= 0; i--) {
+    		if(_factors.get(i).markedRemoved) {
+    			_factors.remove(i);
+    		}
+    	}
     }
 
     public void resetElements() {
